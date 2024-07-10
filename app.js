@@ -26,6 +26,8 @@ mongoose
     console.log("Error connecting to MongoDB Atlas", error);
   });
 
+const User = require("./models/user");
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
