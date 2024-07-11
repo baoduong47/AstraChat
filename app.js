@@ -17,24 +17,11 @@ const app = express();
 // MongoDB connection string(from .env)
 const MongoURI = process.env.MONGO_URI;
 
-mongoose
-  .connect(MongoURI, {})
+const connect = mongoose.connect(MongoURI, {});
+
+connect
   .then(() => {
     console.log("Connected to MongoDB Atlas!");
-
-    const User = require("./models/user");
-    const testUser = new User({
-      firstname: "brandon2",
-      lastname: "duong",
-      email: "bduong14972@gmail.com",
-    });
-
-    testUser
-      .save()
-      .then(() => {
-        console.log("Test user saved successfully!");
-      })
-      .catch((error) => console.log("Error saving test user: ", error));
   })
   .catch((error) => {
     console.log("Error connecting to MongoDB Atlas", error);
