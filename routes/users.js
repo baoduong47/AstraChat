@@ -6,13 +6,13 @@ userRouter.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
-userRouter.post("/signup", async (req, res) => {
+userRouter.route("/signup").post(async (req, res) => {
   const { firstname, lastname, email, username, password } = req.body;
-
   const existingUser = await User.findOne({ $or: [{ email }] });
+
   if (existingUser) {
-    console.log("User already exists:", existingUser);
-    return res.status(400).send("User with this email already exists");
+    console.log("User already exists", existingUser);
+    return res.status(400).send("User with this emnail already exists");
   }
 
   try {
@@ -23,12 +23,9 @@ userRouter.post("/signup", async (req, res) => {
       username,
       password,
     });
-    await newUser.save();
-    console.log("User registered successfully:", newUser);
-    res.status(200).send("User registered successfully");
+    newUser.save();
   } catch (error) {
-    console.error("Error registering user: ", error);
-    res.status(500).send("Error registering user");
+    return res.status(500).send("Error registering user");
   }
 });
 
@@ -36,10 +33,10 @@ userRouter.get("/login", (req, res, next) => {
   res.send("Welcome to the Login Page");
 });
 
-userRouter.get("/:userId", async (req, res) => {
+userRouter.route("/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
-    console.log("Received userId:", userId);
+    console.log("Found user", userId);
 
     const user = await User.findById(userId);
 
