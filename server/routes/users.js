@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const User = require("../models/user");
 
 userRouter.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.json({ message: "respond with a resource" });
 });
 
 userRouter.route("/signup").post(async (req, res) => {
