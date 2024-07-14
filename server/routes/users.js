@@ -2,8 +2,13 @@ const express = require("express");
 const userRouter = express.Router();
 const User = require("../models/user");
 
-userRouter.get("/", function (req, res, next) {
-  res.json({ message: "respond with a resource" });
+userRouter.route("/").get(async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).send("Error retrieving users");
+  }
 });
 
 userRouter.route("/signup").post(async (req, res) => {
