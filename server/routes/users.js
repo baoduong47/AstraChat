@@ -13,13 +13,15 @@ userRouter.route("/").get(async (req, res) => {
 
 userRouter.route("/signup").post(async (req, res) => {
   const { firstname, lastname, email, username, password } = req.body;
+
   const existingUser = await User.findOne({ $or: [{ email }] });
 
   if (existingUser) {
     console.log("User already exists", existingUser);
-    return res.status(400).send("User with this email already exists");
+    return res
+      .status(400)
+      .json({ message: "User with this email already exists" });
   }
-
   try {
     const newUser = new User({
       firstname,
@@ -28,31 +30,46 @@ userRouter.route("/signup").post(async (req, res) => {
       username,
       password,
     });
+
     newUser.save();
-    res.status(200).send("User created successfully!");
+    res.status(200).json({ message: "User created successfully!", newUser });
     console.log(newUser);
   } catch (error) {
-    return res.status(500).send("Error registering user");
+    return res.status(500).json({ message: "Error signing up", error });
   }
 });
 
-userRouter.route("/:userId").get(async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    console.log("Received userId", userId);
+userRouter
+  .route("/:userId")
+  .get(async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      console.log("Received userId", userId);
 
-    const user = await User.findById(userId);
-    console.log("Found user", user);
+      const user = await User.findById(userId);
+      console.log("Found user", user);
 
-    if (!user) {
-      return res.status(404).send("User not found");
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      console.log(error); // Log error for debugging
+      return res.status(500).send("Error retrieving user");
     }
-    res.status(200).json(user);
-  } catch (error) {
-    console.log(error); // Log error for debugging
-    return res.status(500).send("Error retrieving user");
-  }
-});
+  })
+  .delete(async (req, res) => {
+    try {
+      const user = await User.findByIdAndDelete(req.params.userId);
+      if (user) {
+        res.status(200).json({ message: "User deleted successfully", user });
+      } else {
+        res.status(404).send("User not found");
+      }
+    } catch (error) {
+      return res.status(400).send("Error deleting user");
+    }
+  });
 
 userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
