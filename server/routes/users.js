@@ -1,6 +1,8 @@
 const express = require("express");
 const userRouter = express.Router();
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 userRouter.route("/").get(async (req, res) => {
   try {
@@ -14,26 +16,28 @@ userRouter.route("/").get(async (req, res) => {
 userRouter.route("/signup").post(async (req, res) => {
   const { firstname, lastname, email, username, password } = req.body;
 
-  const existingUser = await User.findOne({ $or: [{ email }] });
-
-  if (existingUser) {
-    console.log("User already exists", existingUser);
-    return res
-      .status(400)
-      .json({ message: "User with this email already exists" });
-  }
   try {
+    const existingUser = await User.findOne({ $or: [{ email }] });
+
+    if (existingUser) {
+      console.log("User already exists", existingUser);
+      return res
+        .status(400)
+        .json({ message: "User with this email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
       firstname,
       lastname,
       email,
       username,
-      password,
+      password: hashedPassword,
     });
 
     newUser.save();
     res.status(200).json({ message: "User created successfully!", newUser });
-    console.log(newUser);
   } catch (error) {
     return res.status(500).json({ message: "Error signing up", error });
   }
@@ -52,6 +56,7 @@ userRouter
       if (!user) {
         return res.status(404).send("User not found");
       }
+
       res.status(200).json(user);
     } catch (error) {
       console.log(error); // Log error for debugging
@@ -81,11 +86,17 @@ userRouter.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    if (user.password !== password) {
-      return res.status(400).json({ message: "Invalid password" });
+    const isPasswordMatch = bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(200).json({ message: "Password Invalid" });
     }
 
-    res.status(200).json({ message: "Login successful!", user });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({ message: "Login successful!", user, token });
+    console.log("You are successfully logged in!");
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Invalid email or password" });
