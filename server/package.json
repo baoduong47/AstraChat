@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.6",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "core-js": "^3.37.1",
