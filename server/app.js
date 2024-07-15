@@ -40,6 +40,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
+app.use(cors({ origin: "http://localhost:3001" }));
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/comments", commentRouter);
