@@ -1,44 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Home from "./pages/Home";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Home from "./pages/Home";
 
 function App() {
-  const [backendData, setBackendData] = useState([]);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:3000/users/signup")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setBackendData(data);
-  //     })
-  //     .catch((error) => console.error("Error fetching data:", error));
-  // }, []);
-
   return (
-    <>
-      {/* {backendData.map((item) => (
-        <div key={item._id}>
-          <div>
-            <b>Name:</b> {item.firstname} {item.lastname}
-          </div>
-          <div>
-            <b>ID:</b> {item._id}
-          </div>
-          <div>
-            <b>Email:</b> {item.email}
-          </div>
-          <div>
-            <b>Username:</b> {item.username}
-          </div>
-          <div>
-            <b>Password:</b> {item.password}
-          </div>
-          <br />
-        </div>
-      ))} */}
-      <Signup />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 

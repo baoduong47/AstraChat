@@ -13,16 +13,16 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payloud.user,
+        user: action.payload.user,
         loading: false,
         error: null,
       };
 
-    case REGISTER_FAIL:
-    case LOGIN_FAIL:
+    case "REGISTER_FAIL":
+    case "LOGIN_FAIL":
       return {
         ...state,
-        error: action.payloud,
+        error: action.payload,
         loading: false,
       };
 

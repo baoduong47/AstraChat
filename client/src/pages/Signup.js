@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../redux/actions/authActions";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,22 +11,27 @@ const Signup = () => {
     password: "",
   });
 
+  const dispatch = useDispatch();
+  const authError = useSelector((state) => state.auth.eror);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData, // Preserve the other fields
-      [name]: value, // Update the specific field that changed
-    });
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(registerUser(formData));
     console.log("Form submitted", formData);
   };
 
   return (
     <div>
-      <p>This is the Signup Screen</p>
+      <p>Sign Up</p>
+      {authError && <p className="error">{authError.message}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="firstname"
@@ -33,6 +40,7 @@ const Signup = () => {
           placeholder="firstname"
           value={formData.firstname}
           onChange={handleChange}
+          required
         ></input>
         <input
           type="lastname"
@@ -41,6 +49,7 @@ const Signup = () => {
           placeholder="lastname"
           value={formData.lastname}
           onChange={handleChange}
+          required
         ></input>
         <input
           type="username"
@@ -49,6 +58,7 @@ const Signup = () => {
           placeholder="username"
           value={formData.username}
           onChange={handleChange}
+          required
         ></input>
         <input
           type="email"
@@ -57,6 +67,7 @@ const Signup = () => {
           placeholder="email"
           value={formData.email}
           onChange={handleChange}
+          required
         ></input>
         <input
           type="password"
@@ -65,6 +76,7 @@ const Signup = () => {
           placeholder="password"
           value={formData.password}
           onChange={handleChange}
+          required
         ></input>
         <button type="submit">Submit</button>
       </form>
