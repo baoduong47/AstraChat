@@ -12,7 +12,7 @@ const {
 
 const userRouter = express.Router();
 
-userRouter.route("/").get(getUsers);
+userRouter.route("/").get(authMiddleware, getUsers);
 userRouter.route("/signup").post(signup);
 userRouter.route("/:userId").get(getUserById).delete(deleteUser);
 userRouter.post("/login", login);
