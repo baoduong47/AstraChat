@@ -28,7 +28,15 @@ export const loginUser = (credentials) => async (dispatch) => {
     );
     console.log("Received response from server:", response.data);
     dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
-    alert("Login Success!");
+
+    localStorage.setItem("token", response.data.token);
+
+    if (response.data.token) {
+      console.log("User is authenticated, redirecting to home...");
+      window.location.href = "/";
+    } else {
+      console.log("User is not authenticated, no redirection.");
+    }
   } catch (error) {
     console.log("Error during login:", error.response.data);
     dispatch({ type: "LOGIN_FAIL", payload: error.response.data });
