@@ -28,9 +28,11 @@ export const loginUser = (credentials) => async (dispatch) => {
     );
     console.log("Received response from server:", response.data);
     dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
+    alert("Login Success!");
   } catch (error) {
     console.log("Error during login:", error.response.data);
     dispatch({ type: "LOGIN_FAIL", payload: error.response.data });
+    alert("Login Failed!");
   }
 };
 
