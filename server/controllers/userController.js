@@ -12,7 +12,7 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.signup = async (req, res) => {
-  const { firstname, lastname, email, username, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ $or: [{ email }] });
@@ -30,7 +30,6 @@ exports.signup = async (req, res) => {
       firstname,
       lastname,
       email,
-      username,
       password: hashedPassword,
     });
 
