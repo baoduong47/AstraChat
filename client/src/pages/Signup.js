@@ -4,7 +4,7 @@ import { registerUser } from "../redux/actions/authActions";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    fistname: "",
+    firstname: "",
     lastname: "",
     email: "",
     username: "",
