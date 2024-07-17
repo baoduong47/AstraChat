@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <div>
-        <LogoutButton />
+        {/* <LogoutButton /> */}
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
