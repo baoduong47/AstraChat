@@ -7,7 +7,19 @@ exports.getUsers = async (req, res) => {
     const users = await User.find({});
     res.status(200).json(users);
   } catch (error) {
-    return res.status(500).send("Error retrieving users");
+    return res.status(500).json({ message: "Error retrieving users" });
+  }
+};
+
+exports.getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user).select("-password");
+    if (!user) {
+      return res.status(500).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ message: "Error retrieving user" });
   }
 };
 
