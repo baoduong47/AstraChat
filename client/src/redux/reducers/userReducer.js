@@ -3,6 +3,7 @@ const initialState = {
   users: [],
   loading: true,
   error: null,
+  currentUser: null,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -19,10 +20,18 @@ const userReducer = (state = initialState, action) => {
         loading: false,
         isAuthenticated: true,
       };
-    case "GET_USERS_FAIL":
+    case "GET_CURRENT_USER_SUCCESS":
       return {
         ...state,
-        users: null,
+        currentUser: action.payload,
+        loading: false,
+        isAuthenticated: true,
+      };
+
+    case "GET_USERS_FAIL":
+    case "GET_CURRENT_USER_FAIL":
+      return {
+        ...state,
         loading: false,
         isAuthenticated: false,
         error: action.payload,
