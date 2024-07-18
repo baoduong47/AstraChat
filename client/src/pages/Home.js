@@ -17,11 +17,19 @@ const Home = () => {
   // // console.log("User state:", users);
   console.log("Current user:", currentUser);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   return (
     <div>
       <h1>
-        Welcome {""}
-        {currentUser.firstname}
+        Welcome Back, {""}
+        {currentUser ? currentUser.firstname : "Guest"}
       </h1>
       <h2>All Users List</h2>
 
