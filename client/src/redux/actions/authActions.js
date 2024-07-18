@@ -10,6 +10,13 @@ export const registerUser = (userData) => async (dispatch) => {
     console.log("Recieved response: ", response.data);
     dispatch({ type: "REGISTER_SUCCESS", payload: response.data });
     alert("Registration Success!");
+
+    if (response.data.token) {
+      console.log("User is authenticated, redirecting to login...");
+      window.location.href = "/login";
+    } else {
+      console.log("User is not authenticated, no redirection.");
+    }
   } catch (error) {
     console.error("Error during registration:", error);
     const errorMessage = error.response?.data || { message: "Server error" };
