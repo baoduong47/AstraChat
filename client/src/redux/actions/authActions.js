@@ -9,7 +9,6 @@ export const registerUser = (userData) => async (dispatch) => {
     );
     console.log("Recieved response: ", response.data);
     dispatch({ type: "REGISTER_SUCCESS", payload: response.data });
-    alert("Registration Success!");
 
     if (response.data.token) {
       console.log("User is authenticated, redirecting to login...");
@@ -22,7 +21,6 @@ export const registerUser = (userData) => async (dispatch) => {
     const errorMessage = error.response?.data || { message: "Server error" };
     console.log("Error message:", errorMessage);
     dispatch({ type: "REGISTER_FAIL", payload: errorMessage });
-    alert("Registration Error!");
   }
 };
 
@@ -40,14 +38,13 @@ export const loginUser = (credentials) => async (dispatch) => {
 
     if (response.data.token) {
       console.log("User is authenticated, redirecting to home...");
-      window.location.href = "/";
+      window.location.href = "/home";
     } else {
       console.log("User is not authenticated, no redirection.");
     }
   } catch (error) {
     console.log("Error during login:", error.response.data);
     dispatch({ type: "LOGIN_FAIL", payload: error.response.data });
-    alert("Login Failed!");
   }
 };
 
