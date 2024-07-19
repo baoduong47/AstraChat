@@ -1,5 +1,6 @@
 const express = require("express");
 const commentRouter = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
 
 const {
   getComments,
@@ -8,7 +9,7 @@ const {
   editComment,
 } = require("../controllers/commentController");
 
-commentRouter.route("/").get(getComments).post(postComment);
+commentRouter.route("/").get(getComments).post(authMiddleware, postComment);
 commentRouter.route("/:commentId").get(getCommentById).put(editComment);
 
 module.exports = commentRouter;

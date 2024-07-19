@@ -1,5 +1,5 @@
 const Comment = require("../models/comment");
-const { findById, findByIdAndUpdate } = require("../models/user");
+const User = require("../models/user");
 
 exports.getComments = async (req, res) => {
   try {
@@ -28,19 +28,39 @@ exports.getCommentById = async (req, res) => {
 };
 
 exports.postComment = async (req, res) => {
-  const { comment, author, postId } = req.body;
+  const { comment } = req.body;
+
+  console.log("Comment", comment);
+
+  if (!comment) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
   try {
+    console.log("Authenticated user:", req.user);
+
+    const user = await User.findById(req.user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("User fetched successfully:", user);
+
     const newComment = new Comment({
       comment,
-      author,
-      postId,
+      author: user.firstname,
+      postId: req.user,
     });
 
     await newComment.save();
     res
       .status(200)
       .json({ message: "Comment saved successfully!", newComment });
+
+    console.log("Comment saved: ", newComment);
   } catch (error) {
+    console.log("Error saving message", error);
     res.status(500).json({ message: "Error saving comment", error });
   }
 };
