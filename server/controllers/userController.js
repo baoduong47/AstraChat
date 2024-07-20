@@ -11,11 +11,30 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log("Received userId", userId);
+
+    const user = await User.findById(userId);
+    console.log("Found user", user);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error); // Log error for debugging
+    return res.status(500).send("Error retrieving user");
+  }
+};
+
 exports.getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user).select("-password");
     if (!user) {
-      return res.status(500).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json(user);
   } catch (error) {
@@ -23,11 +42,53 @@ exports.getCurrentUser = async (req, res) => {
   }
 };
 
+exports.updateCurrentUser = async (req, res) => {
+  try {
+    const userId = req.user;
+
+    console.log("userid", userId);
+
+    const updates = { ...req.body };
+
+    if (req.file) {
+      updates.avatar = req.file.path;
+    }
+
+    const user = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+    }).select("-password");
+
+    console.log("Updates", updates);
+
+    console.log("User", user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ message: "User successfully updated", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating profile" });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.userId);
+    if (user) {
+      res.status(200).json({ message: "User deleted successfully", user });
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (error) {
+    return res.status(500).send("Error deleting user", error);
+  }
+};
+
 exports.signup = async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ $or: [{ email }] });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       console.log("User already exists", existingUser);
@@ -58,38 +119,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    console.log("Received userId", userId);
-
-    const user = await User.findById(userId);
-    console.log("Found user", user);
-
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
-    res.status(200).json(user);
-  } catch (error) {
-    console.log(error); // Log error for debugging
-    return res.status(500).send("Error retrieving user");
-  }
-};
-
-exports.deleteUser = async (req, res) => {
-  try {
-    const user = await User.findByIdAndDelete(req.params.userId);
-    if (user) {
-      res.status(200).json({ message: "User deleted successfully", user });
-    } else {
-      res.status(404).send("User not found");
-    }
-  } catch (error) {
-    return res.status(400).send("Error deleting user");
-  }
-};
-
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -102,7 +131,7 @@ exports.login = async (req, res) => {
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      return res.status(200).json({ message: "Password Invalid" });
+      return res.status(400).json({ message: "Password Invalid" });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -113,6 +142,6 @@ exports.login = async (req, res) => {
     console.log("You are successfully logged in!");
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Invalid email or password" });
+    return res.status(500).json({ message: "Error logging in", error });
   }
 };
