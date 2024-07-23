@@ -27,9 +27,16 @@ const userReducer = (state = initialState, action) => {
         loading: false,
         isAuthenticated: true,
       };
+    case "UPDATE_USER_SUCCESS":
+      return {
+        ...state,
+        currentUser: action.payload.user,
+        loading: false,
+      };
 
     case "GET_USERS_FAIL":
     case "GET_CURRENT_USER_FAIL":
+    case "UPDATE_USER_FAIL":
       return {
         ...state,
         loading: false,

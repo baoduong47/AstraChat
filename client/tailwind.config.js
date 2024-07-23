@@ -9,7 +9,7 @@ module.exports = {
         customBlue: "#023D60",
       },
       fontFamily: {
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        sans: ["DM Sans", "sans-serif"],
       },
     },
   },

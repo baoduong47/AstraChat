@@ -5,17 +5,18 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import LogoutButton from "./components/LogoutButton";
 import PrivateRoute from "./components/PrivateRoute";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <Router>
       <div>
-        {/* <LogoutButton /> */}
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<PrivateRoute element={Home} />} />
+          <Route path="/profile" element={<PrivateRoute element={Profile} />} />
         </Routes>
       </div>
     </Router>
