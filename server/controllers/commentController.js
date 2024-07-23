@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 exports.getComments = async (req, res) => {
   try {
-    const comments = await Comment.find({});
+    const comments = await Comment.find({}).populate("postId");
     res.status(200).json(comments);
   } catch (error) {
     return res.status(500).send("Error retrieving comments");
@@ -47,13 +47,17 @@ exports.postComment = async (req, res) => {
 
     console.log("User fetched successfully:", user);
 
-    const newComment = new Comment({
+    let newComment = new Comment({
       comment,
       author: user.firstname,
       postId: req.user,
     });
 
     await newComment.save();
+
+    newComment = await Comment.findById(newComment._id).populate("postId");
+    console.log("New comment populated:", newComment);
+
     res
       .status(200)
       .json({ message: "Comment saved successfully!", newComment });
