@@ -7,6 +7,9 @@ module.exports = {
     extend: {
       colors: {
         customBlue: "#023D60",
+        customGray: "#2A3139",
+
+        sideBar: "#1C1F26",
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],

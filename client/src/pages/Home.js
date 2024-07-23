@@ -8,16 +8,13 @@ import {
   deleteComment,
 } from "../redux/actions/commentAction";
 import PersonIcon from "@mui/icons-material/Person";
-import PeopleIcon from "@mui/icons-material/People";
 import MainLayout from "../components/MainLayout";
-import LogoutButton from "../components/LogoutButton";
+import Card from "../components/Card";
 
 const Home = () => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
-  const { users, currentUser, loading, error } = useSelector(
-    (state) => state.user
-  );
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.comment);
 
   const handleSubmit = (e) => {
@@ -76,31 +73,19 @@ const Home = () => {
           "Guest"
         )}
       </h1>
-      <h2 className="mt-5">
-        {" "}
-        <PeopleIcon style={{ verticalAlign: "middle", marginRight: "8px" }} />
-        All Users List <LogoutButton />
-      </h2>
 
-      <ul>
-        {users.map((item) => (
-          <li key={item._id}>
-            {item.firstname} {item.lastname}
-          </li>
-        ))}
-      </ul>
       <div>
-        <h2>Comments</h2>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="mt-20">
             <label htmlFor="comment">Comment:</label>
-            <textarea
+            <input
               type="text"
               id="text"
               name="text"
               value={comment}
               onChange={handleChange}
               placeholder="Enter a new comment..."
+              className="mx-2 text-black rounded-xl"
             />
             <button type="submit">Submit</button>
           </div>
@@ -112,28 +97,23 @@ const Home = () => {
               style={{
                 marginBottom: "16px",
                 padding: "50px",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
                 textAlign: "center",
               }}
+              className="flex justify-center"
             >
-              <div style={{ marginBottom: "4px" }}>
-                <PersonIcon
-                  style={{ fontSize: "6rem", color: "#bbb" }}
-                  alt={`${comment.author.firstname}'s avatar`}
-                  key={comment.author.firstname}
+              <div>
+                <Card
+                  description={comment.comment}
+                  author={comment.author}
+                  avatar={`http://localhost:3000/${comment.postId.avatar}`}
+                  title={`Comment by ${comment.author}`}
+                  date={new Date(comment.createdAt).toLocaleString()}
                 />
-                <strong>{comment.author}</strong>{" "}
-                <span style={{ color: "#555" }}>
-                  {new Date(comment.createdAt).toLocaleString()}
-                </span>
-                <h3>User ID: {comment.postId}</h3>
-                <h4>Comment ID: {comment._id}</h4>
+
+                <button onClick={() => handleDeleteSubmit(comment._id)}>
+                  Delete
+                </button>
               </div>
-              <div>{comment.comment}</div>
-              <button onClick={() => handleDeleteSubmit(comment._id)}>
-                Delete
-              </button>
             </li>
           ))}
         </ul>
