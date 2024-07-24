@@ -19,10 +19,20 @@ const Sidebar = () => {
   );
 
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
+  const [isMessageTabOpen, setIsMessageTabOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
   const toggleUsersDropdown = () => {
     setIsUsersDropdownOpen(!isUsersDropdownOpen);
+  };
+
+  const handleUserClick = (user) => {
+    if (selectedUser && selectedUser._id === user._id) {
+      setIsMessageTabOpen(!isMessageTabOpen);
+    } else {
+      setSelectedUser(user);
+      setIsMessageTabOpen(true);
+    }
   };
 
   if (loading) {
@@ -93,7 +103,7 @@ const Sidebar = () => {
               {users.map((user) => (
                 <li
                   key={user._id}
-                  onClick={() => setSelectedUser(user)}
+                  onClick={() => handleUserClick(user)}
                   className="cursor-pointer"
                 >
                   {user.firstname} {user.lastname}
@@ -131,7 +141,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
-      {selectedUser && <MessageTab user={selectedUser} />}
+      {isMessageTabOpen && selectedUser && <MessageTab user={selectedUser} />}
     </div>
   );
 };
