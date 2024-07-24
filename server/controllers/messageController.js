@@ -36,3 +36,18 @@ exports.sendMessage = async (req, res) => {
       .json({ message: "Error sending message", error: error.message });
   }
 };
+
+exports.getMessagesBetweenUsers = async (req, res) => {
+  try {
+    const messages = await Message.find({});
+
+    console.log("messages", messages);
+    res
+      .status(200)
+      .json({ message: "Message retrieved successfully", messages });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error fetching messages", error: error.message });
+  }
+};
