@@ -79,7 +79,7 @@ const Home = () => {
       </h1>
 
       <div>
-        {/* <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="mt-20">
             <label htmlFor="comment">Comment:</label>
             <input
@@ -93,9 +93,9 @@ const Home = () => {
             />
             <button type="submit">Submit</button>
           </div>
-        </form> */}
+        </form>
 
-        {/* <ul style={{ listStyleType: "none", padding: 0, marginTop: 10 }}>
+        <ul style={{ listStyleType: "none", padding: 0, marginTop: 10 }}>
           {comments.map((comment) => (
             <li
               key={comment._id}
@@ -121,7 +121,7 @@ const Home = () => {
               </div>
             </li>
           ))}
-        </ul> */}
+        </ul>
       </div>
     </MainLayout>
   );
