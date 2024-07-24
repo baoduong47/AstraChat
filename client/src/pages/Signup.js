@@ -40,7 +40,7 @@ const Signup = () => {
       >
         {/* <h1 className="text-white text-4xl font-bold">ChatBox Messaging App</h1> */}
       </div>
-      <div className="w-3/6 bg-white flex items-center justify-center p-8">
+      <div className="w-3/6 bg-backGround flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <h2 className="text-5xl font-bold mb-16">Create Account</h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -59,17 +59,20 @@ const Signup = () => {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "&.Mui-focused fieldset": {
-                      borderColor: "#023D60",
+                      borderColor: "#536f50",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#023D60",
+                      borderColor: "#536f50",
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#536f50",
                     },
                   },
                   "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#023D60",
+                    color: "#536f50",
                   },
                 }}
-              ></TextField>
+              />
               <TextField
                 type="lastname"
                 id="lastname"
@@ -84,17 +87,20 @@ const Signup = () => {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "&.Mui-focused fieldset": {
-                      borderColor: "#023D60",
-                      "&:hover fieldset": {
-                        borderColor: "#023D60",
-                      },
+                      borderColor: "#536f50",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#536f50",
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#536f50",
                     },
                   },
                   "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#023D60",
+                    color: "#536f50",
                   },
                 }}
-              ></TextField>
+              />
             </div>
             <TextField
               type="email"
@@ -110,17 +116,20 @@ const Signup = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&.Mui-focused fieldset": {
-                    borderColor: "#023D60",
-                    "&:hover fieldset": {
-                      borderColor: "#023D60",
-                    },
+                    borderColor: "#536f50",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#536f50",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#536f50",
                   },
                 },
                 "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#023D60",
+                  color: "#536f50",
                 },
               }}
-            ></TextField>
+            />
             <TextField
               type="password"
               id="password"
@@ -135,27 +144,36 @@ const Signup = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "&.Mui-focused fieldset": {
-                    borderColor: "#023D60",
-                    "&:hover fieldset": {
-                      borderColor: "#023D60",
-                    },
+                    borderColor: "#536f50",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#536f50",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#536f50",
                   },
                 },
                 "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#023D60",
+                  color: "#536f50",
                 },
               }}
-            ></TextField>
+            />
             <Button
               variant="contained"
               type="submit"
-              className="w-full px-4 py-2.5 border bg-customBlue text-white rounded-lg flex justify-center items-center"
+              className="w-full px-4 py-2.5 border text-white rounded-lg flex justify-center items-center"
+              sx={{
+                backgroundColor: "#536f50",
+                "&:hover": {
+                  backgroundColor: "#435d40",
+                },
+              }}
             >
               Create Account
             </Button>
-            <h4 className="text-xs text-[#666565]">
+            <h4 className="text-s text-[#666565]">
               Already have an account?{" "}
-              <a href="/login" className="text-blue-950">
+              <a href="/login" className="text-highlightColor">
                 Login.
               </a>
             </h4>

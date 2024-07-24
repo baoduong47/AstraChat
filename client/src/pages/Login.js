@@ -31,13 +31,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen bg-white">
       {authError && <p className="text-red-500">{authError.message}</p>}
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-center mb-2">Welcome back!</h2>
         <h3 className="text-l">
           Don't have an account yet?{" "}
-          <a href="/signup" className="text-blue-950">
+          <a href="/signup" className="text-highlightColor">
             Sign up now
           </a>
         </h3>
@@ -55,6 +55,22 @@ const Login = () => {
             label="Email"
             required
             fullWidth
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: "#536f50",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#536f50",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#536f50",
+                },
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "#536f50",
+              },
+            }}
           ></TextField>
           <TextField
             size="small"
@@ -68,6 +84,22 @@ const Login = () => {
             label="Password"
             required
             fullWidth
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: "#536f50",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#536f50",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#536f50",
+                },
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "#536f50",
+              },
+            }}
           ></TextField>
           <div className="flex items-center justify-between pl-2 pr-2">
             <FormControlLabel
@@ -86,7 +118,7 @@ const Login = () => {
                 variant="body2"
                 sx={{ fontSize: "12px", color: "#666565" }}
               >
-                Forgot passsword?
+                Forgot password?
               </Typography>
             </a>
           </div>
@@ -101,6 +133,10 @@ const Login = () => {
                 color: "white",
                 padding: "10px 16px",
                 fontSize: "11px",
+                backgroundColor: "#536f50",
+                "&:hover": {
+                  backgroundColor: "#435d40",
+                },
               }}
             >
               Log In
@@ -111,7 +147,7 @@ const Login = () => {
             <span className="px-4 text-gray-500">or</span>
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
-          <div className="text-center">
+          <div className="text-center ">
             <Button type="button" size="small">
               Log in with Google
             </Button>

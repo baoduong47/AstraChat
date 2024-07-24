@@ -10,6 +10,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import Avatar from "../components/Avatar";
+import MessageTab from "./MessagingTab";
 import { logout } from "../utils/auth";
 
 const Sidebar = () => {
@@ -18,6 +19,7 @@ const Sidebar = () => {
   );
 
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const toggleUsersDropdown = () => {
     setIsUsersDropdownOpen(!isUsersDropdownOpen);
@@ -88,9 +90,13 @@ const Sidebar = () => {
           </li>
           {isUsersDropdownOpen && (
             <ul className="space-y-2">
-              {users.map((item) => (
-                <li key={item._id}>
-                  {item.firstname} {item.lastname}
+              {users.map((user) => (
+                <li
+                  key={user._id}
+                  onClick={() => setSelectedUser(user)}
+                  className="cursor-pointer"
+                >
+                  {user.firstname} {user.lastname}
                 </li>
               ))}
             </ul>
@@ -125,6 +131,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
+      {selectedUser && <MessageTab user={selectedUser} />}
     </div>
   );
 };

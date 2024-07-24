@@ -10,7 +10,6 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
-import SendMessage from "../components/sendMessage";
 
 const Home = () => {
   const [comment, setComment] = useState("");
@@ -78,9 +77,9 @@ const Home = () => {
           "Guest"
         )}
       </h1>
-      <SendMessage />
+
       <div>
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}>
           <div className="mt-20">
             <label htmlFor="comment">Comment:</label>
             <input
@@ -94,8 +93,9 @@ const Home = () => {
             />
             <button type="submit">Submit</button>
           </div>
-        </form>
-        <ul style={{ listStyleType: "none", padding: 0, marginTop: 10 }}>
+        </form> */}
+
+        {/* <ul style={{ listStyleType: "none", padding: 0, marginTop: 10 }}>
           {comments.map((comment) => (
             <li
               key={comment._id}
@@ -121,7 +121,7 @@ const Home = () => {
               </div>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </div>
     </MainLayout>
   );

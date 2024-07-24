@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar";
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="flex bg-backGround text-black">
+    <div className="flex bg-mainbackGround text-black">
       <Sidebar />
       <div className="grow mr-16 md:mr-52 h-full lg:h-screen">
         {/* <Navbar /> */}
