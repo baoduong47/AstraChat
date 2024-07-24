@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   sendMessage,
   getMessagesBetweenUsers,
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 const MessageTab = ({ user }) => {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const messagesEndRef = useRef(null);
 
   const { messages } = useSelector((state) => state.message);
   const { currentUser } = useSelector((state) => state.user);
@@ -42,7 +43,19 @@ const MessageTab = ({ user }) => {
     setMessage(e.target.value);
   };
 
-  console.log("user: ", user);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      console.log("key pressed", e.key);
+      handleSubmit(e);
+    }
+  };
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black">
@@ -71,6 +84,7 @@ const MessageTab = ({ user }) => {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef}></div>
       </div>
       <div className="mt-4 flex">
         <input
@@ -79,6 +93,7 @@ const MessageTab = ({ user }) => {
           className="w-full border rounded-md p-2"
           value={message}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
         <button
           onClick={handleSubmit} // Add your button functionality here
