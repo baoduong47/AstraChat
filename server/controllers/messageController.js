@@ -14,11 +14,11 @@ exports.sendMessage = async (req, res) => {
       return res.status(404).json({ message: "Recipient not found" });
     }
 
-    console.log("Sender: ", sender);
-    console.log("Sender ID: ", sender.id);
+    // console.log("Sender: ", sender);
+    // console.log("Sender ID: ", sender.id);
 
-    console.log("Reciever", reciever);
-    console.log("Reciever ID: ", reciever.id);
+    // console.log("Reciever", reciever);
+    // console.log("Reciever ID: ", reciever.id);
 
     const newMessage = new Message({
       sender: sender.id,
@@ -38,13 +38,20 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.getMessagesBetweenUsers = async (req, res) => {
+  const { senderId, recieverId } = req.params;
   try {
-    const messages = await Message.find({});
+    const messages = await Message.find({
+      $or: [
+        { sender: senderId, reciever: recieverId },
+        { sender: recieverId, reciever: senderId },
+      ],
+    }).sort({ timestamp: 1 });
 
-    console.log("messages", messages);
-    res
-      .status(200)
-      .json({ message: "Message retrieved successfully", messages });
+    console.log("sender Id: ", senderId);
+    console.log("reciever Id: ", recieverId);
+    console.log("messages :", messages);
+
+    res.status(200).json(messages);
   } catch (error) {
     return res
       .status(500)
