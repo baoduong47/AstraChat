@@ -10,6 +10,7 @@ const cors = require("cors");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const commentRouter = require("./routes/commentRouter");
+const messageRouter = require("./routes/messageRouter");
 
 // Load environment variables from .env file
 dotenv.config();
@@ -46,6 +47,7 @@ app.use(cors({ origin: "http://localhost:3001" }));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/comments", commentRouter);
+app.use("/messages", messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
