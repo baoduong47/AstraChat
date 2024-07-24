@@ -36,14 +36,10 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="bg-sideBar text-white h-screen px-4 fixed right-0 w-16 md:w-52 border-l border-gray-700 flex flex-col justify-between opacity-80 ">
+    <div className="bg-sideBar text-white h-screen px-4 fixed right-0 w-16 md:w-52 border-l border-gray-700 flex flex-col justify-between ">
       <div className="ml-2">
-        <h1 className="text-2xl font-bold hidden md:block mt-8 text-center italic">
-          Messaging Blog App
-        </h1>
-
         <ul className="flex flex-col mt-5 text-sm ">
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer  ">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer  ">
             <Avatar
               src={`http://localhost:3000/${currentUser.avatar}`}
               alt={`${currentUser.firstname}'s avatar`}
@@ -51,26 +47,26 @@ const Sidebar = () => {
             />
             <span className="hidden md:inline">{currentUser.firstname}</span>
           </li>
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
             <Link to="/home" className="flex items-center space-x-3">
               <HomeRoundedIcon />
               <span className="hidden md:inline">Home</span>
             </Link>
           </li>
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
             <Link to="/post" className="flex items-center space-x-3">
               <PostAddRoundedIcon />
               <span className="hidden md:inline">Post</span>
             </Link>
           </li>
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
             <Link to="/messages" className="flex items-center space-x-3">
               <TextsmsRoundedIcon />
               <span className="hidden md:inline">Messages</span>
             </Link>
           </li>
           <li
-            className="hover:text-gray-400 flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer"
+            className="hover:text-hoverColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer"
             onClick={toggleUsersDropdown}
           >
             <PeopleAltRoundedIcon />
@@ -99,7 +95,7 @@ const Sidebar = () => {
               ))}
             </ul>
           )}
-          <li className=" hover:text-gray-400 flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
+          <li className=" hover:text-hoverColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
             <Link to="/notifications" className="flex items-center space-x-3">
               <NotificationsActiveRoundedIcon />
               <span className="hidden md:inline">Notifications</span>
@@ -109,19 +105,19 @@ const Sidebar = () => {
       </div>
       <div>
         <ul className=" flex flex-col text-sm mb-2 ml-2">
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer">
             <Link to="/profile" className="flex items-center space-x-5">
               <ManageAccountsIcon />
               <span className="hidden md:inline">Profile</span>
             </Link>
           </li>
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer">
             <Link to="/settings" className="flex items-center space-x-5">
               <SettingsSuggestRoundedIcon />
               <span className="hidden md:inline">Settings</span>
             </Link>
           </li>
-          <li className="hover:text-gray-400 flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer">
+          <li className="hover:text-hoverColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer">
             <button onClick={logout} className="flex items-center space-x-5">
               <LogoutRoundedIcon fontSize="medium" />
               <span className="hidden md:inline">Logout</span>

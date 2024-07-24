@@ -65,7 +65,11 @@ const Home = () => {
         {currentUser ? (
           <>
             <PersonIcon
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              style={{
+                verticalAlign: "middle",
+                marginRight: "8px",
+                marginLeft: "8px",
+              }}
             />
             {currentUser.firstname} {currentDateTime}
           </>

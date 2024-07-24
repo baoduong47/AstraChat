@@ -6,13 +6,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customBlue: "#023D60",
+        customBlue: "#606676",
         customGray: "#2A3139",
-
-        sideBar: "#1C1F26",
+        lightGreen: "#BEC6A0",
+        backGround: "#EBEBEB",
+        sideBar: "#040218",
+        textColor: "#00ADB5",
+        cardColor: "#EEEEEE",
+        hoverColor: "#F04A02",
       },
       fontFamily: {
-        sans: ["DM Sans", "sans-serif"],
+        sans: ["Quicksand", "Fredoka"],
       },
     },
   },
