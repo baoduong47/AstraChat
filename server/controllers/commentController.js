@@ -3,7 +3,12 @@ const User = require("../models/user");
 
 exports.getComments = async (req, res) => {
   try {
-    const comments = await Comment.find({}).populate("postId");
+    const comments = await Comment.find({})
+      .populate({
+        path: "replies.authorId",
+        select: "firstname avatar",
+      })
+      .populate("postId");
     res.status(200).json(comments);
   } catch (error) {
     return res.status(500).send("Error retrieving comments");
@@ -70,8 +75,10 @@ exports.postComment = async (req, res) => {
 };
 
 exports.replyComment = async (req, res) => {
-  const { reply: replyComment, authorId } = req.body;
+  const { reply: replyComment } = req.body;
   const { commentId } = req.params;
+
+  console.log("commentID: ", commentId);
 
   try {
     console.log("Comment ID successfully retrieved:", commentId);
@@ -119,13 +126,20 @@ exports.replyComment = async (req, res) => {
 
     await parentComment.save();
 
-    console.log("Parent comment with new reply after saving:", parentComment);
+    const updatedParentComment = await Comment.findById(commentId).populate({
+      path: "replies.authorId",
+      select: "firstname avatar",
+    });
 
-    console.log("New reply added:", reply);
+    console.log(
+      "Parent comment with new reply after saving:",
+      updatedParentComment
+    );
 
-    res
-      .status(200)
-      .json({ message: "Reply added successfully!", parentComment });
+    res.status(200).json({
+      message: "Reply added successfully!",
+      parentComment: updatedParentComment,
+    });
   } catch (error) {
     console.log("Error replying to comment:", error);
     console.log("Error details:", error.errors); // Log detailed error
