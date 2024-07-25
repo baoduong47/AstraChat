@@ -133,7 +133,7 @@ exports.replyComment = async (req, res) => {
 
     console.log(
       "Parent comment with new reply after saving:",
-      updatedParentComment
+      JSON.stringify(updatedParentComment, null, 2)
     );
 
     res.status(200).json({
@@ -142,7 +142,7 @@ exports.replyComment = async (req, res) => {
     });
   } catch (error) {
     console.log("Error replying to comment:", error);
-    console.log("Error details:", error.errors); // Log detailed error
+    console.log("Error details:", error.errors);
     return res
       .status(500)
       .json({ message: "Error replying to comment", error });
