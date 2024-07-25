@@ -32,7 +32,11 @@ const Login = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-white">
-      {authError && <p className="text-red-500">{authError.message}</p>}
+      {authError && (
+        <p className="text-red-500">
+          {authError.message || "Invalid login credentials"}
+        </p>
+      )}
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-center mb-2">Welcome back!</h2>
         <h3 className="text-l">
@@ -44,6 +48,9 @@ const Login = () => {
       </div>
       <div className="w-full max-w-sm">
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {authError?.field === "email" && (
+            <p className="text-red-500">{authError.message}</p>
+          )}
           <TextField
             size="small"
             type="email"
