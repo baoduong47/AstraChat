@@ -36,7 +36,7 @@ const Signup = () => {
       {authError && <p className="text-red-500">{authError.message}</p>}
       <div
         className="w-3/6 flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/image.jpg')" }}
+        style={{ backgroundImage: "url('/images/cute-ff.jpg')" }}
       >
         {/* <h1 className="text-white text-4xl font-bold">ChatBox Messaging App</h1> */}
       </div>

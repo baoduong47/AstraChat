@@ -19,6 +19,17 @@ const commentReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case "REPLY_TO_COMMENT_SUCCESS":
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment._id === action.payload.parentComment._id) {
+            return action.payload.parentComment;
+          }
+          return comment;
+        }),
+        loading: false,
+      };
     case "DELETE_COMMENT_SUCCESS":
       return {
         ...state,
@@ -28,8 +39,10 @@ const commentReducer = (state = initialState, action) => {
       };
 
     case "GET_COMMENTS_FAIL":
+    case "GET_REPLIES_FAIL":
     case "POST_COMMENT_FAIL":
     case "DELETE_COMMENT_FAIL":
+    case "REPLY_TO_COMMENT_FAIL":
       return {
         ...state,
         loading: false,

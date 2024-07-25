@@ -5,6 +5,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
+      // backgroundImage: {
+      //   "hero-pattern": "url('/images/image.jpg')", // Correct path
+      // },
       colors: {
         customBlue: "#606676",
         customGray: "#2A3139",
@@ -17,7 +20,7 @@ module.exports = {
         cardColor: "#EEEEEE",
         hoverColor: "#F04A02",
         highlightColor: "#536f50",
-        buttonColor: "#536f50",
+        buttonColor: "#CB7857",
         navColor: "#767676",
         foregroundColor: "#63636B",
         inputColor: "#F2F2F4",

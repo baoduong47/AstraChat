@@ -1,4 +1,3 @@
-// Home.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, getCurrentUser } from "../redux/actions/userActions";
@@ -7,12 +6,15 @@ import {
   postComment,
   deleteComment,
 } from "../redux/actions/commentAction";
-import PersonIcon from "@mui/icons-material/Person";
+import { GiBroadsword } from "react-icons/gi";
+import { HiMiniUserCircle } from "react-icons/hi2";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
 
 const Home = () => {
   const [comment, setComment] = useState("");
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.comment);
@@ -21,7 +23,6 @@ const Home = () => {
     e.preventDefault();
     if (currentUser) {
       dispatch(postComment(comment));
-      console.log("Comment submitted", comment);
       setComment("");
     } else {
       console.log("User not authenticated. Cannot submit comment.");
@@ -41,13 +42,16 @@ const Home = () => {
     setComment(e.target.value);
   };
 
-  const now = new Date();
-  const currentDateTime = now.toLocaleString();
-
   useEffect(() => {
     dispatch(getUsers());
     dispatch(getCurrentUser());
     dispatch(getComments());
+
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [dispatch]);
 
   if (loading) {
@@ -60,24 +64,29 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <h1>
-        Welcome Back, {""}
+      <div className="inline-flex items-center space-x-1 fixed">
+        <span>Welcome Back,</span>
         {currentUser ? (
-          <>
-            <PersonIcon
+          <span className="inline-flex items-center space-x-2">
+            <HiMiniUserCircle
               style={{
                 verticalAlign: "middle",
-                marginRight: "8px",
-                marginLeft: "8px",
+                marginRight: "1px",
+                marginLeft: "5px",
+                fontSize: "large",
               }}
             />
-            {currentUser.firstname} {currentDateTime}
-          </>
+            <span>{currentUser.firstname}</span>
+            <span>{currentDateTime.toLocaleString()}</span>
+            <GiBroadsword
+              className="ml-1 inline-block align-middle"
+              size={16}
+            />
+          </span>
         ) : (
-          "Guest"
+          <span>Guest</span>
         )}
-      </h1>
-
+      </div>
       <div>
         <form onSubmit={handleSubmit}>
           <div className="mt-20">
@@ -113,6 +122,8 @@ const Home = () => {
                   avatar={`http://localhost:3000/${comment.postId.avatar}`}
                   title={`Comment by ${comment.author}`}
                   date={new Date(comment.createdAt).toLocaleString()}
+                  commentId={comment._id}
+                  replies={comment.replies}
                 />
 
                 <button onClick={() => handleDeleteSubmit(comment._id)}>

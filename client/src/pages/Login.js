@@ -31,7 +31,16 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-white">
+    <div
+      className="flex flex-col justify-center items-center h-screen text-white bg-white"
+      style={{
+        backgroundImage: "url('/images/loading.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
       {authError && (
         <p className="text-red-500">
           {authError.message || "Invalid login credentials"}
@@ -41,7 +50,7 @@ const Login = () => {
         <h2 className="text-3xl font-bold text-center mb-2">Welcome back!</h2>
         <h3 className="text-l">
           Don't have an account yet?{" "}
-          <a href="/signup" className="text-highlightColor">
+          <a href="/signup" className="text-buttonColor">
             Sign up now
           </a>
         </h3>
@@ -65,17 +74,21 @@ const Login = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {
-                  borderColor: "#536f50",
+                  borderColor: "white",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#536f50",
+                  borderColor: "white",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#536f50",
+                  borderColor: "white",
                 },
               },
+              "& .MuiInputLabel-root": {
+                color: "white",
+                fontSize: "13px",
+              },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#536f50",
+                color: "#FCF8F3",
               },
             }}
           ></TextField>
@@ -94,17 +107,21 @@ const Login = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {
-                  borderColor: "#536f50",
+                  borderColor: "#392840",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#536f50",
+                  borderColor: "#392840",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#536f50",
+                  borderColor: "#392840",
                 },
               },
+              "& .MuiInputLabel-root": {
+                color: "#666565",
+                fontSize: "13px",
+              },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#536f50",
+                color: "#FCF8F3",
               },
             }}
           ></TextField>
@@ -140,9 +157,9 @@ const Login = () => {
                 color: "white",
                 padding: "10px 16px",
                 fontSize: "11px",
-                backgroundColor: "#536f50",
+                backgroundColor: "#392840",
                 "&:hover": {
-                  backgroundColor: "#435d40",
+                  backgroundColor: "#392840",
                 },
               }}
             >
@@ -151,11 +168,11 @@ const Login = () => {
           </div>
           <div className="flex items-center py-6">
             <div className="flex-grow border-t border-gray-400"></div>
-            <span className="px-4 text-gray-500">or</span>
+            <span className="px-4 text-white">or</span>
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
           <div className="text-center ">
-            <Button type="button" size="small">
+            <Button sx={{ color: "#C0D7D5" }} type="button" size="small">
               Log in with Google
             </Button>
           </div>
