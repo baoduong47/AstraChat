@@ -69,6 +69,72 @@ exports.postComment = async (req, res) => {
   }
 };
 
+exports.replyComment = async (req, res) => {
+  const { reply: replyComment, authorId } = req.body;
+  const { commentId } = req.params;
+
+  try {
+    console.log("Comment ID successfully retrieved:", commentId);
+
+    if (!commentId) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    console.log("Authenticated user ID:", req.user);
+
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const user = await User.findById(req.user);
+
+    console.log("User found: ", user);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const parentComment = await Comment.findById(commentId);
+    if (!parentComment) {
+      return res.status(404).json({ message: "Parent comment not found" });
+    }
+
+    const reply = {
+      comment: replyComment,
+      author: user.firstname,
+      avatar: user.avatar,
+      authorId: user._id,
+      createdAt: new Date(),
+    };
+
+    console.log("New reply created:", reply);
+
+    if (!reply.authorId) {
+      console.error("Error: authorId is missing in the reply data");
+      return res.status(400).json({ message: "authorId is required" });
+    }
+
+    parentComment.replies.push(reply);
+
+    console.log("Parent comment with new reply before saving:", parentComment);
+
+    await parentComment.save();
+
+    console.log("Parent comment with new reply after saving:", parentComment);
+
+    console.log("New reply added:", reply);
+
+    res
+      .status(200)
+      .json({ message: "Reply added successfully!", parentComment });
+  } catch (error) {
+    console.log("Error replying to comment:", error);
+    console.log("Error details:", error.errors); // Log detailed error
+    return res
+      .status(500)
+      .json({ message: "Error replying to comment", error });
+  }
+};
+
 exports.editComment = async (req, res) => {
   try {
     const commentId = req.params.commentId;
