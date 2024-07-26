@@ -75,7 +75,7 @@ const Profile = () => {
       ) : !currentUser ? (
         <p>User not found</p>
       ) : (
-        <div className="bg-white bg-opacity-90 p-6 border border-gray-300 rounded-lg shadow-lg max-w-4xl w-full mx-4">
+        <div className=" mb-2 mt-2 bg-white bg-opacity-80 p-6 border border-gray-300 rounded-lg shadow-lg max-w-4xl w-full mx-4">
           <h1 className="text-2xl font-bold mb-4">
             {currentUser.firstname}'s Profile
           </h1>
@@ -93,6 +93,38 @@ const Profile = () => {
                 onChange={handleChange}
                 className="mb-4"
               />
+              <div className="flow-root">
+                <dl className="-my-1 divide-y divide-gray-100 text-sm">
+                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                    <dt className="font-medium text-gray-900">Location</dt>
+                    <dd className="text-gray-700 sm:col-span-2">Atlanta, GA</dd>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                    <dt className="font-medium text-gray-900">Email</dt>
+                    <dd className="text-gray-700 sm:col-span-2">
+                      bduong1497@gmail.com
+                    </dd>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                    <dt className="font-medium text-gray-900">Birthday</dt>
+                    <dd className="text-gray-700 sm:col-span-2">12/14/1997</dd>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                    <dt className="font-medium text-gray-900">Bio</dt>
+                    <dd className="text-gray-700 sm:col-span-2">
+                      I'm Cloud Strife, a former SOLDIER 1st Class from the
+                      Shinra Electric Power Company. My journey began in the
+                      small mountain village of Nibelheim, where I grew up
+                      dreaming of joining the elite ranks of SOLDIER. I
+                      eventually achieved that dream, but at a great personal
+                      cost.
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700">Bio:</label>

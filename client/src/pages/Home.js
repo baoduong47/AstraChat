@@ -65,61 +65,67 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <div
-        className="inline-flex items-center space-x-1 fixed animate__animated animate__fadeInLeft"
-        style={{ animationDelay: "0.5s", animationDuration: "1s" }}
-      >
-        <span>Welcome Back,</span>
-        {currentUser ? (
-          <span className="inline-flex items-center space-x-2">
-            <HiMiniUserCircle
-              style={{
-                verticalAlign: "middle",
-                marginRight: "1px",
-                marginLeft: "5px",
-                fontSize: "large",
-              }}
-            />
-            <span>{currentUser.firstname}</span>
-            <span>{currentDateTime.toLocaleString()}</span>
-            <GiBroadsword
-              className="ml-1 inline-block align-middle"
-              size={16}
-            />
-          </span>
-        ) : (
-          <span>Guest</span>
-        )}
-      </div>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div
-            className="mt-10 fixed flex animate__animated animate__fadeInLeft"
-            style={{ animationDelay: "1s", animationDuration: "1s" }}
-          >
-            <div>
-              <label htmlFor="comment">New Post:</label>
-              <input
-                type="text"
-                id="text"
-                name="text"
-                value={comment}
-                onChange={handleChange}
-                placeholder="Enter a new comment..."
-                className="mx-2 h-9 bg-inputColor border-gray-300 text-black rounded-xl"
+      <div className="flex justify-between items-center">
+        <div
+          className="inline-flex items-center space-x-1 fixed animate__animated animate__fadeInLeft"
+          style={{ animationDelay: "0.5s", animationDuration: "1s" }}
+        >
+          <span>Welcome Back,</span>
+          {currentUser ? (
+            <span className="inline-flex items-center space-x-2">
+              <HiMiniUserCircle
+                style={{
+                  verticalAlign: "middle",
+                  marginRight: "1px",
+                  marginLeft: "5px",
+                  fontSize: "large",
+                }}
               />
-            </div>
-            <div>
-              <button
-                className="h-9 bg-white border flex justify-center items-center border-gray-300 rounded-lg hover:bg-inputColor focus:outline-none  px-4 py-2 text-center"
-                type="submit"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </form>
+              <span>{currentUser.firstname}</span>
+              <span>{currentDateTime.toLocaleString()}</span>
+              <GiBroadsword
+                className="ml-1 inline-block align-middle"
+                size={16}
+              />
+            </span>
+          ) : (
+            <span>Guest</span>
+          )}
+        </div>
+        <div className="flex-1 text-right mr-20">
+          <h1 className="text-xl pop-text">Hello, Welcome to Wisteria!</h1>
+        </div>
+      </div>
 
+      <form onSubmit={handleSubmit}>
+        <div
+          className="mt-5 fixed flex animate__animated animate__fadeInLeft"
+          style={{ animationDelay: "1s", animationDuration: "1s" }}
+        >
+          <div>
+            <label htmlFor="comment">New Post:</label>
+            <input
+              type="text"
+              id="text"
+              name="text"
+              value={comment}
+              onChange={handleChange}
+              placeholder="Enter a new comment..."
+              className="mx-2 h-9 bg-inputColor border-gray-300 text-black rounded-xl"
+            />
+          </div>
+          <div>
+            <button
+              className="h-9 bg-white border flex justify-center items-center border-gray-300 rounded-lg hover:bg-inputColor focus:outline-none  px-4 py-2 text-center"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div>
         <ul style={{ listStyleType: "none", padding: 0, marginTop: 10 }}>
           {comments.map((comment) => (
             <li
@@ -145,6 +151,11 @@ const Home = () => {
                 <button onClick={() => handleDeleteSubmit(comment._id)}>
                   Delete
                 </button>
+                <span className="relative flex justify-center">
+                  <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"></div>
+
+                  <span className="relative z-10 mt-10 px-6"></span>
+                </span>
               </div>
             </li>
           ))}
