@@ -25,7 +25,6 @@ export const postComment = (comment) => async (dispatch) => {
         },
       }
     );
-
     dispatch({ type: "POST_COMMENT_SUCCESS", payload: response.data });
   } catch (error) {
     console.log("Error posting comment", error.response.data);
@@ -71,5 +70,42 @@ export const replyComment = (commentId, reply) => async (dispatch) => {
   } catch (error) {
     console.log("Error replying to comment", error.response.data);
     dispatch({ type: "REPLY_TO_COMMENT_FAIL", payload: error.message });
+  }
+};
+
+export const updateLikes = (commentId) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const response = await axios.post(
+      `http://localhost:3000/comments/${commentId}/likes`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Successfully updated likes: ", response.data);
+    dispatch({ type: "UPDATE_LIKES_SUCCESS", payload: response.data });
+  } catch (error) {
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+
+    console.log("Error updating likes", errorMessage);
+
+    if (errorMessage === "User has already liked this comment") {
+      // Handle the case where the user has already liked the comment
+      alert("You have already liked this comment.");
+      // Optionally, update the UI to reflect this state
+      dispatch({ type: "UPDATE_LIKES_ALREADY_LIKED" });
+    } else {
+      dispatch({ type: "UPDATE_LIKES_FAIL", payload: errorMessage });
+    }
   }
 };

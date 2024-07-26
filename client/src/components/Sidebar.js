@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { GiSlumberingSanctuary } from "react-icons/gi";
-import { TbHome } from "react-icons/tb";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiBellSimpleRingingFill } from "react-icons/pi";
@@ -13,6 +12,7 @@ import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRound
 import Avatar from "../components/Avatar";
 import { logout } from "../utils/auth";
 import MessageTab from "./MessagingTab";
+import "animate.css";
 
 const Sidebar = () => {
   const { users, currentUser, loading, error } = useSelector(
@@ -48,11 +48,52 @@ const Sidebar = () => {
     return <p>User not found</p>;
   }
 
+  const menuItems = [
+    {
+      text: "Home",
+      icon: <GiSlumberingSanctuary fontSize="large" />,
+      link: "/home",
+    },
+    { text: "Post", icon: <PostAddRoundedIcon />, link: "/post" },
+    {
+      text: "Messages",
+      icon: <TextsmsRoundedIcon fontSize="small" />,
+      link: "/messages",
+    },
+    {
+      text: "Users",
+      icon: <FaArrowsDownToPeople fontSize="large" />,
+      onClick: toggleUsersDropdown,
+    },
+    {
+      text: "Notifications",
+      icon: <PiBellSimpleRingingFill fontSize="large" />,
+      link: "/notifications",
+    },
+  ];
+
+  const settingsItems = [
+    { text: "Profile", icon: <ManageAccountsIcon />, link: "/profile" },
+    {
+      text: "Settings",
+      icon: <SettingsSuggestRoundedIcon />,
+      link: "/settings",
+    },
+    {
+      text: "Logout",
+      icon: <RiLogoutCircleLine fontSize="large" />,
+      onClick: logout,
+    },
+  ];
+
   return (
-    <div className="bg-sideBar text-black h-screen px-4 fixed right-0 w-16 md:w-48 flex flex-col justify-between">
+    <div className="bg-sideBar text-black h-screen px-4 fixed right-0 w-16 md:w-48 flex flex-col justify-between border border-neutral-400">
       <div className="ml-2">
-        <ul className="flex flex-col mt-5 text-sm ">
-          <li className="hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer">
+        <ul className="flex flex-col mt-5 text-sm">
+          <li
+            className="hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer animate__animated animate__fadeInRight"
+            style={{ animationDelay: "0.3s", animationDuration: "1s" }}
+          >
             <Avatar
               src={`http://localhost:3000/${currentUser.avatar}`}
               alt={`${currentUser.firstname}'s avatar`}
@@ -60,101 +101,104 @@ const Sidebar = () => {
             />
             <span className="hidden md:inline">{currentUser.firstname}</span>
           </li>
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <Link to="/home" className="flex items-center space-x-3">
-              <GiSlumberingSanctuary
-                className="group-hover:text-gray-500"
-                fontSize="large"
-              />
-              <span className="hidden md:inline">Home</span>
-            </Link>
-          </li>
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <Link to="/post" className="flex items-center space-x-3">
-              <PostAddRoundedIcon className="group-hover:text-gray-500" />
-              <span className="hidden md:inline">Post</span>
-            </Link>
-          </li>
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <Link to="/messages" className="flex items-center space-x-3">
-              <TextsmsRoundedIcon
-                className="group-hover:text-gray-500"
-                fontSize="small"
-              />
-              <span className="hidden md:inline">Messages</span>
-            </Link>
-          </li>
-          <li
-            className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105"
-            onClick={toggleUsersDropdown}
-          >
-            <FaArrowsDownToPeople
-              className="group-hover:text-gray-500"
-              fontSize="large"
-            />
-            <span className="hidden md:inline">Users</span>
-            <svg
-              className={`w-5 h-5 transition-transform duration-200 ${
-                isUsersDropdownOpen ? "rotate-360" : "rotate-180"
-              }`}
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </li>
-          {isUsersDropdownOpen && (
-            <ul className="space-y-2">
-              {users.map((user) => (
-                <li
-                  key={user._id}
-                  onClick={() => handleUserClick(user)}
-                  className="cursor-pointer"
-                >
-                  {user.firstname} {user.lastname}
-                </li>
-              ))}
-            </ul>
-          )}
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <Link to="/notifications" className="flex items-center space-x-3">
-              <PiBellSimpleRingingFill
-                className="group-hover:text-gray-500"
-                fontSize="large"
-              />
-              <span className="hidden md:inline">Notifications</span>
-            </Link>
-          </li>
+          {menuItems.map((item, index) => (
+            <React.Fragment key={index}>
+              <li
+                className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-110 animate__animated animate__fadeInRight"
+                style={{
+                  animationDelay: `${(index + 2) * 0.3}s`,
+                  animationDuration: "1s",
+                }}
+                onClick={item.onClick}
+              >
+                {item.link ? (
+                  <Link
+                    to={item.link}
+                    className="flex items-center space-x-3 group no-underline"
+                  >
+                    {item.icon}
+                    <span className="hidden md:inline group-hover:text-indigo-500 no-underline">
+                      {item.text}
+                    </span>
+                  </Link>
+                ) : (
+                  <div className="flex items-center space-x-3 group">
+                    {item.icon}
+                    <span className="hidden md:inline group-hover:text-indigo-500">
+                      {item.text}
+                    </span>
+                    {item.text === "Users" && (
+                      <svg
+                        className={`w-5 h-5 transition-transform duration-200 ${
+                          isUsersDropdownOpen ? "rotate-180" : "rotate-0"
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                )}
+              </li>
+              {item.text === "Users" && isUsersDropdownOpen && (
+                <ul className="pl-8 space-y-2">
+                  {users.map((user, userIndex) => (
+                    <li
+                      key={user._id}
+                      onClick={() => handleUserClick(user)}
+                      className="cursor-pointer group animate__animated animate__fadeInRight"
+                      style={{
+                        animationDelay: `${(userIndex + 1) * 0.1}s`,
+                        animationDuration: "0.7s",
+                      }}
+                    >
+                      {user.firstname} {user.lastname}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </React.Fragment>
+          ))}
         </ul>
       </div>
       <div>
         <ul className="flex flex-col text-sm mb-2 ml-2">
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <Link to="/profile" className="flex items-center space-x-5">
-              <ManageAccountsIcon className="group-hover:text-gray-500" />
-              <span className="hidden md:inline">Profile</span>
-            </Link>
-          </li>
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <Link to="/settings" className="flex items-center space-x-5">
-              <SettingsSuggestRoundedIcon className="group-hover:text-gray-500" />
-              <span className="hidden md:inline">Settings</span>
-            </Link>
-          </li>
-          <li className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105">
-            <button onClick={logout} className="flex items-center space-x-5">
-              <RiLogoutCircleLine
-                className="group-hover:text-gray-500"
-                fontSize="large"
-              />
-              <span className="hidden md:inline">Logout</span>
-            </button>
-          </li>
+          {settingsItems.map((item, index) => (
+            <li
+              key={index}
+              className="group hover:text-foregroundColor flex items-center py-3 px-2 space-x-5 hover:rounded hover:cursor-pointer transform transition-transform duration-200 hover:scale-105 animate__animated animate__fadeInRight"
+              style={{
+                animationDelay: `${(menuItems.length + index + 2) * 0.3}s`,
+                animationDuration: "1s",
+              }}
+              onClick={item.onClick}
+            >
+              {item.link ? (
+                <Link
+                  to={item.link}
+                  className="flex items-center space-x-5 group no-underline"
+                >
+                  {item.icon}
+                  <span className="hidden md:inline group-hover:text-indigo-500 no-underline">
+                    {item.text}
+                  </span>
+                </Link>
+              ) : (
+                <button className="flex items-center space-x-5 group no-underline">
+                  {item.icon}
+                  <span className="hidden md:inline group-hover:text-black no-underline">
+                    {item.text}
+                  </span>
+                </button>
+              )}
+            </li>
+          ))}
         </ul>
       </div>
       {isMessageTabOpen && selectedUser && <MessageTab user={selectedUser} />}

@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { replyComment } from "../redux/actions/commentAction";
+import { replyComment, updateLikes } from "../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
 import Avatar from "./Avatar";
 
-const Card = ({ avatar, author, date, description, commentId, replies }) => {
+const Card = ({
+  avatar,
+  author,
+  date,
+  description,
+  commentId,
+  replies,
+  likes,
+  likedBy,
+}) => {
   const [reply, setReply] = useState("");
+  const [currentLikes, setCurrentLikes] = useState(likes);
   const { currentUser } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -20,6 +31,13 @@ const Card = ({ avatar, author, date, description, commentId, replies }) => {
       dispatch(replyComment(commentId, reply));
       setReply("");
     }
+  };
+
+  const handleLikes = (e) => {
+    e.preventDefault();
+    dispatch(updateLikes(commentId));
+    console.log("clicked event");
+    setCurrentLikes(currentLikes + 1);
   };
 
   const parseDescription = (description) => {
@@ -53,7 +71,7 @@ const Card = ({ avatar, author, date, description, commentId, replies }) => {
       <div className="flex items-center text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4 text-crystalColor"
+          className="w-4 h-4 text-crystalColor cursor-pointer"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -62,6 +80,7 @@ const Card = ({ avatar, author, date, description, commentId, replies }) => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          onClick={handleLikes}
         >
           <line x1="2" x2="22" y1="12" y2="12" />
           <line x1="12" x2="12" y1="2" y2="22" />
@@ -70,7 +89,9 @@ const Card = ({ avatar, author, date, description, commentId, replies }) => {
           <path d="m16 4-4 4-4-4" />
           <path d="m8 20 4-4 4 4" />
         </svg>
-        <div className="text-foregroundColor text-sm ml-3">12 likes</div>
+        <div className="text-foregroundColor text-sm ml-3">
+          {currentLikes} likes
+        </div>
       </div>
 
       <div className="mt-6 grid gap-4">

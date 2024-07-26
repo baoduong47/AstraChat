@@ -4,6 +4,7 @@ import {
   getMessagesBetweenUsers,
 } from "../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
+import "animate.css";
 
 const MessageTab = ({ user }) => {
   const [message, setMessage] = useState("");
@@ -58,7 +59,7 @@ const MessageTab = ({ user }) => {
   }, [messages]);
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black border border-gray-300 space-y-2">
+    <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black border border-gray-300 space-y-2 animate__animated animate__fadeInRight">
       <div className="border-b pb-2 mb-4">
         <h2 className="text-xl font-semibold">
           {user.firstname} {user.lastname}

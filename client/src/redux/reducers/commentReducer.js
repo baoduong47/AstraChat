@@ -19,6 +19,15 @@ const commentReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case "UPDATE_LIKES_SUCCESS":
+      return {
+        ...state,
+        comments: state.comments.map((comment) =>
+          comment._id === action.payload._id ? action.payload : comment
+        ),
+        loading: false,
+      };
+
     case "REPLY_TO_COMMENT_SUCCESS":
       return {
         ...state,
@@ -43,6 +52,7 @@ const commentReducer = (state = initialState, action) => {
     case "POST_COMMENT_FAIL":
     case "DELETE_COMMENT_FAIL":
     case "REPLY_TO_COMMENT_FAIL":
+    case "UPDATE_LIKES_FAIL":
       return {
         ...state,
         loading: false,

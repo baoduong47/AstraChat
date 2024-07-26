@@ -13,6 +13,7 @@ module.exports = {
         customGray: "#2A3139",
         lightGreen: "#BEC6A0",
         backGround: "#fdffe0",
+
         mainbackGround: "#edeeca",
         messageBackground: "#E1E5F2",
         sideBar: "#F2F2F4",
