@@ -121,22 +121,18 @@ const Home = () => {
         </form>
 
         <ul style={{ listStyleType: "none", padding: 0, marginTop: 10 }}>
-          {comments.map((comment, index) => (
+          {comments.map((comment) => (
             <li
               key={comment._id}
               style={{
                 marginBottom: "16px",
                 padding: "50px",
                 textAlign: "center",
-                animationDelay: `${index * 0.3 + 1.5}s`,
-                animationDuration: "1s",
-                animationTimingFunction: "ease-in-out",
               }}
-              className="flex justify-center animate__animated animate__fadeIn"
+              className="flex justify-center"
             >
               <div>
                 <Card
-                  key={comment._id}
                   description={comment.comment}
                   author={comment.author}
                   avatar={`http://localhost:3000/${comment.postId.avatar}`}
@@ -144,8 +140,6 @@ const Home = () => {
                   date={new Date(comment.createdAt).toLocaleString()}
                   commentId={comment._id}
                   replies={comment.replies}
-                  likes={comment.likes}
-                  likedBy={comment.likedBy}
                 />
 
                 <button onClick={() => handleDeleteSubmit(comment._id)}>
