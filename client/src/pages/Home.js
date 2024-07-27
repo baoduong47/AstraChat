@@ -10,6 +10,7 @@ import { GiBroadsword } from "react-icons/gi";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
+
 import "animate.css";
 
 const Home = () => {
@@ -26,7 +27,7 @@ const Home = () => {
       dispatch(postComment(comment));
       setComment("");
     } else {
-      console.log("User not authenticated. Cannot submit comment.");
+      console.log("Error posting comment");
     }
   };
 
@@ -65,7 +66,7 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <div className="flex justify-between items-center">
+      <div className="relative flex justify-between items-center">
         <div
           className="inline-flex items-center space-x-1 fixed animate__animated animate__fadeInLeft"
           style={{ animationDelay: "0.5s", animationDuration: "1s" }}
@@ -92,14 +93,27 @@ const Home = () => {
             <span>Guest</span>
           )}
         </div>
-        <div className="flex-1 text-right mr-20">
-          <h1 className="text-xl pop-text">Hello, Welcome to Wisteria!</h1>
+        <div className="absolute right-0 mr-72 mt-80">
+          <div className="inline-flex flex-col items-center ">
+            <img
+              src="/images/kupo.png"
+              alt="Kupo"
+              className="w-20 h-auto mr-32 mb-2 animate-fly"
+            />
+            <div className="absolute animate-fly  -top-20 -right-3 w-32 bg-white border border-gray-300 rounded-lg p-2 shadow-lg kupo-bubble">
+              <p className="text-xs text-gray-700">
+                Greetings, {currentUser.firstname}! Welcome to Wisteria! May
+                your adventures here be filled with magic and wonder, kupo!
+              </p>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-white border-l-transparent border-r-transparent"></div>
+            </div>
+          </div>
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div
-          className="mt-5 fixed flex animate__animated animate__fadeInLeft"
+          className="mt-8 fixed flex animate__animated animate__fadeInLeft"
           style={{ animationDelay: "1s", animationDuration: "1s" }}
         >
           <div>

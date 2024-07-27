@@ -51,7 +51,7 @@ const Card = ({
   };
 
   return (
-    <div className="border bg-white border-gray-300 rounded-lg box-border w-96 p-6 max-w-md mx-auto shadow-sm opacity-90 ">
+    <div className="border bg-white border-gray-300 rounded-lg  box-border w-96 p-6 max-w-md mx-auto shadow-sm opacity-90 ">
       <div className="flex items-center justify-start ml-1">
         <Avatar
           src={avatar}

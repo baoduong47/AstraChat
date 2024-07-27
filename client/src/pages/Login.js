@@ -69,7 +69,6 @@ const Login = () => {
             value={formData.email}
             variant="outlined"
             label="Email"
-            required
             fullWidth
             sx={{
               "& .MuiOutlinedInput-root": {
@@ -102,7 +101,6 @@ const Login = () => {
             value={formData.password}
             variant="outlined"
             label="Password"
-            required
             fullWidth
             sx={{
               "& .MuiOutlinedInput-root": {

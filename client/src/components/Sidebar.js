@@ -10,6 +10,7 @@ import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import Avatar from "../components/Avatar";
+
 import { logout } from "../utils/auth";
 import MessageTab from "./MessagingTab";
 import "animate.css";
@@ -97,7 +98,7 @@ const Sidebar = () => {
             <Avatar
               src={`http://localhost:3000/${currentUser.avatar}`}
               alt={`${currentUser.firstname}'s avatar`}
-              className="w-10 h-10 rounded-full object-cover"
+              className="w-10 h-10 rounded-full object-cover "
             />
             <span className="hidden md:inline">{currentUser.firstname}</span>
           </li>
