@@ -24,6 +24,18 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
+    bio: {
+      type: String,
+    },
+    birthday: {
+      type: Date,
+    },
+    location: {
+      type: String,
+    },
+    title: {
+      type: String,
+    },
   },
   {
     timestamps: true,

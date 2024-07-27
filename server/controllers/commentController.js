@@ -6,9 +6,12 @@ exports.getComments = async (req, res) => {
     const comments = await Comment.find({})
       .populate({
         path: "replies.authorId",
-        select: "firstname avatar",
+        select: "firstname avatar title",
       })
-      .populate("postId");
+      .populate({
+        path: "postId",
+        select: "firstname avatar title",
+      });
     res.status(200).json(comments);
   } catch (error) {
     return res.status(500).send("Error retrieving comments");
@@ -126,10 +129,15 @@ exports.replyComment = async (req, res) => {
 
     await parentComment.save();
 
-    const updatedParentComment = await Comment.findById(commentId).populate({
-      path: "replies.authorId",
-      select: "firstname avatar",
-    });
+    const updatedParentComment = await Comment.findById(commentId)
+      .populate({
+        path: "replies.authorId",
+        select: "firstname avatar",
+      })
+      .populate({
+        path: "postId",
+        select: "avatar",
+      });
 
     console.log(
       "Parent comment with new reply after saving:",
@@ -176,12 +184,17 @@ exports.deleteComment = async (req, res) => {
 
     console.log("Received request to delete comment with ID:", commentId);
 
+    console.log("Authenticated user ID:", req.user);
+
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
     const user = await User.findById(req.user);
 
-    console.log("User", user);
-
+    console.log("User found: ", user);
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const comment = await Comment.findById(commentId);
@@ -212,5 +225,54 @@ exports.deleteComment = async (req, res) => {
   } catch (error) {
     console.log("Error removing message", error);
     return res.status(500).json({ message: "Error deleting message", error });
+  }
+};
+
+exports.updateLikes = async (req, res) => {
+  const { commentId } = req.params;
+  try {
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    console.log("Retrieved comment:", comment);
+
+    if (!comment.likedBy) {
+      comment.likedBy = [];
+    }
+    console.log("likedBy array:", comment.likedBy);
+
+    const user = await User.findById(req.user);
+    console.log("succesfully retrieved user for liked comments:", user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("user ID", user._id);
+
+    const userIdString = user._id.toString();
+
+    if (comment.likedBy.some((id) => id.toString() === userIdString)) {
+      console.log("User has already liked this comment");
+      return res
+        .status(400)
+        .json({ message: "User has already liked this comment" });
+    }
+
+    comment.likes += 1;
+    comment.likedBy.push(user);
+    await comment.save();
+
+    res.status(200).json({
+      comment,
+      user: {
+        _id: user._id,
+        avatar: user.avatar,
+      },
+    });
+  } catch (error) {
+    console.log("Error updating likes", error);
+    return res.status(500).send({ message: "Error updating likes", error });
   }
 };

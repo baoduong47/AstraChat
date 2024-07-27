@@ -9,6 +9,7 @@ const {
   editComment,
   deleteComment,
   replyComment,
+  updateLikes,
 } = require("../controllers/commentController");
 
 commentRouter.route("/").get(getComments).post(authMiddleware, postComment);
@@ -20,4 +21,7 @@ commentRouter
   .delete(authMiddleware, deleteComment);
 
 commentRouter.route("/:commentId/replies").post(authMiddleware, replyComment);
+
+commentRouter.route("/:commentId/likes").post(authMiddleware, updateLikes);
+
 module.exports = commentRouter;
