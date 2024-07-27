@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customBlue: "#606676",
+        signupBackground: "#E0C0836",
         customGray: "#2A3139",
         lightGreen: "#BEC6A0",
         backGround: "#fdffe0",
@@ -16,8 +16,8 @@ module.exports = {
         textColor: "#00ADB5",
         cardColor: "#EEEEEE",
         hoverColor: "#F04A02",
-        highlightColor: "#536f50",
-        buttonColor: "#CB7857",
+        highlightColor: "#A58351",
+        buttonColor: "#895881",
         navColor: "#767676",
         foregroundColor: "#63636B",
         inputColor: "#F2F2F4",

@@ -105,17 +105,17 @@ const Login = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused fieldset": {
-                  borderColor: "#392840",
+                  borderColor: "white",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#392840",
+                  borderColor: "white",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#392840",
+                  borderColor: "white",
                 },
               },
               "& .MuiInputLabel-root": {
-                color: "#666565",
+                color: "white",
                 fontSize: "13px",
               },
               "& .MuiInputLabel-root.Mui-focused": {

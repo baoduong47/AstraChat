@@ -5,6 +5,7 @@ import {
 } from "../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
 import "animate.css";
+import Avatar from "../components/Avatar";
 
 const MessageTab = ({ user }) => {
   const [message, setMessage] = useState("");
@@ -60,13 +61,20 @@ const MessageTab = ({ user }) => {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black border border-gray-300 space-y-2 animate__animated animate__fadeInRight">
-      <div className="border-b pb-2 mb-4">
-        <h2 className="text-xl font-semibold">
-          {user.firstname} {user.lastname}
+      <div className="ml-2 border-b pb-2 mb-4">
+        <h2 className="text-xl font-semibold flex gap-1">
+          <Avatar
+            src={`http://localhost:3000/${user.avatar}`}
+            alt={`${currentUser.firstname}'s avatar`}
+            className="w-10 h-10 rounded-full object-cover "
+          />
+          <div className="ml-1 flex flex-col justify-center items-start">
+            {user.firstname} {user.lastname}
+            <p className="text-sm text-gray-500">
+              @{user.firstname} {user.lastname}
+            </p>
+          </div>
         </h2>
-        <p className="text-sm text-gray-500">
-          @{user.firstname} {user.lastname}
-        </p>
       </div>
       <div className="overflow-y-auto h-5/6 ">
         {/* Messages will go here */}

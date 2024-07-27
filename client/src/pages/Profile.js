@@ -5,6 +5,7 @@ import {
   updateCurrentUser,
 } from "../redux/actions/userActions";
 import Avatar from "../components/Avatar";
+import "animate.css";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Profile = () => {
     birthday: "",
     email: "",
     location: "",
+    title: "",
   });
 
   useEffect(() => {
@@ -27,9 +29,10 @@ const Profile = () => {
       setFormData({
         avatar: null,
         bio: currentUser.bio || "",
-        birthday: currentUser.birthday || "",
+        birthday: currentUser.birthday ? formatDate(currentUser.birthday) : "",
         email: currentUser.email || "",
         location: currentUser.location || "",
+        title: currentUser.title || "",
       });
     }
   }, [currentUser]);
@@ -45,6 +48,7 @@ const Profile = () => {
     data.append("birthday", formData.birthday);
     data.append("email", formData.email);
     data.append("location", formData.location);
+    data.append("title", formData.title);
 
     dispatch(updateCurrentUser(data));
   };
@@ -55,6 +59,14 @@ const Profile = () => {
       ...formData,
       [name]: files ? files[0] : value,
     });
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -75,7 +87,10 @@ const Profile = () => {
       ) : !currentUser ? (
         <p>User not found</p>
       ) : (
-        <div className=" mb-2 mt-2 bg-white bg-opacity-80 p-6 border border-gray-300 rounded-lg shadow-lg max-w-4xl w-full mx-4">
+        <div
+          className="mb-2 mt-2 bg-white bg-opacity-80 p-6 border border-gray-300 rounded-lg shadow-lg max-w-4xl w-full mx-4 animate__animated animate__fadeInRight"
+          style={{ animationDelay: "0.2s", animationDuration: "1s" }}
+        >
           <h1 className="text-2xl font-bold mb-4">
             {currentUser.firstname}'s Profile
           </h1>
@@ -93,38 +108,54 @@ const Profile = () => {
                 onChange={handleChange}
                 className="mb-4"
               />
-              <div className="flow-root">
-                <dl className="-my-1 divide-y divide-gray-100 text-sm">
-                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                    <dt className="font-medium text-gray-900">Location</dt>
-                    <dd className="text-gray-700 sm:col-span-2">Atlanta, GA</dd>
-                  </div>
+            </div>
+            <div className="flow-root">
+              <dl className="-my-1 divide-y divide-gray-100 text-sm">
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900">Title</dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    {currentUser.title}
+                  </dd>
+                </div>
 
-                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                    <dt className="font-medium text-gray-900">Email</dt>
-                    <dd className="text-gray-700 sm:col-span-2">
-                      bduong1497@gmail.com
-                    </dd>
-                  </div>
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900">Bio</dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    {currentUser.bio}
+                  </dd>
+                </div>
 
-                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                    <dt className="font-medium text-gray-900">Birthday</dt>
-                    <dd className="text-gray-700 sm:col-span-2">12/14/1997</dd>
-                  </div>
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900">Email</dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    {currentUser.email}
+                  </dd>
+                </div>
 
-                  <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                    <dt className="font-medium text-gray-900">Bio</dt>
-                    <dd className="text-gray-700 sm:col-span-2">
-                      I'm Cloud Strife, a former SOLDIER 1st Class from the
-                      Shinra Electric Power Company. My journey began in the
-                      small mountain village of Nibelheim, where I grew up
-                      dreaming of joining the elite ranks of SOLDIER. I
-                      eventually achieved that dream, but at a great personal
-                      cost.
-                    </dd>
-                  </div>
-                </dl>
-              </div>
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900">Birthday</dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    {formData.birthday}
+                  </dd>
+                </div>
+
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900">Location</dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    {currentUser.location}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Title:</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full mt-2 p-2 border rounded"
+              />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700">Bio:</label>
@@ -136,21 +167,21 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Birthday:</label>
-              <input
-                type="date"
-                name="birthday"
-                value={formData.birthday}
-                onChange={handleChange}
-                className="w-full mt-2 p-2 border rounded"
-              />
-            </div>
-            <div className="mb-4">
               <label className="block text-gray-700">Email:</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
+                onChange={handleChange}
+                className="w-full mt-2 p-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Birthday:</label>
+              <input
+                type="date"
+                name="birthday"
+                value={formData.birthday}
                 onChange={handleChange}
                 className="w-full mt-2 p-2 border rounded"
               />

@@ -10,7 +10,6 @@ import { GiBroadsword } from "react-icons/gi";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
-
 import "animate.css";
 
 const Home = () => {
@@ -82,7 +81,9 @@ const Home = () => {
                   fontSize: "large",
                 }}
               />
-              <span>{currentUser.firstname}</span>
+              <span>
+                {currentUser.title} {currentUser.firstname}
+              </span>
               <span>{currentDateTime.toLocaleString()}</span>
               <GiBroadsword
                 className="ml-1 inline-block align-middle"
@@ -93,18 +94,29 @@ const Home = () => {
             <span>Guest</span>
           )}
         </div>
-        <div className="absolute right-0 mr-72 mt-80">
-          <div className="inline-flex flex-col items-center ">
+        <div className="absolute right-0 mr-28 mt-80">
+          <div
+            className="inline-flex flex-col items-center animate__animated animate__backInRight "
+            style={{ animationDelay: "0.5s", animationDuration: "2s" }}
+          >
             <img
               src="/images/kupo.png"
               alt="Kupo"
               className="w-20 h-auto mr-32 mb-2 animate-fly"
             />
+
             <div className="absolute animate-fly  -top-20 -right-3 w-32 bg-white border border-gray-300 rounded-lg p-2 shadow-lg kupo-bubble">
-              <p className="text-xs text-gray-700">
-                Greetings, {currentUser.firstname}! Welcome to Wisteria! May
-                your adventures here be filled with magic and wonder, kupo!
-              </p>
+              {currentUser ? (
+                <p className="text-xs text-gray-700">
+                  Greetings, {currentUser.firstname}! Welcome to Wisteria! May
+                  your adventures here be filled with magic and wonder, kupo!
+                </p>
+              ) : (
+                <p className="text-xs text-gray-700">
+                  Greetings, Kupo! Welcome to Wisteria! May your adventures here
+                  be filled with magic and wonder, kupo!
+                </p>
+              )}
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-white border-l-transparent border-r-transparent"></div>
             </div>
           </div>
@@ -156,7 +168,7 @@ const Home = () => {
                   description={comment.comment}
                   author={comment.author}
                   avatar={`http://localhost:3000/${comment.postId.avatar}`}
-                  title={`Comment by ${comment.author}`}
+                  title={comment.postId.title}
                   date={new Date(comment.createdAt).toLocaleString()}
                   commentId={comment._id}
                   replies={comment.replies}
@@ -165,11 +177,16 @@ const Home = () => {
                 <button onClick={() => handleDeleteSubmit(comment._id)}>
                   Delete
                 </button>
-                <span className="relative flex justify-center">
-                  <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"></div>
-
-                  <span className="relative z-10 mt-10 px-6"></span>
-                </span>
+                {/* <span
+                  className="relative flex justify-center items-center animate__animated animate__fadeIn"
+                  style={{ animationDelay: "1.2s", animationDuration: "3s" }}
+                >
+                  <img
+                    src="/images/ff-crystal.png"
+                    alt="Description of the image"
+                    className="relative z-10 ml-8 mt-2 w-20 h-20"
+                  />
+                </span> */}
               </div>
             </li>
           ))}

@@ -10,6 +10,7 @@ import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import Avatar from "../components/Avatar";
+import PersonIcon from "@mui/icons-material/Person";
 
 import { logout } from "../utils/auth";
 import MessageTab from "./MessagingTab";
@@ -95,11 +96,13 @@ const Sidebar = () => {
             className="hover:text-foregroundColor flex items-center py-3 px-2 space-x-3 hover:rounded hover:cursor-pointer animate__animated animate__fadeInRight"
             style={{ animationDelay: "0.3s", animationDuration: "1s" }}
           >
-            <Avatar
-              src={`http://localhost:3000/${currentUser.avatar}`}
-              alt={`${currentUser.firstname}'s avatar`}
-              className="w-10 h-10 rounded-full object-cover "
-            />
+            <Link to="/profile" className="flex items-center space-x-3">
+              <Avatar
+                src={`http://localhost:3000/${currentUser.avatar}`}
+                alt={`${currentUser.firstname}'s avatar`}
+                className="w-10 h-10 rounded-full object-cover "
+              />
+            </Link>
             <span className="hidden md:inline">{currentUser.firstname}</span>
           </li>
           {menuItems.map((item, index) => (
