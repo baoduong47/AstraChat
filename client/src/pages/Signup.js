@@ -5,6 +5,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +15,15 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+  });
 
   const dispatch = useDispatch();
-  const authError = useSelector((state) => state.auth.eror);
+  const authError = useSelector((state) => state.auth.error);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,15 +33,81 @@ const Signup = () => {
     }));
   };
 
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    let error = "";
+
+    switch (name) {
+      case "firstname":
+      case "lastname":
+        if (!value.trim()) {
+          error = `${
+            name.charAt(0).toUpperCase() + name.slice(1)
+          } is required.`;
+        }
+        break;
+      case "email":
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(value)) {
+          error = "Invalid email address.";
+        }
+        break;
+      case "password":
+        if (value.length < 8) {
+          error = "Password must be at least 8 characters long.";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
+  };
+
+  const validateForm = () => {
+    let formIsValid = true;
+    let errors = {};
+
+    if (!formData.firstname.trim()) {
+      formIsValid = false;
+      errors.firstname = "First name is required.";
+    }
+
+    if (!formData.lastname.trim()) {
+      formIsValid = false;
+      errors.lastname = "Last name is required.";
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      formIsValid = false;
+      errors.email = "Invalid email address.";
+    }
+
+    if (formData.password.length < 8) {
+      formIsValid = false;
+      errors.password = "Password must be at least 8 characters long.";
+    }
+
+    setErrors(errors);
+    return formIsValid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(formData));
-    console.log("Form submitted", formData);
+    if (validateForm()) {
+      dispatch(registerUser(formData));
+      console.log("Form submitted", formData);
+    } else {
+      console.log("Form has errors", errors);
+    }
   };
 
   return (
     <div className="flex h-screen bg-customBlue">
-      {authError && <p className="text-red-500">{authError.message}</p>}
       <div
         className="w-3/6 flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: "url('/images/cute-ff.jpg')" }}
@@ -44,14 +118,22 @@ const Signup = () => {
         <div className="w-full max-w-md">
           <h2 className="text-5xl font-bold mb-16">Create Account</h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {authError && (
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                {typeof authError === "string" ? authError : authError.message}
+              </Alert>
+            )}
             <div className="flex space-x-4">
               <TextField
-                type="firstname"
+                error={!!errors.firstname}
+                helperText={errors.firstname}
+                type="text"
                 id="firstname"
                 name="firstname"
                 value={formData.firstname}
                 onChange={handleChange}
-                required
+                onBlur={handleBlur}
                 size="small"
                 label="First Name"
                 variant="outlined"
@@ -75,13 +157,15 @@ const Signup = () => {
               />
 
               <TextField
-                type="lastname"
+                error={!!errors.lastname}
+                helperText={errors.lastname}
+                type="text"
                 id="lastname"
                 name="lastname"
-                size="small"
                 value={formData.lastname}
                 onChange={handleChange}
-                required
+                onBlur={handleBlur}
+                size="small"
                 label="Last Name"
                 variant="outlined"
                 className="w-1/2"
@@ -104,12 +188,14 @@ const Signup = () => {
               />
             </div>
             <TextField
+              error={!!errors.email}
+              helperText={errors.email}
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              required
+              onBlur={handleBlur}
               size="small"
               label="Email"
               variant="outlined"
@@ -132,12 +218,14 @@ const Signup = () => {
               }}
             />
             <TextField
+              error={!!errors.password}
+              helperText={errors.password}
               type="password"
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              required
+              onBlur={handleBlur}
               size="small"
               label="Password"
               variant="outlined"
