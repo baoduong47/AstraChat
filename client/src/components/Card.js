@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { replyComment, updateLikes } from "../redux/actions/commentAction";
+import {
+  replyComment,
+  updateLikes,
+  deleteComment,
+} from "../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
 import Avatar from "./Avatar";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { GiFloatingCrystal } from "react-icons/gi";
+import { FaPhoenixFramework } from "react-icons/fa";
+import { FaPhoenixSquadron } from "react-icons/fa6";
+import { SiThunderbird } from "react-icons/si";
+
 import "animate.css";
+
 const Card = ({
   avatar,
   author,
@@ -12,12 +25,14 @@ const Card = ({
   commentId,
   replies,
   likes,
-  likedBy,
+  likedBy: initialLikedBy,
   title,
 }) => {
   const [reply, setReply] = useState("");
   const [currentLikes, setCurrentLikes] = useState(likes);
   const [isMessageOpen, setMessageOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [likedBy, setLikedBy] = useState(initialLikedBy);
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -25,8 +40,6 @@ const Card = ({
   const handleChange = (e) => {
     setReply(e.target.value);
   };
-
-  console.log("title: ", title);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,9 +56,15 @@ const Card = ({
 
   const handleLikes = (e) => {
     e.preventDefault();
+
+    if (likedBy.includes(currentUser._id)) {
+      alert("User has already liked this comment");
+      return;
+    }
+
     dispatch(updateLikes(commentId));
-    console.log("clicked event");
     setCurrentLikes(currentLikes + 1);
+    setLikedBy([...likedBy, currentUser._id]);
   };
 
   const parseDescription = (description) => {
@@ -58,11 +77,64 @@ const Card = ({
     });
   };
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    // Implement edit functionality here
+    handleMenuClose();
+  };
+
+  const handleDelete = () => {
+    if (currentUser) {
+      dispatch(deleteComment(commentId));
+      console.log("Successfully deleted comment", commentId);
+    } else {
+      console.log("User not authenticated. Cannot submit comment.");
+    }
+    handleMenuClose();
+  };
+
   return (
     <div
-      className="ml-10 border bg-white  border-gray-300 rounded-lg  box-border w-96 p-6 max-w-md mx-auto shadow-sm opacity-90 animate__animated animate__fadeInUp"
+      className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border w-96 p-6 max-w-md mx-auto shadow-sm opacity-90 animate__animated animate__fadeInUp"
       style={{ animationDelay: "0.2s", animationDuration: "2s" }}
     >
+      <div className="absolute top-2 right-2">
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={handleMenuClick}
+        >
+          <SiThunderbird className="text-gray-700" />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem
+            onClick={handleEdit}
+            style={{ fontFamily: "inherit", fontSize: "inherit" }}
+          >
+            Edit Post
+          </MenuItem>
+          <MenuItem
+            onClick={handleDelete}
+            style={{ fontFamily: "inherit", fontSize: "inherit" }}
+          >
+            Delete Post
+          </MenuItem>
+        </Menu>
+      </div>
       <div className="flex items-center justify-start ml-1">
         <Avatar
           src={avatar}
@@ -177,12 +249,12 @@ const Card = ({
             onChange={handleChange}
             value={reply}
             type="text"
-            className=" w-full h-10 p-2 border bg-inputColor border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full h-10 p-2 border bg-inputColor border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Add a comment..."
           />
           <button
             type="submit"
-            className="h-10 bg-white border border-gray-300 text-black px-4 py-2  flex items-center justify-center rounded-lg hover:bg-inputColor focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="h-10 bg-white border border-gray-300 text-black px-4 py-2 flex items-center justify-center rounded-lg hover:bg-inputColor focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Reply
           </button>

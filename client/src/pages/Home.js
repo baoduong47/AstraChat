@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, getCurrentUser } from "../redux/actions/userActions";
-import {
-  getComments,
-  postComment,
-  deleteComment,
-} from "../redux/actions/commentAction";
+import { getComments, postComment } from "../redux/actions/commentAction";
 import { GiBroadsword } from "react-icons/gi";
 import { HiMiniUserCircle } from "react-icons/hi2";
 import MainLayout from "../components/MainLayout";
@@ -27,15 +23,6 @@ const Home = () => {
       setComment("");
     } else {
       console.log("Error posting comment");
-    }
-  };
-
-  const handleDeleteSubmit = (commentId) => {
-    if (currentUser) {
-      dispatch(deleteComment(commentId));
-      console.log("Successfully deleted comment", comment);
-    } else {
-      console.log("User not authenticated. Cannot submit comment.");
     }
   };
 
@@ -172,21 +159,9 @@ const Home = () => {
                   date={new Date(comment.createdAt).toLocaleString()}
                   commentId={comment._id}
                   replies={comment.replies}
+                  likes={comment.likes}
+                  likedBy={comment.likedBy}
                 />
-
-                <button onClick={() => handleDeleteSubmit(comment._id)}>
-                  Delete
-                </button>
-                {/* <span
-                  className="relative flex justify-center items-center animate__animated animate__fadeIn"
-                  style={{ animationDelay: "1.2s", animationDuration: "3s" }}
-                >
-                  <img
-                    src="/images/ff-crystal.png"
-                    alt="Description of the image"
-                    className="relative z-10 ml-8 mt-2 w-20 h-20"
-                  />
-                </span> */}
               </div>
             </li>
           ))}

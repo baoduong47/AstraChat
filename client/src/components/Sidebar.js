@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+// src/components/Sidebar.jsx
+
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GiSlumberingSanctuary } from "react-icons/gi";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { RiLogoutCircleLine } from "react-icons/ri";
@@ -10,20 +12,39 @@ import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import Avatar from "../components/Avatar";
-import PersonIcon from "@mui/icons-material/Person";
-
 import { logout } from "../utils/auth";
 import MessageTab from "./MessagingTab";
+import AllMessagesTab from "./AllMessagesTab";
+import {
+  getUnreadMessagesCount,
+  getUnreadMessagesCounts,
+} from "../redux/actions/messageActions";
 import "animate.css";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
   const { users, currentUser, loading, error } = useSelector(
     (state) => state.user
   );
+  const unreadCount = useSelector((state) => state.message.unreadCount);
+  const unreadCounts = useSelector((state) => state.message.unreadCounts);
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(getUnreadMessagesCount());
+      dispatch(getUnreadMessagesCounts());
+    }
+  }, [currentUser, dispatch]);
+
+  useEffect(() => {
+    console.log("Unreadcounts:", unreadCounts);
+  }, [unreadCounts]);
 
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
   const [isMessageTabOpen, setIsMessageTabOpen] = useState(false);
+  const [isMessageTabClosing, setIsMessageTabClosing] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
 
   const toggleUsersDropdown = () => {
     setIsUsersDropdownOpen(!isUsersDropdownOpen);
@@ -36,6 +57,10 @@ const Sidebar = () => {
       setSelectedUser(user);
       setIsMessageTabOpen(true);
     }
+  };
+
+  const toggleAllMessagesTab = () => {
+    setIsAllMessagesTabOpen(!isAllMessagesTabOpen);
   };
 
   if (loading) {
@@ -60,11 +85,20 @@ const Sidebar = () => {
     {
       text: "Messages",
       icon: <TextsmsRoundedIcon fontSize="small" />,
-      link: "/messages",
+      onClick: toggleAllMessagesTab,
     },
     {
       text: "Users",
-      icon: <FaArrowsDownToPeople fontSize="large" />,
+      icon: (
+        <div className="relative">
+          <FaArrowsDownToPeople fontSize="large" />
+          {Object.values(unreadCounts).reduce((a, b) => a + b, 0) > 0 && (
+            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              {Object.values(unreadCounts).reduce((a, b) => a + b, 0)}
+            </span>
+          )}
+        </div>
+      ),
       onClick: toggleUsersDropdown,
     },
     {
@@ -100,7 +134,7 @@ const Sidebar = () => {
               <Avatar
                 src={`http://localhost:3000/${currentUser.avatar}`}
                 alt={`${currentUser.firstname}'s avatar`}
-                className="w-10 h-10 rounded-full object-cover "
+                className="w-10 h-10 rounded-full object-cover"
               />
             </Link>
             <span className="hidden md:inline">{currentUser.firstname}</span>
@@ -151,20 +185,30 @@ const Sidebar = () => {
                 )}
               </li>
               {item.text === "Users" && isUsersDropdownOpen && (
-                <ul className="pl-8 space-y-2">
-                  {users.map((user, userIndex) => (
-                    <li
-                      key={user._id}
-                      onClick={() => handleUserClick(user)}
-                      className="cursor-pointer group animate__animated animate__fadeInRight"
-                      style={{
-                        animationDelay: `${(userIndex + 1) * 0.1}s`,
-                        animationDuration: "0.7s",
-                      }}
-                    >
-                      {user.firstname} {user.lastname}
-                    </li>
-                  ))}
+                <ul
+                  className="pl-8 space-y-2 overflow-y-auto"
+                  style={{ maxHeight: "400px" }}
+                >
+                  {users
+                    .filter((user) => user._id !== currentUser._id)
+                    .map((user, userIndex) => (
+                      <li
+                        key={user._id}
+                        onClick={() => handleUserClick(user)}
+                        className="cursor-pointer group animate__animated animate__fadeInRight relative flex items-center space-x-3"
+                        style={{
+                          animationDelay: `${(userIndex + 1) * 0.1}s`,
+                          animationDuration: "0.7s",
+                        }}
+                      >
+                        {unreadCounts[user._id] > 0 && (
+                          <span className="absolute left-0 bg-red-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center transform -translate-x-4 -translate-y-1/2 top-1/2"></span>
+                        )}
+                        <span>
+                          {user.firstname} {user.lastname}
+                        </span>
+                      </li>
+                    ))}
                 </ul>
               )}
             </React.Fragment>
@@ -206,6 +250,9 @@ const Sidebar = () => {
         </ul>
       </div>
       {isMessageTabOpen && selectedUser && <MessageTab user={selectedUser} />}
+      {isAllMessagesTabOpen && (
+        <AllMessagesTab onClose={toggleAllMessagesTab} />
+      )}
     </div>
   );
 };

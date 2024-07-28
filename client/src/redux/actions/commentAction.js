@@ -100,9 +100,7 @@ export const updateLikes = (commentId) => async (dispatch) => {
     console.log("Error updating likes", errorMessage);
 
     if (errorMessage === "User has already liked this comment") {
-      // Handle the case where the user has already liked the comment
       alert("You have already liked this comment.");
-      // Optionally, update the UI to reflect this state
       dispatch({ type: "UPDATE_LIKES_ALREADY_LIKED" });
     } else {
       dispatch({ type: "UPDATE_LIKES_FAIL", payload: errorMessage });

@@ -53,8 +53,8 @@ const Signup = () => {
         }
         break;
       case "password":
-        if (value.length < 8) {
-          error = "Password must be at least 8 characters long.";
+        if (value.length < 2) {
+          error = "Password must be at least 2 characters long.";
         }
         break;
       default:
@@ -87,9 +87,9 @@ const Signup = () => {
       errors.email = "Invalid email address.";
     }
 
-    if (formData.password.length < 8) {
+    if (formData.password.length < 2) {
       formIsValid = false;
-      errors.password = "Password must be at least 8 characters long.";
+      errors.password = "Password must be at least 2 characters long.";
     }
 
     setErrors(errors);

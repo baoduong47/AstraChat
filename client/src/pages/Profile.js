@@ -112,7 +112,7 @@ const Profile = () => {
             <div className="flow-root">
               <dl className="-my-1 divide-y divide-gray-100 text-sm">
                 <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                  <dt className="font-medium text-gray-900">Title</dt>
+                  <dt className="font-medium text-gray-900 ">Title</dt>
                   <dd className="text-gray-700 sm:col-span-2">
                     {currentUser.title}
                   </dd>
@@ -152,6 +152,7 @@ const Profile = () => {
               <input
                 type="text"
                 name="title"
+                maxLength={11}
                 value={formData.title}
                 onChange={handleChange}
                 className="w-full mt-2 p-2 border rounded"

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-
 import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./components/NotFound";
 import Profile from "./pages/Profile";

@@ -36,9 +36,52 @@ export const getMessagesBetweenUsers =
         }
       );
       dispatch({ type: "GET_MESSAGE_SUCCESS", payload: response.data });
+      dispatch(getUnreadMessagesCounts());
       console.log("Received messages: ", response.data);
     } catch (error) {
       console.log("Error retrieving messages: ", error.response.data);
       dispatch({ type: "GET_MESSAGE_FAIL", payload: error.message });
     }
   };
+
+export const getUnreadMessagesCount = () => async (dispatch) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/messages/unread-count",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch({
+      type: "GET_UNREAD_COUNT_SUCCESS",
+      payload: response.data.unreadCount,
+    });
+  } catch (error) {
+    console.log("Error fetching unread messages count", error.response.data);
+    dispatch({ type: "GET_UNREAD_COUNT_FAIL", payload: error.message });
+  }
+};
+
+export const getUnreadMessagesCounts = () => async (dispatch) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/messages/unread-counts",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch({
+      type: "GET_UNREAD_COUNTS_SUCCESS",
+      payload: response.data.unreadCounts,
+    });
+  } catch (error) {
+    console.log("Error fetching unread messages counts", error.response.data);
+    dispatch({ type: "GET_UNREAD_COUNTS_FAIL", payload: error.message });
+  }
+};

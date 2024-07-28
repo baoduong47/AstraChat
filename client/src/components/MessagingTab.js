@@ -77,7 +77,6 @@ const MessageTab = ({ user }) => {
         </h2>
       </div>
       <div className="overflow-y-auto h-5/6 ">
-        {/* Messages will go here */}
         {messages.map((message) => (
           <div key={message._id} className="mb-2">
             <div className="flex justify-between">
