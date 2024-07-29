@@ -53,7 +53,9 @@ exports.updateCurrentUser = async (req, res) => {
     if (req.file) {
       updates.avatar = req.file.path;
     }
+    console.log("user", userId);
 
+    updates.bio;
     const user = await User.findByIdAndUpdate(userId, updates, {
       new: true,
     }).select("-password");
