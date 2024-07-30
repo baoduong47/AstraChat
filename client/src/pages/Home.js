@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Alert from "@mui/material/Alert";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
+import Particles from "../components/Particle";
 import "animate.css";
 
 const Home = () => {
@@ -87,6 +88,7 @@ const Home = () => {
   return (
     <MainLayout>
       <div className="relative flex justify-between items-center">
+        <Particles count={50} />
         <AnimatePresence>
           {showError && (
             <motion.div
