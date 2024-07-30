@@ -14,7 +14,8 @@ const MessageTab = ({ user }) => {
 
   const { messages } = useSelector((state) => state.message);
   const { currentUser } = useSelector((state) => state.user);
-  console.log("messages recieved: ", messages);
+  console.log("message", message);
+  console.log("messages", messages);
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);

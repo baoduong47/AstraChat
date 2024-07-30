@@ -10,10 +10,8 @@ import Avatar from "./Avatar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { GiFloatingCrystal } from "react-icons/gi";
-import { FaPhoenixFramework } from "react-icons/fa";
-import { FaPhoenixSquadron } from "react-icons/fa6";
 import { SiThunderbird } from "react-icons/si";
+import ConfirmationModal from "./ConfirmationModal";
 
 import "animate.css";
 
@@ -33,6 +31,7 @@ const Card = ({
   const [isMessageOpen, setMessageOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [likedBy, setLikedBy] = useState(initialLikedBy);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -106,6 +105,19 @@ const Card = ({
     handleMenuClose();
   };
 
+  const confirmDelete = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleModalConfirm = () => {
+    handleDelete();
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border w-96 p-6 max-w-md mx-auto shadow-sm opacity-90 animate__animated animate__fadeInUp"
@@ -134,7 +146,7 @@ const Card = ({
             Edit Post
           </MenuItem>
           <MenuItem
-            onClick={handleDelete}
+            onClick={confirmDelete}
             style={{ fontFamily: "inherit", fontSize: "inherit" }}
           >
             Delete Post
@@ -266,6 +278,11 @@ const Card = ({
           </button>
         </form>
       </div>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onConfirm={handleModalConfirm}
+      />
     </div>
   );
 };

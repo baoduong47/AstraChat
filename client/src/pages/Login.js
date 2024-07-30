@@ -7,6 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Typography } from "@mui/material";
 import LoadingScreen from "./LoadingScreen";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -29,15 +30,15 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
     dispatch(loginUser(formData));
   };
 
   useEffect(() => {
     if (authenticated) {
+      setIsLoading(true);
       setTimeout(() => {
         window.location.href = "/home";
-      }, 3000);
+      }, 4000);
     } else if (authError) {
       setIsLoading(false);
     }
@@ -48,7 +49,7 @@ const Login = () => {
   }
 
   return (
-    <div
+    <motion.div
       className="flex flex-col justify-center items-center h-screen text-white bg-white"
       style={{
         backgroundImage: "url('/images/loading.png')",
@@ -57,13 +58,26 @@ const Login = () => {
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
       }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2 }}
     >
       {authError && (
-        <p className="text-red-500">
+        <motion.p
+          className="text-red-500"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           {authError.message || "Invalid login credentials"}
-        </p>
+        </motion.p>
       )}
-      <div className="mb-6">
+      <motion.div
+        className="mb-6"
+        initial={{ scale: 0.7, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
         <h2 className="text-3xl font-bold text-center mb-2">Welcome back!</h2>
         <h3 className="text-l">
           Don't have an account yet?{" "}
@@ -71,8 +85,13 @@ const Login = () => {
             Sign up now
           </a>
         </h3>
-      </div>
-      <div className="w-full max-w-sm">
+      </motion.div>
+      <motion.div
+        className="w-full max-w-sm"
+        initial={{ y: 70, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
         <form className="space-y-4" onSubmit={handleSubmit}>
           {authError?.field === "email" && (
             <p className="text-red-500">{authError.message}</p>
@@ -84,19 +103,20 @@ const Login = () => {
             name="email"
             onChange={handleChange}
             value={formData.email}
-            variant="outlined"
+            variant="filled"
             label="Email"
             fullWidth
             sx={{
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
+              "& .MuiFilledInput-root": {
+                backgroundColor: "rgba(51, 51, 51, 0.6)",
+                "&:hover": {
+                  backgroundColor: "rgba(68, 68, 68, 0.6)",
                 },
-                "&:hover fieldset": {
-                  borderColor: "white",
+                "&.Mui-focused": {
+                  backgroundColor: "rgba(85, 85, 85, 0.6)",
                 },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "white",
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#895881",
                 },
               },
               "& .MuiInputLabel-root": {
@@ -105,6 +125,15 @@ const Login = () => {
               },
               "& .MuiInputLabel-root.Mui-focused": {
                 color: "#FCF8F3",
+              },
+              "& .MuiFilledInput-underline:before": {
+                borderBottomColor: "#895881",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "#895881",
+              },
+              "& .MuiFilledInput-underline:hover:before": {
+                borderBottomColor: "#7A4972",
               },
             }}
           />
@@ -115,21 +144,21 @@ const Login = () => {
             id="password"
             name="password"
             onChange={handleChange}
-            placeholder="password"
             value={formData.password}
-            variant="outlined"
+            variant="filled"
             label="Password"
             fullWidth
             sx={{
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
+              "& .MuiFilledInput-root": {
+                backgroundColor: "rgba(51, 51, 51, 0.6)",
+                "&:hover": {
+                  backgroundColor: "rgba(68, 68, 68, 0.6)",
                 },
-                "&:hover fieldset": {
-                  borderColor: "white",
+                "&.Mui-focused": {
+                  backgroundColor: "rgba(85, 85, 85, 0.6)",
                 },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "white",
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#895881",
                 },
               },
               "& .MuiInputLabel-root": {
@@ -139,6 +168,15 @@ const Login = () => {
               "& .MuiInputLabel-root.Mui-focused": {
                 color: "#FCF8F3",
               },
+              "& .MuiFilledInput-underline:before": {
+                borderBottomColor: "#895881",
+              },
+              "& .MuiFilledInput-underline:after": {
+                borderBottomColor: "#895881",
+              },
+              "& .MuiFilledInput-underline:hover:before": {
+                borderBottomColor: "#7A4972",
+              },
             }}
           />
           <div className="flex items-center justify-between pl-2 pr-2">
@@ -147,7 +185,7 @@ const Login = () => {
               label={
                 <Typography
                   variant="body2"
-                  sx={{ fontSize: "12px", color: "#666565" }}
+                  sx={{ fontSize: "12px", color: "white" }}
                 >
                   Remember me
                 </Typography>
@@ -156,7 +194,7 @@ const Login = () => {
             <a href="#" className="no-underline">
               <Typography
                 variant="body2"
-                sx={{ fontSize: "12px", color: "#666565" }}
+                sx={{ fontSize: "12px", color: "white" }}
               >
                 Forgot password?
               </Typography>
@@ -193,8 +231,8 @@ const Login = () => {
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
