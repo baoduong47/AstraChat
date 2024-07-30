@@ -35,13 +35,6 @@ export const loginUser = (credentials) => async (dispatch) => {
     dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
 
     localStorage.setItem("token", response.data.token);
-
-    if (response.data.token) {
-      console.log("User is authenticated, redirecting to home...");
-      window.location.href = "/home";
-    } else {
-      console.log("User is not authenticated, no redirection.");
-    }
   } catch (error) {
     console.log("Error during login:", error.response.data);
     dispatch({ type: "LOGIN_FAIL", payload: error.response.data });

@@ -1,5 +1,3 @@
-// src/components/Sidebar.jsx
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +17,7 @@ import {
   getUnreadMessagesCount,
   getUnreadMessagesCounts,
 } from "../redux/actions/messageActions";
+
 import "animate.css";
 
 const Sidebar = () => {
@@ -26,28 +25,19 @@ const Sidebar = () => {
   const { users, currentUser, loading, error } = useSelector(
     (state) => state.user
   );
-  const unreadCount = useSelector((state) => state.message.unreadCount);
-  const unreadCounts = useSelector((state) => state.message.unreadCounts);
-
-  useEffect(() => {
-    if (currentUser) {
-      dispatch(getUnreadMessagesCount());
-      dispatch(getUnreadMessagesCounts());
-    }
-  }, [currentUser, dispatch]);
-
-  useEffect(() => {
-    console.log("Unreadcounts:", unreadCounts);
-  }, [unreadCounts]);
 
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
   const [isMessageTabOpen, setIsMessageTabOpen] = useState(false);
-  const [isMessageTabClosing, setIsMessageTabClosing] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
 
-  const toggleUsersDropdown = () => {
-    setIsUsersDropdownOpen(!isUsersDropdownOpen);
+  const unreadCount = useSelector((state) => state.message.unreadCount);
+  const unreadCounts = useSelector((state) => state.message.unreadCounts);
+
+  const handleMessageClick = (message) => {
+    setSelectedUser(message.sender);
+    setIsMessageTabOpen(true);
+    setIsAllMessagesTabOpen(false);
   };
 
   const handleUserClick = (user) => {
@@ -59,9 +49,35 @@ const Sidebar = () => {
     }
   };
 
+  const playSound = () => {
+    const audio = new Audio("/sounds/sao_menu.mp3");
+    audio.play();
+  };
+
+  const toggleUsersDropdown = () => {
+    if (!isUsersDropdownOpen) {
+      playSound();
+    }
+    setIsUsersDropdownOpen(!isUsersDropdownOpen);
+  };
+
   const toggleAllMessagesTab = () => {
+    if (!isAllMessagesTabOpen) {
+      playSound();
+    }
     setIsAllMessagesTabOpen(!isAllMessagesTabOpen);
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(getUnreadMessagesCount());
+      dispatch(getUnreadMessagesCounts());
+    }
+  }, [currentUser, dispatch]);
+
+  useEffect(() => {
+    console.log("Unreadcounts:", unreadCounts);
+  }, [unreadCounts]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -251,7 +267,10 @@ const Sidebar = () => {
       </div>
       {isMessageTabOpen && selectedUser && <MessageTab user={selectedUser} />}
       {isAllMessagesTabOpen && (
-        <AllMessagesTab onClose={toggleAllMessagesTab} />
+        <AllMessagesTab
+          onClose={toggleAllMessagesTab}
+          onMessageClick={handleMessageClick}
+        />
       )}
     </div>
   );

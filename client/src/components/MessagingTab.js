@@ -104,7 +104,7 @@ const MessageTab = ({ user }) => {
           onKeyDown={handleKeyDown}
         />
         <button
-          onClick={handleSubmit} // Add your button functionality here
+          onClick={handleSubmit}
           className="bg-buttonColor hover:bg-green-700 ml-3 text-white font-bold py-2 px-4 rounded"
         >
           Send

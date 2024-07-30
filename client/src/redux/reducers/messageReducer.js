@@ -15,13 +15,6 @@ const messageReducer = (state = initialState, action) => {
         loading: false,
       };
 
-    case "GET_MESSAGE_SUCCESS":
-      return {
-        ...state,
-        messages: action.payload,
-        loading: false,
-      };
-
     case "GET_UNREAD_COUNT_SUCCESS":
       return {
         ...state,
@@ -34,8 +27,16 @@ const messageReducer = (state = initialState, action) => {
         unreadCounts: action.payload,
       };
 
+    case "GET_ALL_MSG_SUCCESS":
+      return {
+        ...state,
+        messages: action.payload,
+        loading: false,
+      };
+
     case "POST_MESSAGE_FAIL":
     case "GET_MESSAGE_FAIL":
+    case "GET_MSG_FAIL":
     case "GET_UNREAD_COUNT_FAIL":
     case "GET_UNREAD_COUNTS_FAIL":
       return {

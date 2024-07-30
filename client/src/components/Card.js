@@ -77,7 +77,13 @@ const Card = ({
     });
   };
 
+  const playSound = () => {
+    const audio = new Audio("/sounds/sao_menu.mp3");
+    audio.play();
+  };
+
   const handleMenuClick = (event) => {
+    playSound();
     setAnchorEl(event.currentTarget);
   };
 

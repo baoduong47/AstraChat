@@ -1,30 +1,52 @@
-// src/components/AllMessagesTab.jsx
-
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllMessagesForUser } from "../redux/actions/messageActions";
+import Avatar from "./Avatar";
 import { Link } from "react-router-dom";
 import "animate.css";
 
-const AllMessagesTab = ({ onClose }) => {
-  const conversations = [
-    {
-      id: 1,
-      name: "John Doe",
-      avatar: "https://via.placeholder.com/150",
-      lastMessage: "Hey, how are you?",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      avatar: "https://via.placeholder.com/150",
-      lastMessage: "Are we still on for tomorrow?",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      avatar: "https://via.placeholder.com/150",
-      lastMessage: "Great job on the project!",
-    },
-  ];
+const AllMessagesTab = ({ onClose, onMessageClick }) => {
+  const dispatch = useDispatch();
+  const { currentUser, loading, error } = useSelector((state) => state.user);
+
+  const { messages } = useSelector((state) => state.message);
+
+  const groupMessagesBySender = (messages) => {
+    const groups = messages.reduce((acc, message) => {
+      const senderName = message.sender.firstname;
+      if (
+        !acc[senderName] ||
+        new Date(acc[senderName].timestamp) < new Date(message.timestamp)
+      ) {
+        acc[senderName] = message;
+      }
+      return acc;
+    }, {});
+    return Object.values(groups);
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(getAllMessagesForUser());
+    }
+  }, [currentUser, dispatch]);
+
+  useEffect(() => {
+    console.log("messages: ", messages);
+    messages.map((message) => {
+      console.log("mapped message: ", message);
+    });
+  }, [messages]);
+
+  const groupedMessages = groupMessagesBySender(messages);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <div className="fixed inset-0 flex justify-end z-50">
@@ -41,27 +63,21 @@ const AllMessagesTab = ({ onClose }) => {
         </button>
         <h2 className="text-xl font-semibold mb-4">Messages</h2>
         <ul className="space-y-4">
-          {conversations.map((conversation) => (
+          {groupedMessages.map((message) => (
             <li
-              key={conversation.id}
-              className="border p-4 rounded-lg hover:bg-gray-100 transition duration-300"
+              key={message._id}
+              className="border p-4 rounded-lg hover:bg-gray-100 transition duration-300 flex items-center space-x-4 cursor-pointer"
+              onClick={() => onMessageClick(message)}
             >
-              <Link
-                to={`/messages/${conversation.id}`}
-                className="flex items-center space-x-4"
-              >
-                <img
-                  src={conversation.avatar}
-                  alt={`${conversation.name}'s avatar`}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-bold text-lg">{conversation.name}</p>
-                  <p className="text-sm text-gray-600">
-                    {conversation.lastMessage}
-                  </p>
-                </div>
-              </Link>
+              <Avatar
+                src={`http://localhost:3000/${message.sender.avatar}`}
+                alt={`${message.sender.firstname}'s avatar`}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div>
+                <p className="font-bold text-lg">{message.sender.firstname}</p>
+                <p className="text-sm text-gray-600">{message.content}</p>
+              </div>
             </li>
           ))}
         </ul>

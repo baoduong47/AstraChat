@@ -23,6 +23,21 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
   }
 };
 
+export const getAllMessagesForUser = () => async (dispatch) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get("http://localhost:3000/messages/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Received all messages: ", response.data);
+    dispatch({ type: "GET_ALL_MSG_SUCCESS", payload: response.data.messages });
+  } catch (error) {
+    console.log("Error retrieving messages: ", error.response.data);
+    dispatch({ type: "GET_ALL_MSG_FAIL", payload: error.message });
+  }
+};
 export const getMessagesBetweenUsers =
   (senderId, recieverId) => async (dispatch) => {
     const token = localStorage.getItem("token");

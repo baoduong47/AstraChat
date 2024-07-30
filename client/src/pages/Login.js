@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/actions/authActions";
 import TextField from "@mui/material/TextField";
@@ -6,15 +6,18 @@ import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Typography } from "@mui/material";
+import LoadingScreen from "./LoadingScreen";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
+  const authenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,9 +29,23 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     dispatch(loginUser(formData));
-    console.log("Login form submitted", formData);
   };
+
+  useEffect(() => {
+    if (authenticated) {
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 3000);
+    } else if (authError) {
+      setIsLoading(false);
+    }
+  }, [authenticated, authError]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div
@@ -90,7 +107,7 @@ const Login = () => {
                 color: "#FCF8F3",
               },
             }}
-          ></TextField>
+          />
 
           <TextField
             size="small"
@@ -123,7 +140,7 @@ const Login = () => {
                 color: "#FCF8F3",
               },
             }}
-          ></TextField>
+          />
           <div className="flex items-center justify-between pl-2 pr-2">
             <FormControlLabel
               control={<Checkbox size="small" defaultChecked />}
