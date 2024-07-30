@@ -38,6 +38,7 @@ export const getAllMessagesForUser = () => async (dispatch) => {
     dispatch({ type: "GET_ALL_MSG_FAIL", payload: error.message });
   }
 };
+
 export const getMessagesBetweenUsers =
   (senderId, recieverId) => async (dispatch) => {
     const token = localStorage.getItem("token");

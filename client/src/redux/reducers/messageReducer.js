@@ -15,6 +15,13 @@ const messageReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case "GET_MESSAGE_SUCCESS":
+      return {
+        ...state,
+        messages: action.payload,
+        loading: false,
+      };
+
     case "GET_UNREAD_COUNT_SUCCESS":
       return {
         ...state,
