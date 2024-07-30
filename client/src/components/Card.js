@@ -6,16 +6,13 @@ import {
   deleteComment,
 } from "../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
+import { SiThunderbird } from "react-icons/si";
 import Avatar from "./Avatar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { GiFloatingCrystal } from "react-icons/gi";
-import { FaPhoenixFramework } from "react-icons/fa";
-import { FaPhoenixSquadron } from "react-icons/fa6";
-import { SiThunderbird } from "react-icons/si";
-
 import "animate.css";
+import ConfirmationModal from "./ConfirmationModal";
 
 const Card = ({
   avatar,
@@ -27,15 +24,35 @@ const Card = ({
   likes,
   likedBy: initialLikedBy,
   title,
+  setShowSuccess,
 }) => {
   const [reply, setReply] = useState("");
   const [currentLikes, setCurrentLikes] = useState(likes);
   const [isMessageOpen, setMessageOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [likedBy, setLikedBy] = useState(initialLikedBy);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+
+  const handleMenuClick = (event) => {
+    playSound();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleModalConfirm = () => {
+    handleDelete();
+    setIsModalOpen(false);
+  };
 
   const handleChange = (e) => {
     setReply(e.target.value);
@@ -48,10 +65,6 @@ const Card = ({
       dispatch(replyComment(commentId, reply));
       setReply("");
     }
-  };
-
-  const toggleComments = (e) => {
-    setMessageOpen(!isMessageOpen);
   };
 
   const handleLikes = (e) => {
@@ -67,6 +80,31 @@ const Card = ({
     setLikedBy([...likedBy, currentUser._id]);
   };
 
+  const toggleComments = (e) => {
+    setMessageOpen(!isMessageOpen);
+  };
+
+  const handleEdit = () => {
+    // Implement edit functionality here
+    handleMenuClose();
+  };
+
+  const handleDelete = () => {
+    if (currentUser) {
+      dispatch(deleteComment(commentId));
+      setShowSuccess(true);
+      console.log("Successfully deleted comment", commentId);
+    } else {
+      setShowSuccess(false);
+      console.log("User not authenticated. Cannot submit comment.");
+    }
+    handleMenuClose();
+  };
+
+  const confirmDelete = () => {
+    setIsModalOpen(true);
+  };
+
   const parseDescription = (description) => {
     const parts = description.split(/(#[a-zA-Z0-9_]+)/g);
     return parts.map((part, index) => {
@@ -80,30 +118,6 @@ const Card = ({
   const playSound = () => {
     const audio = new Audio("/sounds/sao_menu.mp3");
     audio.play();
-  };
-
-  const handleMenuClick = (event) => {
-    playSound();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEdit = () => {
-    // Implement edit functionality here
-    handleMenuClose();
-  };
-
-  const handleDelete = () => {
-    if (currentUser) {
-      dispatch(deleteComment(commentId));
-      console.log("Successfully deleted comment", commentId);
-    } else {
-      console.log("User not authenticated. Cannot submit comment.");
-    }
-    handleMenuClose();
   };
 
   return (
@@ -133,8 +147,9 @@ const Card = ({
           >
             Edit Post
           </MenuItem>
+
           <MenuItem
-            onClick={handleDelete}
+            onClick={confirmDelete}
             style={{ fontFamily: "inherit", fontSize: "inherit" }}
           >
             Delete Post
@@ -266,6 +281,11 @@ const Card = ({
           </button>
         </form>
       </div>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onConfirm={handleModalConfirm}
+      />
     </div>
   );
 };

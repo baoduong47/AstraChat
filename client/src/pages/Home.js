@@ -4,6 +4,8 @@ import { getUsers, getCurrentUser } from "../redux/actions/userActions";
 import { getComments, postComment } from "../redux/actions/commentAction";
 import { GiBroadsword } from "react-icons/gi";
 import { HiMiniUserCircle } from "react-icons/hi2";
+import { AnimatePresence, motion } from "framer-motion";
+import Alert from "@mui/material/Alert";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
 import "animate.css";
@@ -11,6 +13,9 @@ import "animate.css";
 const Home = () => {
   const [comment, setComment] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [postSucess, setPostSuccess] = useState(false);
 
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -18,11 +23,19 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!comment.trim()) {
+      setShowError(true);
+      setPostSuccess(false);
+      return;
+    }
+
     if (currentUser) {
       dispatch(postComment(comment));
       setComment("");
+      setShowError(false);
+      setPostSuccess(true);
     } else {
-      console.log("Error posting comment");
+      setShowError(true);
     }
   };
 
@@ -42,6 +55,27 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [dispatch]);
 
+  useEffect(() => {
+    if (showSuccess || postSucess) {
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+        setPostSuccess(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess, postSucess]);
+
+  useEffect(() => {
+    if (showError) {
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showError]);
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -53,6 +87,45 @@ const Home = () => {
   return (
     <MainLayout>
       <div className="relative flex justify-between items-center">
+        <AnimatePresence>
+          {showError && (
+            <motion.div
+              className="fixed top-0 left-0 w-full flex justify-center mt-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Alert severity="error">Post required.</Alert>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              className="fixed top-0 left-0 w-full flex justify-center mt-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Alert severity="success">Successfully deleted comment.</Alert>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {postSucess && (
+            <motion.div
+              className="fixed top-0 left-0 w-full flex justify-center mt-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Alert severity="success">Successfully posted comment.</Alert>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div
           className="inline-flex items-center space-x-1 fixed animate__animated animate__fadeInLeft"
           style={{ animationDelay: "0.5s", animationDuration: "1s" }}
@@ -161,6 +234,7 @@ const Home = () => {
                   replies={comment.replies}
                   likes={comment.likes}
                   likedBy={comment.likedBy}
+                  setShowSuccess={setShowSuccess}
                 />
               </div>
             </li>

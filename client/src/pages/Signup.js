@@ -111,9 +111,7 @@ const Signup = () => {
       <div
         className="w-3/6 flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: "url('/images/cute-ff.jpg')" }}
-      >
-        {/* <h1 className="text-white text-4xl font-bold">ChatBox Messaging App</h1> */}
-      </div>
+      ></div>
       <div className="w-3/6 bg-signupBackground flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <h2 className="text-5xl font-bold mb-16">Create Account</h2>

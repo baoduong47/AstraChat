@@ -42,8 +42,10 @@ const Sidebar = () => {
 
   const handleUserClick = (user) => {
     if (selectedUser && selectedUser._id === user._id) {
+      menuSound();
       setIsMessageTabOpen(!isMessageTabOpen);
     } else {
+      menuSound();
       setSelectedUser(user);
       setIsMessageTabOpen(true);
     }
@@ -51,6 +53,11 @@ const Sidebar = () => {
 
   const playSound = () => {
     const audio = new Audio("/sounds/sao_menu.mp3");
+    audio.play();
+  };
+
+  const menuSound = () => {
+    const audio = new Audio("/sounds/sao_menu_select.mp3");
     audio.play();
   };
 
