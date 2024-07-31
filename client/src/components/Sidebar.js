@@ -19,6 +19,7 @@ import {
   getUnreadMessagesCounts,
   clearMessages,
 } from "../redux/actions/messageActions";
+import { motion } from "framer-motion";
 
 import "animate.css";
 
@@ -85,6 +86,7 @@ const Sidebar = () => {
       playSound();
     }
     setIsAllMessagesTabOpen(!isAllMessagesTabOpen);
+    setIsMessageTabOpen(false);
   };
 
   const toggleNotifications = () => {

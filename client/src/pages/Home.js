@@ -9,8 +9,10 @@ import { getComments, postComment } from "../redux/actions/commentAction";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
 import Particles from "../components/Particle";
-// import { GiTwoCoins } from "react-icons/gi";
-// import { GiBullHorns } from "react-icons/gi";
+import { Carousel } from "flowbite-react";
+
+import { GiTwoCoins } from "react-icons/gi";
+import { GiBullHorns } from "react-icons/gi";
 
 import "animate.css";
 
@@ -25,6 +27,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.comment);
+
+  const slideVariants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -100 },
+  };
 
   useEffect(() => {
     dispatch(getUsers());
@@ -176,7 +184,7 @@ const Home = () => {
             <span>Guest</span>
           )}
         </div>
-        <div className="absolute right-0 mr-28 mt-80">
+        <div className="absolute right-36 mr-28 mt-80">
           <div
             className="inline-flex flex-col items-center animate__animated animate__backInRight "
             style={{ animationDelay: "0.5s", animationDuration: "2s" }}
@@ -207,7 +215,7 @@ const Home = () => {
 
       <form onSubmit={handleSubmit}>
         <div
-          className="ml-3 mt-8 fixed flex-col animate__animated animate__fadeInLeft"
+          className="ml-3 mt-8 fixed flex flex-col animate__animated animate__fadeInLeft"
           style={{ animationDelay: "1s", animationDuration: "1s" }}
         >
           <div className="flex">
@@ -232,6 +240,16 @@ const Home = () => {
               </button>
             </div>
           </div>
+
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            className="flex flex-col w-[440px] h-auto"
+          >
+            <img
+              src="/images/Behemoth.jpg"
+              className="w-full h-auto object-cover rounded-lg mt-10"
+            />
+          </motion.div>
         </div>
       </form>
 
