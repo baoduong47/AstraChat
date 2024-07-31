@@ -9,8 +9,8 @@ import { getComments, postComment } from "../redux/actions/commentAction";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
 import Particles from "../components/Particle";
-import { GiTwoCoins } from "react-icons/gi";
-import { GiBullHorns } from "react-icons/gi";
+// import { GiTwoCoins } from "react-icons/gi";
+// import { GiBullHorns } from "react-icons/gi";
 
 import "animate.css";
 
@@ -20,6 +20,7 @@ const Home = () => {
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [postSuccess, setPostSuccess] = useState(false);
+  const [showDeleteError, setShowDeleteError] = useState(false);
 
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -49,14 +50,15 @@ const Home = () => {
   }, [showSuccess, postSuccess]);
 
   useEffect(() => {
-    if (showError) {
+    if (showError || showDeleteError) {
       const timer = setTimeout(() => {
         setShowError(false);
+        setShowDeleteError(false);
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [showError]);
+  }, [showError, showDeleteError]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -104,6 +106,19 @@ const Home = () => {
               <Alert severity="error">Post required.</Alert>
             </motion.div>
           )}
+          {showDeleteError && (
+            <motion.div
+              className="fixed top-0 left-0 w-full flex justify-center mt-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Alert severity="error">
+                You cannot delete someone else's post!
+              </Alert>
+            </motion.div>
+          )}
         </AnimatePresence>
         <AnimatePresence>
           {showSuccess && (
@@ -132,7 +147,7 @@ const Home = () => {
           )}
         </AnimatePresence>
         <div
-          className="inline-flex items-center space-x-1 fixed animate__animated animate__fadeInLeft"
+          className="inline-flex text-center items-center space-x-1 fixed animate__animated animate__fadeInLeft"
           style={{ animationDelay: "0.5s", animationDuration: "1s" }}
         >
           <span>Welcome Back,</span>
@@ -149,10 +164,12 @@ const Home = () => {
               <span>
                 {currentUser.title} {currentUser.firstname}
               </span>
-              <span>{currentDateTime.toLocaleString()}</span>
+              <span className="text-sm text-gray-400">
+                {currentDateTime.toLocaleString()}
+              </span>
               <GiBroadsword
-                className="ml-1 inline-block align-middle"
-                size={16}
+                className="ml-2 inline-block align-middle"
+                size={18}
               />
             </span>
           ) : (
@@ -203,89 +220,18 @@ const Home = () => {
                 value={comment}
                 onChange={handleChange}
                 placeholder="Enter a new comment..."
-                className="mx-2 h-9 bg-inputColor border-gray-300 text-black rounded-xl"
+                className="mx-2 h-8 bg-inputColor border-gray-300 text-black rounded-xl"
               />
             </div>
             <div>
               <button
-                className="h-9 bg-white border flex justify-center items-center border-gray-300 rounded-lg hover:bg-inputColor focus:outline-none  px-4 py-2 text-center"
+                className="h-8 bg-white border flex justify-center items-center border-gray-300 rounded-lg hover:bg-inputColor focus:outline-none  px-4 py-2 text-center"
                 type="submit"
               >
                 Submit
               </button>
             </div>
           </div>
-
-          <motion.div
-            className="mt-10 text-center w-[440px] h-auto rounded-lg border-2 border-gray-300 bg-gradient-to-br from-white/90 to-gray-100/90 bg-opacity-80 p-6 relative shadow-[0_10px_15px_-3px_rgba(0,0,0,0.5)]"
-            animate={{ scale: [1, 1.02, 1] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "mirror",
-            }}
-          >
-            <div className="absolute top-2 right-2 bg-red-700 text-white text-sm px-3 py-1 rounded-full">
-              S Rank
-            </div>
-            <div className="absolute top-2 left-2 bg-yellow-600 text-white text-xs px-2 py-1 rounded">
-              Monster of the Day
-            </div>
-            <div className="w-full h-56 mb-4">
-              <img
-                src="/images/Behemoth.jpg"
-                alt="Monster Image"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-            <div
-              className="text-2xl font-extrabold mb-3 mt-3 text-yellow-500 animate-pulse"
-              style={{
-                fontFamily: "Almendra, serif",
-                textShadow: "0 0 10px rgba(255, 215, 0, 0.8)",
-              }}
-            >
-              Behemoth King
-            </div>
-            <div className="text-left text-sm mb-4 text-gray-600">
-              <p>
-                The Behemoth King is a colossal and formidable creature,
-                towering over its adversaries with an imposing stature. It is
-                recognized by its massive, muscular frame, sharp claws, and a
-                set of menacing horns that curve backward from its head. Its fur
-                is dark and thick, providing a natural armor against attacks.
-              </p>
-              <p className="mt-2">Location: ???</p>
-            </div>
-            <div className="border-t-2 border-gold-500 my-4"></div>
-            <div className="text-left text-gray-600 text-sm flex justify-between">
-              <div className="flex justify-center items-center gap-2">
-                Loot:
-                <span>
-                  <GiBullHorns color="purple" />
-                </span>
-                Behemoth Horn
-              </div>
-              <div className="flex justify-center items-center gap-2">
-                Gold:
-                <span>
-                  <GiTwoCoins
-                    color="#FFD700"
-                    style={{ width: "15px", height: "15px" }}
-                  />
-                </span>
-                50,000 gil
-              </div>
-            </div>
-            <div className="border-t-2 border-gold-500 my-4"></div>
-            <div className="mt-4 text-left text-sm text-gray-600">
-              <p className="font-bold">Lore:</p>
-              <p className="mt-1">
-                The Behemoth King has been a menace to the lands for
-                centuries...
-              </p>
-            </div>
-          </motion.div>
         </div>
       </form>
 
@@ -305,6 +251,7 @@ const Home = () => {
                 <Card
                   description={comment.comment}
                   author={comment.author}
+                  authorId={comment.postId}
                   avatar={`http://localhost:3000/${comment.postId.avatar}`}
                   title={comment.postId.title}
                   date={new Date(comment.createdAt).toLocaleString()}
@@ -313,6 +260,7 @@ const Home = () => {
                   likes={comment.likes}
                   likedBy={comment.likedBy}
                   setShowSuccess={setShowSuccess}
+                  setShowDeleteError={setShowDeleteError}
                 />
               </div>
             </li>

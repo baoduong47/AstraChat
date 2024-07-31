@@ -12,7 +12,11 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
   const [readMessages, setReadMessages] = useState({});
 
   const groupMessagesBySender = (messages) => {
-    const groups = messages.reduce((acc, message) => {
+    const filteredMessages = messages.filter(
+      (message) => message.sender._id !== currentUser._id
+    );
+
+    const groups = filteredMessages.reduce((acc, message) => {
       const senderName = message.sender.firstname;
       if (
         !acc[senderName] ||
@@ -22,6 +26,7 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
       }
       return acc;
     }, {});
+
     return Object.values(groups);
   };
 
@@ -53,13 +58,6 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
       dispatch(getAllMessagesForUser());
     }
   }, [currentUser, dispatch]);
-
-  useEffect(() => {
-    console.log("messages: ", messages);
-    messages.map((message) => {
-      console.log("mapped message: ", message);
-    });
-  }, [messages]);
 
   const handleClick = (message) => {
     setReadMessages((prev) => ({ ...prev, [message._id]: true }));

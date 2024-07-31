@@ -5,7 +5,7 @@ const MainLayout = ({ children }) => {
   return (
     <div
       id="root"
-      className="flex min-h-screen text-black"
+      className="flex min-h-screen text-black "
       style={{
         backgroundImage: "url('/images/background.jpeg')",
         backgroundSize: "cover",

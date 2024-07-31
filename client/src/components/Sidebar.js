@@ -226,7 +226,7 @@ const Sidebar = () => {
               </li>
               {item.text === "Users" && isUsersDropdownOpen && (
                 <ul
-                  className="pl-8 space-y-2 overflow-y-auto"
+                  className="pl-8 space-y-2 overflow-y-auto mb-1"
                   style={{ maxHeight: "400px" }}
                 >
                   {users

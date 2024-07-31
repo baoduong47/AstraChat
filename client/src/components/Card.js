@@ -25,6 +25,8 @@ const Card = ({
   likedBy: initialLikedBy,
   title,
   setShowSuccess,
+  setShowDeleteError,
+  authorId,
 }) => {
   const [reply, setReply] = useState("");
   const [currentLikes, setCurrentLikes] = useState(likes);
@@ -94,16 +96,18 @@ const Card = ({
       dispatch(deleteComment(commentId));
       menuSound();
       setShowSuccess(true);
-      console.log("Successfully deleted comment", commentId);
     } else {
       setShowSuccess(false);
-      console.log("User not authenticated. Cannot submit comment.");
     }
     handleMenuClose();
   };
 
   const confirmDelete = () => {
-    setIsModalOpen(true);
+    if (currentUser._id === authorId._id) {
+      setIsModalOpen(true);
+    } else {
+      setShowDeleteError(true);
+    }
   };
 
   const parseDescription = (description) => {
@@ -128,7 +132,7 @@ const Card = ({
 
   return (
     <div
-      className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border min-w-96 p-6 w-[300px] mx-auto shadow-xl opacity-90 animate__animated animate__fadeInUp"
+      className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border h-auto min-w-96 p-6 w-[500px] mx-auto shadow-[-5px_5px_10px_-2px_rgba(0,0,0,0.3)] opacity-90 animate__animated animate__fadeInUp"
       style={{ animationDelay: "0.2s", animationDuration: "2s" }}
     >
       <div className="absolute top-2 right-2">
