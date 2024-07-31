@@ -13,7 +13,7 @@ module.exports = {
         mainbackGround: "#edeeca",
         messageBackground: "#E1E5F2",
         sideBar: "#F2F2F4",
-        textColor: "#00ADB5",
+        textColor: "#B5B5B5",
         cardColor: "#EEEEEE",
         hoverColor: "#F04A02",
         highlightColor: "#A58351",

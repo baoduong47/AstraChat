@@ -23,6 +23,10 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
   }
 };
 
+export const clearMessages = () => ({
+  type: "CLEAR_MESSAGES",
+});
+
 export const getAllMessagesForUser = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {

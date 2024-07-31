@@ -11,10 +11,12 @@ const generateRandomSize = () =>
 
 const generateRandom = (min, max) => Math.random() * (max - min) + min;
 
+const generateRandomDelay = (min, max) => Math.random() * (max - min) + min;
+
 const Particle = React.memo(() => {
   const size = generateRandomSize();
   const duration = generateRandom(6, 8);
-
+  const delay = generateRandomDelay(0, 5);
   return (
     <motion.div
       className="absolute rounded-full"
@@ -45,6 +47,7 @@ const Particle = React.memo(() => {
         ease: "easeInOut",
         repeat: Infinity,
         repeatType: "loop",
+        delay,
       }}
     />
   );

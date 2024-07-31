@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, getCurrentUser } from "../redux/actions/userActions";
-import { getComments, postComment } from "../redux/actions/commentAction";
-import { GiBroadsword } from "react-icons/gi";
-import { HiMiniUserCircle } from "react-icons/hi2";
 import { AnimatePresence, motion } from "framer-motion";
 import Alert from "@mui/material/Alert";
+import { GiBroadsword } from "react-icons/gi";
+import { HiMiniUserCircle } from "react-icons/hi2";
+import { getUsers, getCurrentUser } from "../redux/actions/userActions";
+import { getComments, postComment } from "../redux/actions/commentAction";
 import MainLayout from "../components/MainLayout";
 import Card from "../components/Card";
 import Particles from "../components/Particle";
+import { GiTwoCoins } from "react-icons/gi";
+import { GiBullHorns } from "react-icons/gi";
+
 import "animate.css";
 
 const Home = () => {
@@ -16,11 +19,44 @@ const Home = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [postSucess, setPostSuccess] = useState(false);
+  const [postSuccess, setPostSuccess] = useState(false);
 
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.comment);
+
+  useEffect(() => {
+    dispatch(getUsers());
+    dispatch(getCurrentUser());
+    dispatch(getComments());
+
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (showSuccess || postSuccess) {
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+        setPostSuccess(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess, postSuccess]);
+
+  useEffect(() => {
+    if (showError) {
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showError]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,39 +80,6 @@ const Home = () => {
     setComment(e.target.value);
   };
 
-  useEffect(() => {
-    dispatch(getUsers());
-    dispatch(getCurrentUser());
-    dispatch(getComments());
-
-    const interval = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (showSuccess || postSucess) {
-      const timer = setTimeout(() => {
-        setShowSuccess(false);
-        setPostSuccess(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showSuccess, postSucess]);
-
-  useEffect(() => {
-    if (showError) {
-      const timer = setTimeout(() => {
-        setShowError(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showError]);
-
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -87,8 +90,8 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <div className="relative flex justify-between items-center">
-        <Particles count={50} />
+      <div className="ml-3 mt-2 relative flex justify-between items-center">
+        <Particles count={30} />
         <AnimatePresence>
           {showError && (
             <motion.div
@@ -116,7 +119,7 @@ const Home = () => {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {postSucess && (
+          {postSuccess && (
             <motion.div
               className="fixed top-0 left-0 w-full flex justify-center mt-4"
               initial={{ opacity: 0, y: -20 }}
@@ -167,7 +170,7 @@ const Home = () => {
               className="w-20 h-auto mr-32 mb-2 animate-fly"
             />
 
-            <div className="absolute animate-fly  -top-20 -right-3 w-32 bg-white border border-gray-300 rounded-lg p-2 shadow-lg kupo-bubble">
+            <div className="absolute animate-fly -top-20 -right-3 w-32 bg-white border border-gray-300 rounded-lg p-2 shadow-lg kupo-bubble">
               {currentUser ? (
                 <p className="text-xs text-gray-700">
                   Greetings, {currentUser.firstname}! Welcome to Wisteria! May
@@ -187,29 +190,102 @@ const Home = () => {
 
       <form onSubmit={handleSubmit}>
         <div
-          className="mt-8 fixed flex animate__animated animate__fadeInLeft"
+          className="ml-3 mt-8 fixed flex-col animate__animated animate__fadeInLeft"
           style={{ animationDelay: "1s", animationDuration: "1s" }}
         >
-          <div>
-            <label htmlFor="comment">New Post:</label>
-            <input
-              type="text"
-              id="text"
-              name="text"
-              value={comment}
-              onChange={handleChange}
-              placeholder="Enter a new comment..."
-              className="mx-2 h-9 bg-inputColor border-gray-300 text-black rounded-xl"
-            />
+          <div className="flex">
+            <div>
+              <label htmlFor="comment">New Post:</label>
+              <input
+                type="text"
+                id="text"
+                name="text"
+                value={comment}
+                onChange={handleChange}
+                placeholder="Enter a new comment..."
+                className="mx-2 h-9 bg-inputColor border-gray-300 text-black rounded-xl"
+              />
+            </div>
+            <div>
+              <button
+                className="h-9 bg-white border flex justify-center items-center border-gray-300 rounded-lg hover:bg-inputColor focus:outline-none  px-4 py-2 text-center"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
           </div>
-          <div>
-            <button
-              className="h-9 bg-white border flex justify-center items-center border-gray-300 rounded-lg hover:bg-inputColor focus:outline-none  px-4 py-2 text-center"
-              type="submit"
+
+          <motion.div
+            className="mt-10 text-center w-[440px] h-auto rounded-lg border-2 border-gray-300 bg-gradient-to-br from-white/90 to-gray-100/90 bg-opacity-80 p-6 relative shadow-[0_10px_15px_-3px_rgba(0,0,0,0.5)]"
+            animate={{ scale: [1, 1.02, 1] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: "mirror",
+            }}
+          >
+            <div className="absolute top-2 right-2 bg-red-700 text-white text-sm px-3 py-1 rounded-full">
+              S Rank
+            </div>
+            <div className="absolute top-2 left-2 bg-yellow-600 text-white text-xs px-2 py-1 rounded">
+              Monster of the Day
+            </div>
+            <div className="w-full h-56 mb-4">
+              <img
+                src="/images/Behemoth.jpg"
+                alt="Monster Image"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
+            <div
+              className="text-2xl font-extrabold mb-3 mt-3 text-yellow-500 animate-pulse"
+              style={{
+                fontFamily: "Almendra, serif",
+                textShadow: "0 0 10px rgba(255, 215, 0, 0.8)",
+              }}
             >
-              Submit
-            </button>
-          </div>
+              Behemoth King
+            </div>
+            <div className="text-left text-sm mb-4 text-gray-600">
+              <p>
+                The Behemoth King is a colossal and formidable creature,
+                towering over its adversaries with an imposing stature. It is
+                recognized by its massive, muscular frame, sharp claws, and a
+                set of menacing horns that curve backward from its head. Its fur
+                is dark and thick, providing a natural armor against attacks.
+              </p>
+              <p className="mt-2">Location: ???</p>
+            </div>
+            <div className="border-t-2 border-gold-500 my-4"></div>
+            <div className="text-left text-gray-600 text-sm flex justify-between">
+              <div className="flex justify-center items-center gap-2">
+                Loot:
+                <span>
+                  <GiBullHorns color="purple" />
+                </span>
+                Behemoth Horn
+              </div>
+              <div className="flex justify-center items-center gap-2">
+                Gold:
+                <span>
+                  <GiTwoCoins
+                    color="#FFD700"
+                    style={{ width: "15px", height: "15px" }}
+                  />
+                </span>
+                50,000 gil
+              </div>
+            </div>
+            <div className="border-t-2 border-gold-500 my-4"></div>
+            <div className="mt-4 text-left text-sm text-gray-600">
+              <p className="font-bold">Lore:</p>
+              <p className="mt-1">
+                The Behemoth King has been a menace to the lands for
+                centuries...
+              </p>
+            </div>
+          </motion.div>
         </div>
       </form>
 

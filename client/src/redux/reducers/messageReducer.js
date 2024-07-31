@@ -41,6 +41,12 @@ const messageReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case "CLEAR_MESSAGES":
+      return {
+        ...state,
+        messages: [],
+      };
+
     case "POST_MESSAGE_FAIL":
     case "GET_MESSAGE_FAIL":
     case "GET_MSG_FAIL":

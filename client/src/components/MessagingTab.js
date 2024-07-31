@@ -32,9 +32,6 @@ const MessageTab = ({ user }) => {
     console.log("Message submitted: ", message);
   };
 
-  console.log("currentUser ID", currentUser._id);
-  console.log("user ID", user._id);
-
   useEffect(() => {
     if (user && currentUser) {
       dispatch(getMessagesBetweenUsers(currentUser._id, user._id));
@@ -79,14 +76,14 @@ const MessageTab = ({ user }) => {
       <div className="overflow-y-auto h-5/6 ">
         {messages.map((message) => (
           <div key={message._id} className="mb-2">
-            <div className="flex justify-between">
-              <p>
+            <div className="flex justify-between items-center">
+              <p className="max-w-56 break-words">
                 <strong>
                   {message.sender === currentUser._id ? "You" : user.firstname}:
                 </strong>{" "}
                 {message.content}
               </p>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 whitespace-nowrap ml-2">
                 {formatTimestamp(message.timestamp)}
               </div>
             </div>

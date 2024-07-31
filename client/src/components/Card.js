@@ -92,6 +92,7 @@ const Card = ({
   const handleDelete = () => {
     if (currentUser) {
       dispatch(deleteComment(commentId));
+      menuSound();
       setShowSuccess(true);
       console.log("Successfully deleted comment", commentId);
     } else {
@@ -120,9 +121,14 @@ const Card = ({
     audio.play();
   };
 
+  const menuSound = () => {
+    const audio = new Audio("/sounds/sao_menu_select.mp3");
+    audio.play();
+  };
+
   return (
     <div
-      className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border w-96 p-6 max-w-md mx-auto shadow-sm opacity-90 animate__animated animate__fadeInUp"
+      className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border min-w-96 p-6 w-[300px] mx-auto shadow-xl opacity-90 animate__animated animate__fadeInUp"
       style={{ animationDelay: "0.2s", animationDuration: "2s" }}
     >
       <div className="absolute top-2 right-2">
@@ -204,7 +210,6 @@ const Card = ({
           {currentLikes} likes
         </div>
       </div>
-
       <div className="mt-6 grid gap-4">
         <div className="flex justify-start items-center gap-2 mb-3">
           <FiMessageCircle size={15} className="text-gray-700" />

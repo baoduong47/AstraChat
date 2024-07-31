@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMessagesForUser } from "../redux/actions/messageActions";
 import Avatar from "./Avatar";
-import { Link } from "react-router-dom";
 import "animate.css";
 
 const AllMessagesTab = ({ onClose, onMessageClick }) => {
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
-
   const { messages } = useSelector((state) => state.message);
+
+  const [readMessages, setReadMessages] = useState({});
 
   const groupMessagesBySender = (messages) => {
     const groups = messages.reduce((acc, message) => {
@@ -25,6 +25,29 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
     return Object.values(groups);
   };
 
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} seconds ago`;
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minutes ago`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hours ago`;
+    } else {
+      const days = Math.floor(diffInSeconds / 86400);
+      if (days > 1) {
+        return `${days} days ago`;
+      } else {
+        return `${days} day ago`;
+      }
+    }
+  };
+
   useEffect(() => {
     if (currentUser) {
       dispatch(getAllMessagesForUser());
@@ -37,6 +60,11 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
       console.log("mapped message: ", message);
     });
   }, [messages]);
+
+  const handleClick = (message) => {
+    setReadMessages((prev) => ({ ...prev, [message._id]: true }));
+    onMessageClick(message);
+  };
 
   const groupedMessages = groupMessagesBySender(messages);
 
@@ -66,16 +94,29 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
           {groupedMessages.map((message) => (
             <li
               key={message._id}
-              className="border p-4 rounded-lg hover:bg-gray-100 transition duration-300 flex items-center space-x-4 cursor-pointer"
-              onClick={() => onMessageClick(message)}
+              className="border-2 p-4 rounded-lg hover:bg-gray-100 transition duration-300 flex items-center space-x-4 cursor-pointer relative"
+              onClick={() => handleClick(message)}
             >
               <Avatar
                 src={`http://localhost:3000/${message.sender.avatar}`}
                 alt={`${message.sender.firstname}'s avatar`}
                 className="w-12 h-12 rounded-full object-cover"
               />
-              <div>
-                <p className="font-bold text-lg">{message.sender.firstname}</p>
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-1">
+                    <p className="font-bold text-lg">
+                      {message.sender.firstname}
+                    </p>
+                    <span className="text-gray-900 text-sm ml-1 mr-1">•</span>
+                    <span className="text-gray-500 text-sm">
+                      {message.sender.title}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {formatTimestamp(message.timestamp)}...
+                  </p>
+                </div>
                 <p className="text-sm text-gray-600">{message.content}</p>
               </div>
             </li>

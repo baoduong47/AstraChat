@@ -10,12 +10,14 @@ import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import Avatar from "../components/Avatar";
+import PostNotification from "./PostNotification";
 import { logout } from "../utils/auth";
 import MessageTab from "./MessagingTab";
 import AllMessagesTab from "./AllMessagesTab";
 import {
   getUnreadMessagesCount,
   getUnreadMessagesCounts,
+  clearMessages,
 } from "../redux/actions/messageActions";
 
 import "animate.css";
@@ -30,14 +32,21 @@ const Sidebar = () => {
   const [isMessageTabOpen, setIsMessageTabOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState([
+    "New comment on your post",
+    "Your post got a like",
+  ]);
 
   const unreadCount = useSelector((state) => state.message.unreadCount);
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
   const handleMessageClick = (message) => {
+    menuSound();
     setSelectedUser(message.sender);
     setIsMessageTabOpen(true);
     setIsAllMessagesTabOpen(false);
+    dispatch(clearMessages());
   };
 
   const handleUserClick = (user) => {
@@ -48,6 +57,7 @@ const Sidebar = () => {
       menuSound();
       setSelectedUser(user);
       setIsMessageTabOpen(true);
+      dispatch(clearMessages());
     }
   };
 
@@ -65,7 +75,9 @@ const Sidebar = () => {
     if (!isUsersDropdownOpen) {
       playSound();
     }
+
     setIsUsersDropdownOpen(!isUsersDropdownOpen);
+    setIsMessageTabOpen(!MessageTab);
   };
 
   const toggleAllMessagesTab = () => {
@@ -73,6 +85,11 @@ const Sidebar = () => {
       playSound();
     }
     setIsAllMessagesTabOpen(!isAllMessagesTabOpen);
+  };
+
+  const toggleNotifications = () => {
+    playSound();
+    setIsNotificationOpen(!isNotificationOpen);
   };
 
   useEffect(() => {
@@ -127,7 +144,7 @@ const Sidebar = () => {
     {
       text: "Notifications",
       icon: <PiBellSimpleRingingFill fontSize="large" />,
-      link: "/notifications",
+      onClick: toggleNotifications,
     },
   ];
 
@@ -178,14 +195,14 @@ const Sidebar = () => {
                     className="flex items-center space-x-3 group no-underline"
                   >
                     {item.icon}
-                    <span className="hidden md:inline group-hover:text-indigo-500 no-underline">
+                    <span className="hidden md:inline group-hover:text-gray-800 no-underline">
                       {item.text}
                     </span>
                   </Link>
                 ) : (
                   <div className="flex items-center space-x-3 group">
                     {item.icon}
-                    <span className="hidden md:inline group-hover:text-indigo-500">
+                    <span className="hidden md:inline group-hover:text-gray-800">
                       {item.text}
                     </span>
                     {item.text === "Users" && (
@@ -256,14 +273,14 @@ const Sidebar = () => {
                   className="flex items-center space-x-5 group no-underline"
                 >
                   {item.icon}
-                  <span className="hidden md:inline group-hover:text-indigo-500 no-underline">
+                  <span className="hidden md:inline group-hover:text-gray-800 no-underline">
                     {item.text}
                   </span>
                 </Link>
               ) : (
                 <button className="flex items-center space-x-5 group no-underline">
                   {item.icon}
-                  <span className="hidden md:inline group-hover:text-black no-underline">
+                  <span className="hidden md:inline group-hover:text-gray-800 no-underline">
                     {item.text}
                   </span>
                 </button>
@@ -272,6 +289,12 @@ const Sidebar = () => {
           ))}
         </ul>
       </div>
+      {isNotificationOpen && (
+        <PostNotification
+          notifications={notifications}
+          isOpen={setIsNotificationOpen}
+        />
+      )}
       {isMessageTabOpen && selectedUser && <MessageTab user={selectedUser} />}
       {isAllMessagesTabOpen && (
         <AllMessagesTab
