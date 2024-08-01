@@ -7,9 +7,9 @@ const MainLayout = ({ children }) => {
       id="root"
       className="flex min-h-screen text-black"
       style={{
-        backgroundImage: "url('/images/background.jpeg')",
+        backgroundImage: "url('/images/fantasychar.jpg')",
         backgroundSize: "cover",
-        backgroundPosition: "center bottom",
+        backgroundPosition: "right center",
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
         overflow: "hidden",

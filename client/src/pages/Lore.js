@@ -2,28 +2,28 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const loreData = {
-  title: "Chronicles of Eorzea",
+  title: "History of the Final Fantasy Franchise",
   introduction:
-    "Welcome to the world of Eorzea, a realm steeped in magic, history, and myth. Here, heroes are forged in the fires of war, alliances are tested, and the fate of the world hangs by a thread. Discover the tales of legendary warriors, ancient gods, and the eternal struggle between light and darkness.",
+    "Final Fantasy is a legendary video game franchise that has captivated millions of players worldwide. Since its inception in 1987, the series has become synonymous with epic storytelling, groundbreaking visuals, and unforgettable characters. This page chronicles the evolution of Final Fantasy, highlighting its most iconic titles and moments.",
   sections: [
     {
-      title: "The World of Eorzea",
+      title: "The Origins",
       content:
-        "Eorzea is a vast and diverse continent, home to a myriad of races, cultures, and landscapes. From the bustling city-states of the Hyur to the mysterious forests of the Elezen, each region holds its own secrets and stories.",
+        "Final Fantasy was created by Hironobu Sakaguchi and first released in 1987 by Square (now Square Enix). Initially developed as a last-ditch effort to save the company, the game was a surprise success, leading to a long-running series that continues to this day.",
     },
     {
-      title: "City-States of Eorzea",
-      content: `Eorzea is home to several powerful city-states, each with its own unique culture and history:
-            - **Ul’dah**: A desert city rich in culture and wealth, ruled by a powerful merchant class.
-            - **Limsa Lominsa**: A maritime city known for its fierce pirates and formidable navy.
-            - **Gridania**: A city nestled within the dense forests, where the inhabitants live in harmony with nature.`,
+      title: "Iconic Titles",
+      content: `Over the years, many titles in the Final Fantasy series have become iconic:
+            - **Final Fantasy VII**: Released in 1997, it revolutionized the RPG genre with its 3D graphics, cinematic cutscenes, and deep narrative.
+            - **Final Fantasy X**: The first game in the series to feature voice acting and fully 3D environments, it was released in 2001 and remains a fan favorite.
+            - **Final Fantasy XIV**: Originally launched in 2010 and later relaunched as "A Realm Reborn" in 2013, it is a massively multiplayer online game that continues to evolve with new expansions.`,
     },
     {
-      title: "Legendary Heroes",
-      content: `Eorzea has been protected by many legendary heroes throughout history. Among the most revered are:
-            - **Cloud Strife**: A former soldier who wields a giant sword and fights to protect the planet.
-            - **Tifa Lockhart**: A martial artist with a kind heart, fighting alongside Cloud to bring peace.
-            - **Tidus**: A skilled blitzball player who journeys through the world of Spira to save it from destruction.`,
+      title: "Legendary Characters",
+      content: `Final Fantasy has introduced many memorable characters who have become icons in gaming:
+            - **Cloud Strife**: The protagonist of Final Fantasy VII, known for his iconic Buster Sword and complex character arc.
+            - **Tifa Lockhart**: A skilled martial artist and loyal companion of Cloud, she is a key character in Final Fantasy VII.
+            - **Tidus**: The main character of Final Fantasy X, who embarks on a journey to save the world of Spira.`,
     },
   ],
 };

@@ -75,7 +75,7 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex justify-end z-50">
+    <div className="fixed inset-0 flex justify-end ">
       <div
         className="bg-black opacity-50 absolute inset-0"
         onClick={onClose}

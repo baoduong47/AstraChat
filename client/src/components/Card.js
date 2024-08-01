@@ -13,6 +13,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "animate.css";
 import ConfirmationModal from "./ConfirmationModal";
+import { GiCrystalCluster } from "react-icons/gi";
 
 const Card = ({
   avatar,
@@ -132,7 +133,7 @@ const Card = ({
 
   return (
     <div
-      className="relative ml-10 border bg-white border-gray-300 rounded-lg box-border h-auto min-w-96 p-6 w-[500px] mx-auto shadow-[-5px_5px_10px_-2px_rgba(0,0,0,0.3)] opacity-90 animate__animated animate__fadeInUp"
+      className="ml-40 relative border bg-opacity-90 bg-white border-gray-300 rounded-lg box-border h-auto min-w-96 p-6 w-[500px] mx-auto shadow-[-5px_5px_10px_-2px_rgba(0,0,0,0.3)] animate__animated animate__fadeInUp"
       style={{ animationDelay: "0.2s", animationDuration: "2s" }}
     >
       <div className="absolute top-2 right-2">
@@ -170,7 +171,7 @@ const Card = ({
         <Avatar
           src={avatar}
           alt={`Avatar of ${author}`}
-          className="w-10 h-10 rounded-full"
+          className="w-12 h-12 rounded-full"
         />
         <div className="flex flex-col items-start justify-center ml-3">
           <div className="text-foreground font-medium text-lg flex items-center space-x-2">
@@ -190,26 +191,9 @@ const Card = ({
       </div>
       <div className="mt-4 border-t pt-4 dark:border-muted"></div>
       <div className="flex items-center text-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4 text-crystalColor cursor-pointer"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          onClick={handleLikes}
-        >
-          <line x1="2" x2="22" y1="12" y2="12" />
-          <line x1="12" x2="12" y1="2" y2="22" />
-          <path d="m20 16-4-4 4-4" />
-          <path d="m4 8 4 4-4 4" />
-          <path d="m16 4-4 4-4-4" />
-          <path d="m8 20 4-4 4 4" />
-        </svg>
+        <button onClick={handleLikes}>
+          <GiCrystalCluster color="#3A0CA3" className="w-5 h-5" />
+        </button>
         <div className="text-foregroundColor text-sm ml-3">
           {currentLikes} likes
         </div>

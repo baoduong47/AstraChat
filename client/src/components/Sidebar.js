@@ -5,10 +5,10 @@ import { GiSlumberingSanctuary } from "react-icons/gi";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiBellSimpleRingingFill } from "react-icons/pi";
-import PostAddRoundedIcon from "@mui/icons-material/PostAddRounded";
 import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
+import { GiTiedScroll } from "react-icons/gi";
 import Avatar from "../components/Avatar";
 import PostNotification from "./PostNotification";
 import { logout } from "../utils/auth";
@@ -123,7 +123,7 @@ const Sidebar = () => {
       icon: <GiSlumberingSanctuary fontSize="large" />,
       link: "/home",
     },
-    { text: "Post", icon: <PostAddRoundedIcon />, link: "/post" },
+    { text: "Lore", icon: <GiTiedScroll fontSize="large" />, link: "/lore" },
     {
       text: "Messages",
       icon: <TextsmsRoundedIcon fontSize="small" />,
