@@ -6,7 +6,7 @@ const {
   getComments,
   getCommentById,
   postComment,
-  editComment,
+  updateComment,
   deleteComment,
   replyComment,
   updateLikes,
@@ -17,7 +17,7 @@ commentRouter.route("/").get(getComments).post(authMiddleware, postComment);
 commentRouter
   .route("/:commentId")
   .get(getCommentById)
-  .put(editComment)
+  .put(updateComment)
   .delete(authMiddleware, deleteComment);
 
 commentRouter.route("/:commentId/replies").post(authMiddleware, replyComment);

@@ -158,14 +158,26 @@ exports.replyComment = async (req, res) => {
   }
 };
 
-exports.editComment = async (req, res) => {
+exports.updateComment = async (req, res) => {
   try {
-    const commentId = req.params.commentId;
+    const { commentId } = req.params;
     const updates = req.body;
+
+    console.log("updates: ", updates);
 
     const updatedComment = await Comment.findByIdAndUpdate(commentId, updates, {
       new: true,
-    });
+    })
+      .populate("postId", "firstname avatar title")
+      .populate({
+        path: "replies",
+        populate: {
+          path: "authorId",
+          select: "firstname avatar",
+        },
+      });
+
+    console.log("updated comment: ", updatedComment);
 
     if (!updatedComment) {
       return res.status(404).json({ message: "Comment not found" });
