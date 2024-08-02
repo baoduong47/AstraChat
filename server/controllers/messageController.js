@@ -37,7 +37,7 @@ exports.getAllMessagesForUser = async (req, res) => {
     const messages = await Message.find({
       $or: [{ sender: userId }, { reciever: userId }],
     })
-      .populate({ path: "sender", select: "firstname avatar" })
+      .populate({ path: "sender", select: "firstname avatar title" })
       .sort({ timestamp: 1 });
 
     res.status(200).json({ messages });

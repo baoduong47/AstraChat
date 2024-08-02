@@ -1,5 +1,6 @@
 const Comment = require("../models/comment");
 const User = require("../models/user");
+const Notification = require("../models/notification");
 
 exports.getComments = async (req, res) => {
   try {
