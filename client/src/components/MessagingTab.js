@@ -4,6 +4,7 @@ import {
   getMessagesBetweenUsers,
 } from "../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import "animate.css";
 import Avatar from "../components/Avatar";
 
@@ -57,7 +58,7 @@ const MessageTab = ({ user }) => {
   }, [messages]);
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black border border-gray-300 space-y-2 animate__animated animate__fadeInRight">
+    <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black border border-gray-300 space-y-2 animate__animated animate__fadeInRight z-50">
       <div className="ml-2 border-b pb-2 mb-4">
         <h2 className="text-xl font-semibold flex gap-1">
           <Avatar
@@ -100,12 +101,24 @@ const MessageTab = ({ user }) => {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
-        <button
+        {/* <button
           onClick={handleSubmit}
           className="bg-buttonColor hover:bg-green-700 ml-3 text-white font-bold py-2 px-4 rounded"
         >
           Send
-        </button>
+        </button> */}
+        <motion.button
+          onClick={handleSubmit}
+          whileHover={{
+            scale: 1.05,
+            background: "linear-gradient(135deg, #6b7280, #4b5563)",
+            boxShadow: "0px 0px 15px rgba(255, 255, 255, 0.5)",
+          }}
+          className="bg-indigo-600 ml-3 text-white border border-gray-300 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700 transition-all duration-200 ease-in-out"
+          type="submit"
+        >
+          Submit
+        </motion.button>
       </div>
     </div>
   );

@@ -106,10 +106,16 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
                     <p className="font-bold text-lg">
                       {message.sender.firstname}
                     </p>
-                    <span className="text-gray-900 text-sm ml-1 mr-1">•</span>
-                    <span className="text-gray-500 text-sm">
-                      {message.sender.title}
-                    </span>
+                    {message.sender.title && (
+                      <div>
+                        <span className="text-gray-900 text-sm ml-1 mr-1">
+                          •
+                        </span>
+                        <span className="text-gray-500 text-sm">
+                          {message.sender.title}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <p className="text-xs text-gray-600">
                     {formatTimestamp(message.timestamp)}...

@@ -4,6 +4,7 @@ import {
   replyComment,
   updateLikes,
   deleteComment,
+  updateComment,
 } from "../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
 import { SiThunderbird } from "react-icons/si";
@@ -13,7 +14,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "animate.css";
 import ConfirmationModal from "./ConfirmationModal";
+import EditForm from "./EditForm";
 import { GiCrystalCluster } from "react-icons/gi";
+import EmojiPicker from "emoji-picker-react";
 
 const Card = ({
   avatar,
@@ -27,6 +30,7 @@ const Card = ({
   title,
   setShowSuccess,
   setShowDeleteError,
+  setEditError,
   authorId,
 }) => {
   const [reply, setReply] = useState("");
@@ -35,6 +39,9 @@ const Card = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [likedBy, setLikedBy] = useState(initialLikedBy);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
+
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -42,6 +49,11 @@ const Card = ({
   const handleMenuClick = (event) => {
     playSound();
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleEmojiClick = (emojiObject, event) => {
+    setReply((prevReply) => prevReply + emojiObject.emoji);
+    setEmojiPickerOpen(false);
   };
 
   const handleMenuClose = () => {
@@ -88,8 +100,22 @@ const Card = ({
   };
 
   const handleEdit = () => {
-    // Implement edit functionality here
-    handleMenuClose();
+    if (currentUser._id === authorId._id) {
+      setIsEditing(true);
+      handleMenuClose();
+    } else {
+      setEditError(true);
+    }
+  };
+
+  const handleSaveEdit = (newDescription) => {
+    console.log("New Description", newDescription);
+    dispatch(updateComment(commentId, { comment: newDescription }));
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
   };
 
   const handleDelete = () => {
@@ -187,7 +213,15 @@ const Card = ({
         </div>
       </div>
       <div className="text-start mt-4 text-foreground text-base dark:text-card-foreground">
-        {parseDescription(description)}
+        {isEditing ? (
+          <EditForm
+            initialDescription={description}
+            onSave={handleSaveEdit}
+            onCancel={handleCancelEdit}
+          />
+        ) : (
+          parseDescription(description)
+        )}
       </div>
       <div className="mt-4 border-t pt-4 dark:border-muted"></div>
       <div className="flex items-center text-center">
@@ -224,19 +258,21 @@ const Card = ({
             {replies &&
               replies.map((reply) => (
                 <div key={reply._id} className="flex items-start">
-                  {reply.authorId && reply.authorId.avatar ? (
-                    <Avatar
-                      src={`http://localhost:3000/${reply.authorId.avatar}`}
-                      alt={`Avatar of ${reply.authorId.firstname}`}
-                      className="w-10 h-10 rounded-full flex-shrink-0"
-                    />
-                  ) : (
-                    <Avatar
-                      src="/default-avatar.png"
-                      alt="Default Avatar"
-                      className="w-10 h-10 rounded-full flex-shrink-0"
-                    />
-                  )}
+                  <div className="flex-shrink-0">
+                    {reply.authorId && reply.authorId.avatar ? (
+                      <Avatar
+                        src={`http://localhost:3000/${reply.authorId.avatar}`}
+                        alt={`Avatar of ${reply.authorId.firstname}`}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    ) : (
+                      <Avatar
+                        src="/default-avatar.png"
+                        alt="Default Avatar"
+                        className="w-10 h-10 rounded-full"
+                      />
+                    )}
+                  </div>
                   <div className="ml-3 flex flex-col">
                     <div className="flex items-center gap-2">
                       <div className="font-semibold">
@@ -266,6 +302,20 @@ const Card = ({
             className="w-full h-10 p-2 border bg-inputColor border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Add a comment..."
           />
+          <button
+            type="button"
+            onClick={() => setEmojiPickerOpen(!isEmojiPickerOpen)}
+            className="h-10 bg-white border border-gray-300 text-black px-4 py-2 flex items-center justify-center rounded-lg hover:bg-inputColor focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            😊
+          </button>
+          <div className="relative z-50">
+            {isEmojiPickerOpen && (
+              <div className="absolute bottom-full right-0 mb-2">
+                <EmojiPicker onEmojiClick={handleEmojiClick} />
+              </div>
+            )}
+          </div>
           <button
             type="submit"
             className="h-10 bg-white border border-gray-300 text-black px-4 py-2 flex items-center justify-center rounded-lg hover:bg-inputColor focus:outline-none focus:ring-2 focus:ring-blue-500"

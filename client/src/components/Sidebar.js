@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GiSlumberingSanctuary } from "react-icons/gi";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiBellSimpleRingingFill } from "react-icons/pi";
 import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
+import { ImHome } from "react-icons/im";
 import { GiTiedScroll } from "react-icons/gi";
 import Avatar from "../components/Avatar";
 import PostNotification from "./PostNotification";
@@ -19,7 +19,6 @@ import {
   getUnreadMessagesCounts,
   clearMessages,
 } from "../redux/actions/messageActions";
-import { motion } from "framer-motion";
 
 import "animate.css";
 
@@ -34,7 +33,14 @@ const Sidebar = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isNotificationHovered, setIsNotificationHovered] = useState(false);
   const [notifications, setNotifications] = useState([
+    "New comment on your post",
+    "Your post got a like",
+    "New comment on your post",
+    "Your post got a like",
+    "New comment on your post",
+    "Your post got a like",
     "New comment on your post",
     "Your post got a like",
   ]);
@@ -42,12 +48,23 @@ const Sidebar = () => {
   const unreadCount = useSelector((state) => state.message.unreadCount);
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
+  const messageTabRef = useRef(null);
+
   const handleMessageClick = (message) => {
     menuSound();
     setSelectedUser(message.sender);
     setIsMessageTabOpen(true);
     setIsAllMessagesTabOpen(false);
     dispatch(clearMessages());
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      messageTabRef.current &&
+      !messageTabRef.current.contains(event.target)
+    ) {
+      setIsMessageTabOpen(false);
+    }
   };
 
   const handleUserClick = (user) => {
@@ -120,7 +137,7 @@ const Sidebar = () => {
   const menuItems = [
     {
       text: "Home",
-      icon: <GiSlumberingSanctuary fontSize="large" />,
+      icon: <ImHome fontSize="large" />,
       link: "/home",
     },
     { text: "Lore", icon: <GiTiedScroll fontSize="large" />, link: "/lore" },
@@ -297,7 +314,9 @@ const Sidebar = () => {
           isOpen={setIsNotificationOpen}
         />
       )}
-      {isMessageTabOpen && selectedUser && <MessageTab user={selectedUser} />}
+      {isMessageTabOpen && selectedUser && (
+        <MessageTab onClose={toggleAllMessagesTab} user={selectedUser} />
+      )}
       {isAllMessagesTabOpen && (
         <AllMessagesTab
           onClose={toggleAllMessagesTab}

@@ -4,6 +4,10 @@ import {
   getCurrentUser,
   updateCurrentUser,
 } from "../redux/actions/userActions";
+
+import { GiReturnArrow } from "react-icons/gi";
+import { Link } from "react-router-dom";
+
 import Avatar from "../components/Avatar";
 import "animate.css";
 
@@ -80,6 +84,9 @@ const Profile = () => {
         backgroundAttachment: "fixed",
       }}
     >
+      <Link to="/home">
+        <GiReturnArrow className="fixed top-0 left-0 ml-5 mt-5 text-2xl" />
+      </Link>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -152,7 +159,7 @@ const Profile = () => {
               <input
                 type="text"
                 name="title"
-                maxLength={11}
+                maxLength={15}
                 value={formData.title}
                 onChange={handleChange}
                 className="w-full mt-2 p-2 border rounded"

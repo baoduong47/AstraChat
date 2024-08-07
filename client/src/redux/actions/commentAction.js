@@ -107,3 +107,28 @@ export const updateLikes = (commentId) => async (dispatch) => {
     }
   }
 };
+
+export const updateComment = (commentId, updates) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const response = await axios.put(
+      `http://localhost:3000/comments/${commentId}`,
+      updates,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Successfully updated comment: ", response.data);
+    dispatch({ type: "UPDATE_COMMENT_SUCCESS", payload: response.data });
+  } catch (error) {
+    console.log("Error updating comment", error);
+    dispatch({ type: "UPDATE_COMMENT_FAIL", payload: error.message });
+  }
+};

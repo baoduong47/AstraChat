@@ -1,5 +1,6 @@
 import { Carousel } from "flowbite-react";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const ArtworkCarousel = () => {
   const artworks = [
@@ -26,12 +27,11 @@ const ArtworkCarousel = () => {
   ];
 
   return (
-    <Carousel className="w-[440px] h-auto mt-10 relative">
+    <Carousel className="w-[440px] h-auto mt-10 relative" indicators={false}>
       {artworks.map((artwork, index) => (
         <div
           key={index}
           className="relative w-[440px] h-auto overflow-hidden rounded-lg"
-          onClick={(e) => e.stopPropagation()}
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -47,8 +47,8 @@ const ArtworkCarousel = () => {
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
             >
-              <h3 className="text-lg font-semibold">{artwork.title}</h3>
-              <p className="text-sm">{artwork.description}</p>
+              <h3 className="text-lg font-semibold ml-3">{artwork.title}</h3>
+              <p className="text-sm ml-3 mb-1">{artwork.description}</p>
             </motion.div>
           </motion.div>
         </div>

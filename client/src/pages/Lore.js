@@ -3,64 +3,71 @@ import { motion } from "framer-motion";
 
 const loreData = {
   title: "History of the Final Fantasy Franchise",
-  introduction:
-    "Final Fantasy is a legendary video game franchise that has captivated millions of players worldwide. Since its inception in 1987, the series has become synonymous with epic storytelling, groundbreaking visuals, and unforgettable characters. This page chronicles the evolution of Final Fantasy, highlighting its most iconic titles and moments.",
+  introduction: `Vivi Ornitier is a beloved character from Final Fantasy IX, known
+              for his iconic black mage appearance, featuring a wide-brimmed
+              hat, glowing yellow eyes, and a timid, innocent demeanor. Despite
+              his youthful and somewhat naive nature, Vivi grapples with
+              profound existential questions about life, death, and his purpose.`,
   sections: [
     {
-      title: "The Origins",
+      title: "Creation",
       content:
-        "Final Fantasy was created by Hironobu Sakaguchi and first released in 1987 by Square (now Square Enix). Initially developed as a last-ditch effort to save the company, the game was a surprise success, leading to a long-running series that continues to this day.",
+        " Vivi was created in the Black Mage Village, a secretive place where Black Mages are produced as weapons of war. These Black Mages are manufactured using mist, a substance that pervades the world of Final Fantasy IX and has various mystical properties. Unlike other Black Mages, Vivi was an early prototype, which is why he possesses a more developed consciousness and a soul. This gives him a sense of individuality and self-awareness, setting him apart from the other Black Mages, who mostly function as emotionless soldiers.",
     },
     {
-      title: "Iconic Titles",
-      content: `Over the years, many titles in the Final Fantasy series have become iconic:
-            - **Final Fantasy VII**: Released in 1997, it revolutionized the RPG genre with its 3D graphics, cinematic cutscenes, and deep narrative.
-            - **Final Fantasy X**: The first game in the series to feature voice acting and fully 3D environments, it was released in 2001 and remains a fan favorite.
-            - **Final Fantasy XIV**: Originally launched in 2010 and later relaunched as "A Realm Reborn" in 2013, it is a massively multiplayer online game that continues to evolve with new expansions.`,
+      title: "Early Life",
+      content: `After his creation, Vivi somehow ended up in the care of a Qu named Quan, who found him wandering alone in the wilderness. Quan, a member of a species known for their insatiable appetite, initially took Vivi in, believing that he could eventually eat him. However, over time, Quan grew attached to Vivi, raising him as a grandson. Vivi was unaware of his true origins and believed himself to be a regular, albeit peculiar, child.`,
     },
     {
-      title: "Legendary Characters",
-      content: `Final Fantasy has introduced many memorable characters who have become icons in gaming:
-            - **Cloud Strife**: The protagonist of Final Fantasy VII, known for his iconic Buster Sword and complex character arc.
-            - **Tifa Lockhart**: A skilled martial artist and loyal companion of Cloud, she is a key character in Final Fantasy VII.
-            - **Tidus**: The main character of Final Fantasy X, who embarks on a journey to save the world of Spira.`,
+      title: "Journey to Alexandria",
+      content: `After Quan's passing, Vivi continued to live in Quan's Dwelling, a secluded area where he spent most of his time alone. His journey truly begins when he leaves his home and travels to Alexandria to see a play by Tantalus, a famous theater troupe. This event leads him to join Zidane and the other characters in their adventure, where he slowly uncovers the truth about his origins and the fate of the Black Mages.`,
     },
   ],
 };
 
 const Lore = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.h1
-        className="text-4xl font-bold mb-6 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }} // Increased animation duration
-      >
-        {loreData.title}
-      </motion.h1>
-
-      <motion.p
-        className="text-lg text-gray-700 mb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2 }} // Increased animation duration
-      >
-        {loreData.introduction}
-      </motion.p>
-
-      {loreData.sections.map((section, index) => (
-        <motion.div
-          key={index}
-          className="mb-8"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: index * 0.5 }} // Increased duration and added delay for staggering
+    <div className="flex flex-col mt-6">
+      <div className="ml-6">
+        <motion.h1
+          className="text-4xl font-bold mb-6 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
         >
-          <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
-          <p className="text-gray-600">{section.content}</p>
-        </motion.div>
-      ))}
+          {loreData.title}
+        </motion.h1>
+
+        <motion.p
+          className="text-lg text-gray-700 mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2 }}
+        >
+          <div className="relative">
+            <img
+              src="/images/Vivi.webp"
+              className="float-left w-60 h-auto mr-4 mb-2"
+              alt="Vivi"
+            />
+            <h2 className="text-5xl font-semibold mb-4">Vivi Ornitier</h2>
+            <p className="text-lg text-gray-700">{loreData.introduction}</p>
+          </div>
+        </motion.p>
+
+        {loreData.sections.map((section, index) => (
+          <motion.div
+            key={index}
+            className="mb-8"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: index * 0.5 }}
+          >
+            <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+            <p className="text-gray-600">{section.content}</p>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 };
