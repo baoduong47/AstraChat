@@ -130,6 +130,17 @@ exports.replyComment = async (req, res) => {
 
     await parentComment.save();
 
+    // const notification = new Notification({
+    //   user: parentComment.postId,
+    //   message: `${user.firstname} replied to your comment.`,
+    //   type: "comment",
+    //   postId: parentComment._id,
+    // });
+
+    // console.log("Type of parentComment.author:", typeof parentComment.author);
+
+    // await notification.save();
+
     const updatedParentComment = await Comment.findById(commentId)
       .populate({
         path: "replies.authorId",
@@ -137,13 +148,8 @@ exports.replyComment = async (req, res) => {
       })
       .populate({
         path: "postId",
-        select: "avatar",
+        select: "avatar title",
       });
-
-    console.log(
-      "Parent comment with new reply after saving:",
-      JSON.stringify(updatedParentComment, null, 2)
-    );
 
     res.status(200).json({
       message: "Reply added successfully!",
@@ -276,6 +282,15 @@ exports.updateLikes = async (req, res) => {
     comment.likes += 1;
     comment.likedBy.push(user);
     await comment.save();
+
+    const notification = new Notification({
+      user: comment.postId,
+      message: `${user.firstname} liked your comment.`,
+      type: "like",
+      postId: comment._id,
+    });
+
+    await notification.save();
 
     res.status(200).json({
       comment,
