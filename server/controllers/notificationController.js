@@ -1,5 +1,5 @@
 const Notification = require("../models/notification");
-const Comment = require("../models/comment");
+const Commnt = require("../models/comment");
 
 exports.getNotifications = async (req, res) => {
   try {
@@ -20,7 +20,7 @@ exports.markAsRead = async (req, res) => {
   try {
     await Notification.updateMany(
       { user: req.user, read: false },
-      { read: true }
+      { $set: { read: true } }
     );
     res.status(200).json({ message: "Notifications marked as read" });
   } catch (error) {
