@@ -130,16 +130,28 @@ exports.replyComment = async (req, res) => {
 
     await parentComment.save();
 
-    // const notification = new Notification({
-    //   user: parentComment.postId,
-    //   message: `${user.firstname} replied to your comment.`,
-    //   type: "comment",
-    //   postId: parentComment._id,
-    // });
+    const notification = new Notification({
+      user: parentComment.postId,
+      replier: user._id,
+      message: user.firstname,
+      replyContent: replyComment,
+      type: "comment",
+      postId: parentComment._id,
+    });
+    await notification.save();
 
-    // console.log("Type of parentComment.author:", typeof parentComment.author);
-
-    // await notification.save();
+    // if (parentComment.postId.toString() !== user._id.toString()) {
+    //   // Create notification only if the post is not owned by the current user
+    //   const notification = new Notification({
+    //     user: parentComment.postId,
+    //     replier: user._id,
+    //     message: user.firstname,
+    //     replyContent: replyComment,
+    //     type: "comment",
+    //     postId: parentComment._id,
+    //   });
+    //   await notification.save();
+    // }
 
     const updatedParentComment = await Comment.findById(commentId)
       .populate({
@@ -283,14 +295,16 @@ exports.updateLikes = async (req, res) => {
     comment.likedBy.push(user);
     await comment.save();
 
-    const notification = new Notification({
-      user: comment.postId,
-      message: `${user.firstname} liked your comment.`,
-      type: "like",
-      postId: comment._id,
-    });
-
-    await notification.save();
+    if (comment.postId.toString() !== user._id.toString()) {
+      const notification = new Notification({
+        user: comment.postId,
+        replier: user._id,
+        message: user.firstname,
+        type: "like",
+        postId: comment._id,
+      });
+      await notification.save();
+    }
 
     res.status(200).json({
       comment,

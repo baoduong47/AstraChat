@@ -1,12 +1,15 @@
 const Notification = require("../models/notification");
+const Comment = require("../models/comment");
 
 exports.getNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find({
-      user: req.user,
-      read: false,
-    });
-    console.log("notifications found:", notifications);
+    const notifications = await Notification.find({ user: req.user })
+      .sort({ createdAt: -1 })
+      .populate("replier", "firstname avatar")
+      .exec();
+
+    console.log("notifications found: ", notifications);
+
     res.status(200).json(notifications);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving notifications", error });
