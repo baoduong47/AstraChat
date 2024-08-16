@@ -19,7 +19,10 @@ import {
   getUnreadMessagesCounts,
   clearMessages,
 } from "../redux/actions/messageActions";
-
+import {
+  getNotifications,
+  markNotificationsAsRead,
+} from "../redux/actions/notificationActions";
 import "animate.css";
 
 const Sidebar = () => {
@@ -27,28 +30,19 @@ const Sidebar = () => {
   const { users, currentUser, loading, error } = useSelector(
     (state) => state.user
   );
+  const { notifications } = useSelector((state) => state.notifications);
 
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
   const [isMessageTabOpen, setIsMessageTabOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [isNotificationHovered, setIsNotificationHovered] = useState(false);
-  const [notifications, setNotifications] = useState([
-    "New comment on your post",
-    "Your post got a like",
-    "New comment on your post",
-    "Your post got a like",
-    "New comment on your post",
-    "Your post got a like",
-    "New comment on your post",
-    "Your post got a like",
-  ]);
 
   const unreadCount = useSelector((state) => state.message.unreadCount);
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
-  const messageTabRef = useRef(null);
+  const hasUnreadNotifications = () =>
+    notifications.some((notification) => !notification.read);
 
   const handleMessageClick = (message) => {
     menuSound();
@@ -56,15 +50,6 @@ const Sidebar = () => {
     setIsMessageTabOpen(true);
     setIsAllMessagesTabOpen(false);
     dispatch(clearMessages());
-  };
-
-  const handleClickOutside = (event) => {
-    if (
-      messageTabRef.current &&
-      !messageTabRef.current.contains(event.target)
-    ) {
-      setIsMessageTabOpen(false);
-    }
   };
 
   const handleUserClick = (user) => {
@@ -78,6 +63,10 @@ const Sidebar = () => {
       dispatch(clearMessages());
     }
   };
+  useEffect(() => {
+    console.log("Notifications:", notifications);
+    console.log("Has unread notifications:", hasUnreadNotifications());
+  }, [notifications]);
 
   const playSound = () => {
     const audio = new Audio("/sounds/sao_menu.mp3");
@@ -109,12 +98,20 @@ const Sidebar = () => {
   const toggleNotifications = () => {
     playSound();
     setIsNotificationOpen(!isNotificationOpen);
+
+    if (!isNotificationOpen) {
+      dispatch(markNotificationsAsRead());
+    }
   };
+  useEffect(() => {
+    console.log("Fetched notifications:", notifications);
+  }, [notifications]);
 
   useEffect(() => {
     if (currentUser) {
       dispatch(getUnreadMessagesCount());
       dispatch(getUnreadMessagesCounts());
+      dispatch(getNotifications());
     }
   }, [currentUser, dispatch]);
 
@@ -162,7 +159,14 @@ const Sidebar = () => {
     },
     {
       text: "Notifications",
-      icon: <PiBellSimpleRingingFill fontSize="large" />,
+      icon: (
+        <div className="relative">
+          <PiBellSimpleRingingFill fontSize="large" />
+          {hasUnreadNotifications() && (
+            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center"></span>
+          )}
+        </div>
+      ),
       onClick: toggleNotifications,
     },
   ];

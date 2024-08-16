@@ -26,7 +26,7 @@ const Header = ({
         showEditError={showEditError}
       />
       <div
-        className="inline-flex text-center items-center space-x-1 fixed animate__animated animate__fadeInLeft text-2xl"
+        className="inline-flex z-20 text-center items-center space-x-1 fixed animate__animated animate__fadeInLeft text-2xl"
         style={{ animationDelay: "0.5s", animationDuration: "1s" }}
       >
         <span>Welcome Back,</span>

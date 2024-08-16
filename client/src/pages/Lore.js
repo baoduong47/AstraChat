@@ -1,72 +1,121 @@
 import React from "react";
-import { motion } from "framer-motion";
-
-const loreData = {
-  title: "History of the Final Fantasy Franchise",
-  introduction: `Vivi Ornitier is a beloved character from Final Fantasy IX, known
-              for his iconic black mage appearance, featuring a wide-brimmed
-              hat, glowing yellow eyes, and a timid, innocent demeanor. Despite
-              his youthful and somewhat naive nature, Vivi grapples with
-              profound existential questions about life, death, and his purpose.`,
-  sections: [
-    {
-      title: "Creation",
-      content:
-        " Vivi was created in the Black Mage Village, a secretive place where Black Mages are produced as weapons of war. These Black Mages are manufactured using mist, a substance that pervades the world of Final Fantasy IX and has various mystical properties. Unlike other Black Mages, Vivi was an early prototype, which is why he possesses a more developed consciousness and a soul. This gives him a sense of individuality and self-awareness, setting him apart from the other Black Mages, who mostly function as emotionless soldiers.",
-    },
-    {
-      title: "Early Life",
-      content: `After his creation, Vivi somehow ended up in the care of a Qu named Quan, who found him wandering alone in the wilderness. Quan, a member of a species known for their insatiable appetite, initially took Vivi in, believing that he could eventually eat him. However, over time, Quan grew attached to Vivi, raising him as a grandson. Vivi was unaware of his true origins and believed himself to be a regular, albeit peculiar, child.`,
-    },
-    {
-      title: "Journey to Alexandria",
-      content: `After Quan's passing, Vivi continued to live in Quan's Dwelling, a secluded area where he spent most of his time alone. His journey truly begins when he leaves his home and travels to Alexandria to see a play by Tantalus, a famous theater troupe. This event leads him to join Zidane and the other characters in their adventure, where he slowly uncovers the truth about his origins and the fate of the Black Mages.`,
-    },
-  ],
-};
 
 const Lore = () => {
   return (
-    <div className="flex flex-col mt-6">
-      <div className="ml-6">
-        <motion.h1
-          className="text-4xl font-bold mb-6 text-center"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          {loreData.title}
-        </motion.h1>
-
-        <motion.p
-          className="text-lg text-gray-700 mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2 }}
-        >
-          <div className="relative">
-            <img
-              src="/images/Vivi.webp"
-              className="float-left w-60 h-auto mr-4 mb-2"
-              alt="Vivi"
-            />
-            <h2 className="text-5xl font-semibold mb-4">Vivi Ornitier</h2>
-            <p className="text-lg text-gray-700">{loreData.introduction}</p>
+    <div className="flex gap-10 items-start justify-start h-screen w-screen bg-gray-100">
+      <div className="flex flex-col justify-center items-center mt-5 ml-5">
+        <div>
+          <div>
+            <h1 className="text-3xl">Discover the Heroes of Final Fantasy</h1>
           </div>
-        </motion.p>
+          <div className="flex flex-row mt-10">
+            <img
+              src="/images/clive.webp"
+              alt="Clive"
+              className="w-96 h-auto ml-2"
+            />
+            <div className="ml-2">
+              <div className="text-3xl font-normal">Clive Rossfield</div>
+              <div className="w-60">
+                <h2 className="text-teal-600">
+                  Heir to Rosaria's Fiery Legacy
+                </h2>
+                <p className="text-xs">
+                  Clive Rosfield, the eldest son of the Archduke of Rosaria, was
+                  destined for greatness. Born into a lineage of power, he was
+                  expected to inherit the mythical Phoenix, an Eikon of fire
+                  that has safeguarded his nation for generations. However, fate
+                  had other plans, leaving Clive to forge his own path as a
+                  warrior and protector, while grappling with the burdens of
+                  legacy and loss in the tumultuous world of Valisthea.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className=" text-teal-600 w-52  mr-20">
+          "I was born into power, yet I must fight to carve my own path. For the
+          sake of those I love, I will not falter."
+        </div>
+      </div>
 
-        {loreData.sections.map((section, index) => (
-          <motion.div
-            key={index}
-            className="mb-8"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: index * 0.5 }}
-          >
-            <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
-            <p className="text-gray-600">{section.content}</p>
-          </motion.div>
-        ))}
+      <div className="flex flex-col gap-5 mt-5">
+        <div>
+          <img src="/images/tifa.png" alt="Clive" className="w-56 h-auto" />
+          <div className="ml-2">
+            <div className="text-3xl font-normal">Tifa Lockhart</div>
+            <div className="w-64">
+              <h2 className="text-teal-600">Fist of Nibelheim</h2>
+              <p className="text-xs">
+                Tifa Lockhart is a fierce and determined fighter from the town
+                of Nibelheim. With her unmatched martial arts skills and a heart
+                full of compassion, Tifa stands strong in the face of adversity,
+                driven by her desire to protect those she loves and uncover the
+                truth about her past.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <img src="/images/torgal.webp" alt="Torgal" className="w-64 h-auto" />
+          <div className="ml-2">
+            <div className="text-3xl font-normal">Torgal</div>
+            <div className="w-64">
+              <h2 className="text-teal-600">Loyal Wolf of Rosaria</h2>
+              <p className="text-xs">
+                Torgal is Clive Rosfield’s loyal and ferocious wolf companion,
+                standing by his side through every battle and hardship.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col mt-10">
+        <div className="flex justify-center items-center flex-col gap-5">
+          <h2 className="text-teal-600 w-48 whitespace-normal mr-20">
+            "This is my story. It'll go the way I want it... or I'll end it
+            here."
+          </h2>
+          <img
+            src="/images/tidus.webp"
+            alt="Clive"
+            className="w-80 mt-32 h-auto"
+          />
+        </div>
+        <div className="ml-2">
+          <div className="text-3xl font-normal">Tidus</div>
+          <div className="w-64">
+            <h2 className="text-teal-600">Blitzball Hero of Spira</h2>
+            <p className="text-xs">
+              Tidus, a star Blitzball player from the futuristic city of
+              Zanarkand, finds himself transported to the mysterious world of
+              Spira. Struggling to understand his new reality, Tidus embarks on
+              a journey with Summoner Yuna and her guardians to defeat the
+              malevolent force known as Sin.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-row mt-56">
+        <img src="/images/Zidane.png" alt="Clive" className="w-64 h-auto" />
+        <div className="ml-2">
+          <div className="text-3xl font-normal">Tifa Lockhart</div>
+          <div className="w-60">
+            <h2 className="text-teal-600">Heir to Rosaria's Fiery Legacy</h2>
+            <p className="text-sm">
+              Clive Rosfield, the eldest son of the Archduke of Rosaria, was
+              destined for greatness. Born into a lineage of power, he was
+              expected to inherit the mythical Phoenix, an Eikon of fire that
+              has safeguarded his nation for generations. However, fate had
+              other plans, leaving Clive to forge his own path as a warrior and
+              protector, while grappling with the burdens of legacy and loss in
+              the tumultuous world of Valisthea.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

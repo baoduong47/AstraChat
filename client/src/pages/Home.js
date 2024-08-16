@@ -26,6 +26,11 @@ const Home = () => {
     audio.play();
   };
 
+  const buttonSound = () => {
+    const audio = new Audio("/sounds/ff_select.mp3");
+    audio.play();
+  };
+
   const menuSound = () => {
     const audio = new Audio("/sounds/sao_menu_select.mp3");
     audio.play();
@@ -91,9 +96,11 @@ const Home = () => {
 
       <NewPostForm
         currentUser={currentUser}
+        buttonSound={buttonSound}
         setShowError={setShowError}
         setPostSuccess={setPostSuccess}
       />
+
       <Cactus />
       <CommentsList
         setEditError={setEditError}

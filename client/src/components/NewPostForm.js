@@ -4,12 +4,18 @@ import { motion } from "framer-motion";
 import { postComment } from "../redux/actions/commentAction";
 import ArtworkCarousel from "./ArtworkCarousel";
 
-const NewPostForm = ({ currentUser, setShowError, setPostSuccess }) => {
+const NewPostForm = ({
+  currentUser,
+  buttonSound,
+  setShowError,
+  setPostSuccess,
+}) => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    buttonSound();
     if (!comment.trim()) {
       setShowError(true);
       setPostSuccess(false);

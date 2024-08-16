@@ -17,6 +17,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import EditForm from "./EditForm";
 import { GiCrystalCluster } from "react-icons/gi";
 import EmojiPicker from "emoji-picker-react";
+import { getNotifications } from "../redux/actions/notificationActions";
 
 const Card = ({
   avatar,
@@ -77,7 +78,9 @@ const Card = ({
     e.preventDefault();
     if (reply.trim() === "") return;
     if (currentUser) {
-      dispatch(replyComment(commentId, reply));
+      dispatch(replyComment(commentId, reply)).then(() => {
+        dispatch(getNotifications());
+      });
       setReply("");
     }
   };
@@ -90,7 +93,9 @@ const Card = ({
       return;
     }
 
-    dispatch(updateLikes(commentId));
+    dispatch(updateLikes(commentId)).then(() => {
+      dispatch(getNotifications());
+    });
     setCurrentLikes(currentLikes + 1);
     setLikedBy([...likedBy, currentUser._id]);
   };

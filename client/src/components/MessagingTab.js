@@ -15,7 +15,7 @@ const MessageTab = ({ user }) => {
 
   const { messages } = useSelector((state) => state.message);
   const { currentUser } = useSelector((state) => state.user);
-  console.log("messages recieved: ", messages);
+  console.log("messages received: ", messages);
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -26,8 +26,14 @@ const MessageTab = ({ user }) => {
     });
   };
 
+  const buttonSound = () => {
+    const audio = new Audio("/sounds/ff_select.mp3");
+    audio.play();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    buttonSound();
     dispatch(sendMessage(message, user._id));
     setMessage("");
     console.log("Message submitted: ", message);
@@ -64,7 +70,7 @@ const MessageTab = ({ user }) => {
           <Avatar
             src={`http://localhost:3000/${user.avatar}`}
             alt={`${currentUser.firstname}'s avatar`}
-            className="w-10 h-10 rounded-full object-cover "
+            className="w-10 h-10 rounded-full object-cover"
           />
           <div className="ml-1 flex flex-col justify-center items-start">
             {user.firstname} {user.lastname}
@@ -74,22 +80,36 @@ const MessageTab = ({ user }) => {
           </div>
         </h2>
       </div>
-      <div className="overflow-y-auto h-5/6 ">
-        {messages.map((message) => (
-          <div key={message._id} className="mb-2">
-            <div className="flex justify-between items-center">
-              <p className="max-w-56 break-words">
-                <strong>
-                  {message.sender === currentUser._id ? "You" : user.firstname}:
-                </strong>{" "}
-                {message.content}
-              </p>
-              <div className="text-sm text-gray-600 whitespace-nowrap ml-2">
-                {formatTimestamp(message.timestamp)}
+      <div className="overflow-y-auto h-5/6">
+        {messages.map((message) => {
+          const isCurrentUser = message.sender === currentUser._id;
+
+          return (
+            <div
+              key={message._id}
+              className={`flex mb-2 ${
+                isCurrentUser ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`relative p-3 rounded-lg m-2 min-w-[150px] max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl ${
+                  isCurrentUser
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-black"
+                }`}
+                style={{ wordBreak: "break-word" }}
+              >
+                <p className="mb-5">
+                  <strong>{isCurrentUser ? "You" : user.firstname}:</strong>{" "}
+                  {message.content}
+                </p>
+                <div className="text-xs absolute bottom-0 right-0 mr-2 mb-1">
+                  {formatTimestamp(message.timestamp)}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div ref={messagesEndRef}></div>
       </div>
       <div className="mt-4 flex">
@@ -101,12 +121,6 @@ const MessageTab = ({ user }) => {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
-        {/* <button
-          onClick={handleSubmit}
-          className="bg-buttonColor hover:bg-green-700 ml-3 text-white font-bold py-2 px-4 rounded"
-        >
-          Send
-        </button> */}
         <motion.button
           onClick={handleSubmit}
           whileHover={{
