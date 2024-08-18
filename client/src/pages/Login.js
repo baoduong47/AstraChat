@@ -244,7 +244,14 @@ const Login = () => {
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
           <div className="text-center ">
-            <Button sx={{ color: "#C0D7D5" }} type="button" size="small">
+            <Button
+              sx={{ color: "#C0D7D5" }}
+              type="button"
+              size="small"
+              onClick={() => {
+                window.location.href = "http://localhost:3001/auth/google";
+              }}
+            >
               Log in with Google
             </Button>
           </div>

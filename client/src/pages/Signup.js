@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/actions/authActions";
 import TextField from "@mui/material/TextField";
@@ -105,6 +105,16 @@ const Signup = () => {
       console.log("Form has errors", errors);
     }
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+      window.location.href = "/home";
+    }
+  }, []);
 
   return (
     <div className="flex h-screen bg-customBlue">
@@ -285,6 +295,9 @@ const Signup = () => {
                     borderColor: "gray",
                     color: "#666565",
                   },
+                }}
+                onClick={() => {
+                  window.location.href = "http://localhost:3001/auth/google";
                 }}
               >
                 Sign up with Google

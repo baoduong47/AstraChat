@@ -43,18 +43,18 @@ const NewPostForm = ({
         style={{ animationDelay: "1s", animationDuration: "1s" }}
       >
         <div className="flex">
-          <div>
-            <label htmlFor="comment" className="text-black text-md">
+          <div className="flex items-center">
+            <label htmlFor="comment" className="text-black text-l">
               New Post:
             </label>
-            <input
+            <textarea
               type="text"
               id="text"
               name="text"
               value={comment}
               onChange={handleChange}
               placeholder="Enter a new comment..."
-              className="mx-2 h-10 px-4 text-black bg-inputColor border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md transition-shadow duration-300"
+              className="mx-2 h-10 px-4 mr-2 text-black bg-inputColor border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md transition-shadow duration-300"
               style={{
                 background: "rgba(255, 255, 255, 0.8)",
                 backdropFilter: "blur(5px)",
