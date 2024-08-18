@@ -6,15 +6,19 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const passport = require("passport");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const commentRouter = require("./routes/commentRouter");
 const messageRouter = require("./routes/messageRouter");
 const notificationRouter = require("./routes/notificationRouter");
+const authRouter = require("./routes/authRouter");
 
 // Load environment variables from .env file
 dotenv.config();
+
+require("./config/passport");
 
 const app = express();
 
@@ -42,14 +46,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
-
 app.use(cors({ origin: "http://localhost:3001" }));
+
+app.use(passport.initialize());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/comments", commentRouter);
 app.use("/messages", messageRouter);
 app.use("/notifications", notificationRouter);
+app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

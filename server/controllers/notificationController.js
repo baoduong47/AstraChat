@@ -16,6 +16,15 @@ exports.getNotifications = async (req, res) => {
   }
 };
 
+exports.deleteNotifications = async (req, res) => {
+  try {
+    await Notification.deleteMany({ user: req.user });
+    res.status(200).json({ message: "All notifications deleted" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting notifications", error });
+  }
+};
+
 exports.markAsRead = async (req, res) => {
   try {
     await Notification.updateMany(
