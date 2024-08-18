@@ -38,7 +38,7 @@ const Sidebar = () => {
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-  const unreadCount = useSelector((state) => state.message.unreadCount);
+  // const unreadCount = useSelector((state) => state.message.unreadCount);
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
   const hasUnreadNotifications = () =>

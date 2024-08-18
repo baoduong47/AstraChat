@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
+import { deleteNotifications } from "../redux/actions/notificationActions";
 
 const PostNotification = ({ notifications, isOpen }) => {
-  useEffect(() => {
-    console.log("notifications in postNotifications", notifications);
-  }, [notifications]);
+  // useEffect(() => {
+  //   console.log("notifications in postNotifications", notifications);
+  // }, [notifications]);
+
+  const dispatch = useDispatch();
+  const handleClearNotifications = () => {
+    dispatch(deleteNotifications());
+  };
 
   return (
     <motion.div
@@ -13,9 +20,18 @@ const PostNotification = ({ notifications, isOpen }) => {
       transition={{ duration: 0.3 }}
       className="absolute top-72 right-40 bg-white shadow-lg rounded-lg w-80 p-4 border border-gray-300"
     >
-      <h3 className="text-lg font-semibold mb-3 text-gray-800 text-center">
-        Notifications
-      </h3>
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-lg font-semibold text-gray-800 text-center">
+          Notifications
+        </h3>
+        <button
+          onClick={handleClearNotifications}
+          className="text-sm text-gray-600 transition-colors duration-200"
+        >
+          Clear All
+        </button>
+      </div>
+
       <ul className="space-y-3 overflow-y-auto" style={{ maxHeight: "200px" }}>
         {notifications.length > 0 ? (
           notifications.map((notification) => (

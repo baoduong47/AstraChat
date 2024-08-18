@@ -19,6 +19,21 @@ export const getNotifications = () => async (dispatch) => {
   }
 };
 
+export const deleteNotifications = () => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    await axios.delete("http://localhost:3000/notifications", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({ type: "DELETE_NOTIFICATIONS_SUCCESS" });
+  } catch (error) {
+    dispatch({ type: "DELETE_NOTIFICATIONS_FAIL", payload: error.message });
+  }
+};
+
 export const markNotificationsAsRead = () => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");

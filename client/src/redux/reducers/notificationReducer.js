@@ -21,8 +21,15 @@ const notificationReducer = (state = initialState, action) => {
         })),
         loading: false,
       };
+    case "DELETE_NOTIFICATIONS_SUCCESS":
+      return {
+        ...state,
+        notifications: [],
+        loading: false,
+      };
     case "GET_NOTIFICATIONS_FAIL":
     case "MARK_NOTIFICATIONS_READ_FAIL":
+    case "DELETE_NOTIFICATIONS_FAIL":
       return {
         ...state,
         loading: false,
