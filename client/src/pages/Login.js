@@ -8,6 +8,9 @@ import Checkbox from "@mui/material/Checkbox";
 import { Typography } from "@mui/material";
 import LoadingScreen from "./LoadingScreen";
 import { motion } from "framer-motion";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +18,7 @@ const Login = () => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
@@ -26,6 +30,10 @@ const Login = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const handleSubmit = (e) => {
@@ -140,7 +148,7 @@ const Login = () => {
 
           <TextField
             size="small"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             onChange={handleChange}
@@ -177,6 +185,16 @@ const Login = () => {
               "& .MuiFilledInput-underline:hover:before": {
                 borderBottomColor: "#7A4972",
               },
+            }}
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  style={{ color: "white" }}
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              ),
             }}
           />
           <div className="flex items-center justify-between pl-2 pr-2">
