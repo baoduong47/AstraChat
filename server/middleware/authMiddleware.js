@@ -4,7 +4,9 @@ const authMiddleware = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token, authorization denied" });
+    return res
+      .status(401)
+      .json({ message: "No token, authorization denied", redirect: "/login" });
   }
 
   const token = authHeader.replace("Bearer ", "");
