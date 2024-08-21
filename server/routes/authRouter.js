@@ -3,10 +3,13 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get("/google", (req, res, next) => {
+  const state = req.query.action;
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    state: state,
+  })(req, res, next);
+});
 
 router.get(
   "/google/callback",
@@ -19,11 +22,17 @@ router.get(
 
     console.log("req.user", req.user);
 
-    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7h",
-    });
+    const action = req.query.state;
+    console.log("Action:", action);
 
-    res.redirect(`http://localhost:3001/login?token=${token}`);
+    if (action === "signup") {
+      return res.redirect("http://localhost:3001/login");
+    } else {
+      const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
+        expiresIn: "7h",
+      });
+      res.redirect(`http://localhost:3001/login?token=${token}`);
+    }
   }
 );
 
