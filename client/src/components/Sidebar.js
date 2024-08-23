@@ -80,6 +80,9 @@ const Sidebar = () => {
 
   const toggleUsersDropdown = () => {
     if (!isUsersDropdownOpen) {
+      if (isNotificationOpen) {
+        setIsNotificationOpen(false);
+      }
       playSound();
     }
 
@@ -91,12 +94,21 @@ const Sidebar = () => {
     if (!isAllMessagesTabOpen) {
       playSound();
     }
+    if (isNotificationOpen) {
+      setIsNotificationOpen(false);
+    }
     setIsAllMessagesTabOpen(!isAllMessagesTabOpen);
     setIsMessageTabOpen(false);
   };
 
   const toggleNotifications = () => {
     playSound();
+
+    if (isUsersDropdownOpen) {
+      setIsUsersDropdownOpen(false);
+      setIsMessageTabOpen(false);
+    }
+
     setIsNotificationOpen(!isNotificationOpen);
 
     if (!isNotificationOpen) {

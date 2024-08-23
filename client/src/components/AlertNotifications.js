@@ -8,6 +8,7 @@ const AlertNotifications = ({
   showSuccess,
   postSuccess,
   showEditError,
+  showProfanityError,
 }) => {
   return (
     <AnimatePresence>
@@ -20,6 +21,17 @@ const AlertNotifications = ({
           transition={{ duration: 0.3 }}
         >
           <Alert severity="error">Post required, Kupo!</Alert>
+        </motion.div>
+      )}
+      {showProfanityError && (
+        <motion.div
+          className="fixed z-50 top-0 left-0 w-full flex justify-center mt-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Alert severity="error">{`That's not nice!! No profanity, Kupo. Let's try that again...`}</Alert>
         </motion.div>
       )}
       {showEditError && (

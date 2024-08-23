@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { deleteNotifications } from "../redux/actions/notificationActions";
+import Avatar from "./Avatar";
 
 const PostNotification = ({ notifications, isOpen }) => {
   // useEffect(() => {
@@ -18,7 +19,7 @@ const PostNotification = ({ notifications, isOpen }) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : -20 }}
       transition={{ duration: 0.3 }}
-      className="absolute top-72 right-40 bg-white shadow-lg rounded-lg w-80 p-4 border border-gray-300"
+      className="fixed top-72 right-40 bg-white shadow-lg rounded-lg w-80 p-4 border border-gray-300"
     >
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-lg font-semibold text-gray-800 text-center">
@@ -40,11 +41,11 @@ const PostNotification = ({ notifications, isOpen }) => {
               className="bg-gray-100 p-3 rounded-md shadow-sm hover:bg-gray-200 transition-colors duration-200"
             >
               <div className="flex items-center space-x-2 mb-2">
-                <img
+                <Avatar
                   src={
-                    notification.replier
+                    notification.replier && notification.replier.avatar
                       ? `http://localhost:3000/${notification.replier.avatar}`
-                      : "default-avatar-url"
+                      : "http://localhost:3000/undefined"
                   }
                   alt="Replier Avatar"
                   className="w-9 h-9 border border-gray-200 rounded-full object-cover"

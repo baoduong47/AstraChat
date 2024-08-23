@@ -1,11 +1,13 @@
 import { MdLyrics } from "react-icons/md";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const MusicList = ({ menuSound, playSound }) => {
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMusicListVisible, setIsMusicListVisible] = useState(false);
+
+  const musicListRef = useRef(null);
 
   const musicList = [
     {
@@ -63,6 +65,25 @@ const MusicList = ({ menuSound, playSound }) => {
     }
     setIsMusicListVisible(false);
   };
+
+  const handleClickOutside = (event) => {
+    if (musicListRef.current && !musicListRef.current.contains(event.target)) {
+      setIsMusicListVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isMusicListVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMusicListVisible]);
+
   return (
     <div className="flex gap-2 items-center">
       <MdLyrics
@@ -74,7 +95,10 @@ const MusicList = ({ menuSound, playSound }) => {
       />
 
       {isMusicListVisible && (
-        <div className="absolute transform p-2 translate-x-6 translate-y-44 mt-2 w-60 bg-white border rounded-lg shadow-lg overflow-hidden">
+        <div
+          ref={musicListRef}
+          className="absolute transform p-2 translate-x-6 translate-y-44 mt-2 w-60 bg-white border rounded-lg shadow-lg overflow-hidden"
+        >
           <ul className="py-1 text-sm">
             {musicList.map((music, index) => (
               <li

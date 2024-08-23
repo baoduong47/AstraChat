@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../redux/actions/authActions";
+import { loginUser, authenticateWithToken } from "../redux/actions/authActions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -51,6 +51,22 @@ const Login = () => {
       setIsLoading(false);
     }
   }, [authenticated, authError]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const token = queryParams.get("token");
+    const action = queryParams.get("action");
+
+    console.log("Action:", action);
+
+    if (token) {
+      localStorage.setItem("authToken", token);
+      dispatch(authenticateWithToken(token));
+      setIsLoading(true);
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [dispatch]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -123,6 +139,9 @@ const Login = () => {
                 "&.Mui-focused": {
                   backgroundColor: "rgba(85, 85, 85, 0.6)",
                 },
+                "& .MuiInputBase-input": {
+                  color: "white",
+                },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                   borderColor: "#895881",
                 },
@@ -164,6 +183,9 @@ const Login = () => {
                 },
                 "&.Mui-focused": {
                   backgroundColor: "rgba(85, 85, 85, 0.6)",
+                },
+                "& .MuiInputBase-input": {
+                  color: "white",
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                   borderColor: "#895881",
@@ -249,7 +271,8 @@ const Login = () => {
               type="button"
               size="small"
               onClick={() => {
-                window.location.href = "http://localhost:3001/auth/google";
+                window.location.href =
+                  "http://localhost:3000/auth/google?action=login";
               }}
             >
               Log in with Google

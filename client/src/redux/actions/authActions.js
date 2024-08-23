@@ -44,3 +44,12 @@ export const loginUser = (credentials) => async (dispatch) => {
 export const logoutUser = () => {
   return { type: "LOGOUT" };
 };
+
+export const authenticateWithToken = (token) => (dispatch) => {
+  localStorage.setItem("token", token);
+
+  dispatch({
+    type: "AUTHENTICATE_USER",
+    payload: token,
+  });
+};

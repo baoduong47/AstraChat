@@ -18,6 +18,7 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
 
     const groups = filteredMessages.reduce((acc, message) => {
       const senderName = message.sender.firstname;
+
       if (
         !acc[senderName] ||
         new Date(acc[senderName].timestamp) < new Date(message.timestamp)
@@ -89,42 +90,48 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
         </button>
         <h2 className="text-xl font-semibold mb-4">Messages</h2>
         <ul className="space-y-4">
-          {groupedMessages.map((message) => (
-            <li
-              key={message._id}
-              className="border-2 p-4 rounded-lg hover:bg-gray-100 transition duration-300 flex items-center space-x-4 cursor-pointer relative"
-              onClick={() => handleClick(message)}
-            >
-              <Avatar
-                src={`http://localhost:3000/${message.sender.avatar}`}
-                alt={`${message.sender.firstname}'s avatar`}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div className="flex-1">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-1">
-                    <p className="font-bold text-lg">
-                      {message.sender.firstname}
+          {groupedMessages.length > 0 ? (
+            groupedMessages.map((message) => (
+              <li
+                key={message._id}
+                className="border-2 p-4 rounded-lg hover:bg-gray-100 transition duration-300 flex items-center space-x-4 cursor-pointer relative"
+                onClick={() => handleClick(message)}
+              >
+                <Avatar
+                  src={`http://localhost:3000/${message.sender.avatar}`}
+                  alt={`${message.sender.firstname}'s avatar`}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-1">
+                      <p className="font-bold text-lg">
+                        {message.sender.firstname}
+                      </p>
+                      {message.sender.title && (
+                        <div>
+                          <span className="text-gray-900 text-sm ml-1 mr-1">
+                            •
+                          </span>
+                          <span className="text-gray-500 text-sm">
+                            {message.sender.title}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-600">
+                      {formatTimestamp(message.timestamp)}...
                     </p>
-                    {message.sender.title && (
-                      <div>
-                        <span className="text-gray-900 text-sm ml-1 mr-1">
-                          •
-                        </span>
-                        <span className="text-gray-500 text-sm">
-                          {message.sender.title}
-                        </span>
-                      </div>
-                    )}
                   </div>
-                  <p className="text-xs text-gray-600">
-                    {formatTimestamp(message.timestamp)}...
-                  </p>
+                  <p className="text-sm text-gray-600">{message.content}</p>
                 </div>
-                <p className="text-sm text-gray-600">{message.content}</p>
-              </div>
+              </li>
+            ))
+          ) : (
+            <li className="text-center mt-10 text-gray-500">
+              No messages yet. Start a conversation!
             </li>
-          ))}
+          )}
         </ul>
       </div>
     </div>

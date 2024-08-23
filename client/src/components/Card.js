@@ -18,6 +18,7 @@ import EditForm from "./EditForm";
 import { GiCrystalCluster } from "react-icons/gi";
 import EmojiPicker from "emoji-picker-react";
 import { getNotifications } from "../redux/actions/notificationActions";
+import { GiMineralHeart } from "react-icons/gi";
 
 const Card = ({
   avatar,
@@ -44,6 +45,8 @@ const Card = ({
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
   const { currentUser } = useSelector((state) => state.user);
+
+  console.log("current likes", currentLikes);
 
   const dispatch = useDispatch();
 
@@ -231,10 +234,10 @@ const Card = ({
       <div className="mt-4 border-t pt-4 dark:border-muted"></div>
       <div className="flex items-center text-center">
         <button onClick={handleLikes}>
-          <GiCrystalCluster color="#3A0CA3" className="w-5 h-5" />
+          <GiMineralHeart color="red" className="w-5 h-5" />
         </button>
         <div className="text-foregroundColor text-sm ml-3">
-          {currentLikes} likes
+          {currentLikes} {currentLikes === 1 ? "like" : "likes"}
         </div>
       </div>
       <div className="mt-6 grid gap-4">
@@ -272,7 +275,7 @@ const Card = ({
                       />
                     ) : (
                       <Avatar
-                        src="/default-avatar.png"
+                        src="http://localhost:3000/undefined"
                         alt="Default Avatar"
                         className="w-10 h-10 rounded-full"
                       />

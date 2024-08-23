@@ -7,6 +7,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { motion } from "framer-motion";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -117,20 +118,38 @@ const Signup = () => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-customBlue">
+    <motion.div
+      className="flex h-screen bg-customBlue"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2, ease: "easeInOut" }}
+    >
       <div
         className="w-3/6 flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: "url('/images/cute-ff.jpg')" }}
       ></div>
       <div className="w-3/6 bg-signupBackground flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+        <motion.div
+          className="w-full max-w-md"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 2, ease: "easeInOut" }}
+        >
           <h2 className="text-5xl font-bold mb-16">Create Account</h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             {authError && (
-              <Alert severity="error">
-                <AlertTitle>Error</AlertTitle>
-                {typeof authError === "string" ? authError : authError.message}
-              </Alert>
+              <motion.div
+                initial={{ y: -30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.75, ease: "easeOut" }}
+              >
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {typeof authError === "string"
+                    ? authError
+                    : authError.message}
+                </Alert>
+              </motion.div>
             )}
             <div className="flex space-x-4">
               <TextField
@@ -163,7 +182,6 @@ const Signup = () => {
                   },
                 }}
               />
-
               <TextField
                 error={!!errors.lastname}
                 helperText={errors.lastname}
@@ -297,7 +315,9 @@ const Signup = () => {
                   },
                 }}
                 onClick={() => {
-                  window.location.href = "http://localhost:3001/auth/google";
+                  const url = "http://localhost:3000/auth/google?action=signup";
+                  console.log("Redirecting to:", url);
+                  window.location.href = url;
                 }}
               >
                 Sign up with Google
@@ -323,9 +343,9 @@ const Signup = () => {
               </Button>
             </div>
           </form>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
