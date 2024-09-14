@@ -24,7 +24,7 @@ export const registerUser = (userData) => async (dispatch) => {
   }
 };
 
-export const loginUser = (credentials) => async (dispatch) => {
+export const loginUser = (credentials, rememberMe) => async (dispatch) => {
   try {
     console.log("Logging user with credentials:", credentials);
     const response = await axios.post(
@@ -42,6 +42,8 @@ export const loginUser = (credentials) => async (dispatch) => {
 };
 
 export const logoutUser = () => {
+  localStorage.removeItem("email");
+  localStorage.removeItem("rememberMe");
   return { type: "LOGOUT" };
 };
 

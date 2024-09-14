@@ -4,11 +4,10 @@ import {
   getCurrentUser,
   updateCurrentUser,
 } from "../redux/actions/userActions";
-
 import { GiReturnArrow } from "react-icons/gi";
 import { Link } from "react-router-dom";
-
 import Avatar from "../components/Avatar";
+import { motion } from "framer-motion";
 import "animate.css";
 
 const Profile = () => {
@@ -19,7 +18,6 @@ const Profile = () => {
     avatar: null,
     bio: "",
     birthday: "",
-    email: "",
     location: "",
     title: "",
   });
@@ -34,7 +32,6 @@ const Profile = () => {
         avatar: null,
         bio: currentUser.bio || "",
         birthday: currentUser.birthday ? formatDate(currentUser.birthday) : "",
-        email: currentUser.email || "",
         location: currentUser.location || "",
         title: currentUser.title || "",
       });
@@ -43,6 +40,7 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    buttonSound();
     const data = new FormData();
 
     if (formData.avatar) {
@@ -50,7 +48,6 @@ const Profile = () => {
     }
     data.append("bio", formData.bio);
     data.append("birthday", formData.birthday);
-    data.append("email", formData.email);
     data.append("location", formData.location);
     data.append("title", formData.title);
 
@@ -67,10 +64,15 @@ const Profile = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
+  };
+
+  const buttonSound = () => {
+    const audio = new Audio("/sounds/ff_select.mp3");
+    audio.play();
   };
 
   return (
@@ -133,13 +135,6 @@ const Profile = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                  <dt className="font-medium text-gray-900">Email</dt>
-                  <dd className="text-gray-700 sm:col-span-2">
-                    {currentUser.email}
-                  </dd>
-                </div>
-
-                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
                   <dt className="font-medium text-gray-900">Birthday</dt>
                   <dd className="text-gray-700 sm:col-span-2">
                     {formData.birthday}
@@ -154,7 +149,7 @@ const Profile = () => {
                 </div>
               </dl>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 mt-5">
               <label className="block text-gray-700">Title:</label>
               <input
                 type="text"
@@ -174,16 +169,7 @@ const Profile = () => {
                 className="w-full mt-2 p-2 border rounded"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full mt-2 p-2 border rounded"
-              />
-            </div>
+
             <div className="mb-4">
               <label className="block text-gray-700">Birthday:</label>
               <input
@@ -205,12 +191,17 @@ const Profile = () => {
               />
             </div>
             <div className="flex justify-center mt-6">
-              <button
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  background: "linear-gradient(135deg, #6b7280, #4b5563)",
+                  boxShadow: "0px 0px 15px rgba(255, 255, 255, 0.5)",
+                }}
+                className="h-10 bg-indigo-600 text-white border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700 transition-all duration-200 ease-in-out"
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Save
-              </button>
+              </motion.button>
             </div>
           </form>
         </div>

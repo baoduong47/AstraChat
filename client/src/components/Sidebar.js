@@ -149,7 +149,6 @@ const Sidebar = () => {
       icon: <ImHome fontSize="large" />,
       link: "/home",
     },
-    { text: "Lore", icon: <GiTiedScroll fontSize="large" />, link: "/lore" },
     {
       text: "Messages",
       icon: <TextsmsRoundedIcon fontSize="small" />,

@@ -15,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 import "animate.css";
 import ConfirmationModal from "./ConfirmationModal";
 import EditForm from "./EditForm";
-import { GiCrystalCluster } from "react-icons/gi";
 import EmojiPicker from "emoji-picker-react";
 import { getNotifications } from "../redux/actions/notificationActions";
 import { GiMineralHeart } from "react-icons/gi";
@@ -336,6 +335,10 @@ const Card = ({
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onConfirm={handleModalConfirm}
+        title="Do you really want to delete this comment? This process cannot be
+              undone."
+        cancelMsg="Cancel"
+        deleteMsg="Delete"
       />
     </div>
   );

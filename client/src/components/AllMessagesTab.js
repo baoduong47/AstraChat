@@ -100,7 +100,7 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
                 <Avatar
                   src={`http://localhost:3000/${message.sender.avatar}`}
                   alt={`${message.sender.firstname}'s avatar`}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-12 h-12 rounded-full  object-cover"
                 />
                 <div className="flex-1">
                   <div className="flex justify-between items-center">

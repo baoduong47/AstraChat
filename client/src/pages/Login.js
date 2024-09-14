@@ -14,11 +14,14 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    email: localStorage.getItem("email") || "",
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(
+    () => localStorage.getItem("rememberMe") === true
+  );
 
   const dispatch = useDispatch();
   const authError = useSelector((state) => state.auth.error);
@@ -38,7 +41,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
+    localStorage.setItem("rememberMe", rememberMe ? "true" : "false");
+    if (rememberMe) {
+      localStorage.setItem("email", formData.email);
+    } else {
+      localStorage.removeItem("email");
+    }
+
+    dispatch(loginUser(formData, rememberMe));
   };
 
   useEffect(() => {
@@ -221,7 +231,14 @@ const Login = () => {
           />
           <div className="flex items-center justify-between pl-2 pr-2">
             <FormControlLabel
-              control={<Checkbox size="small" defaultChecked />}
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onClick={(e) => setRememberMe(e.target.checked)}
+                  size="small"
+                  defaultChecked
+                />
+              }
               label={
                 <Typography
                   variant="body2"

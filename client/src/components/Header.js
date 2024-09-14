@@ -37,7 +37,7 @@ const Header = ({
                 verticalAlign: "middle",
                 marginRight: "1px",
                 marginLeft: "5px",
-                fontSize: "large",
+                fontSize: "22px",
               }}
             />
 

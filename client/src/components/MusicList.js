@@ -103,7 +103,7 @@ const MusicList = ({ menuSound, playSound }) => {
             {musicList.map((music, index) => (
               <li
                 key={music.name}
-                className="cursor-pointer text-left px-4 py-2 text-black hover:bg-gray-600 hover:text-white transition-colors duration-200 animate__animated animate__fadeInRight"
+                className="cursor-pointer text-left px-4 py-2 text-black  hover:bg-gray-100 transition-colors duration-200 animate__animated animate__fadeInRight"
                 style={{
                   animationDelay: `${(index + 1) * 0.1}s`,
                   animationDuration: "0.7s",

@@ -9,6 +9,7 @@ const AlertNotifications = ({
   postSuccess,
   showEditError,
   showProfanityError,
+  showEmailError,
 }) => {
   return (
     <AnimatePresence>
@@ -21,6 +22,17 @@ const AlertNotifications = ({
           transition={{ duration: 0.3 }}
         >
           <Alert severity="error">Post required, Kupo!</Alert>
+        </motion.div>
+      )}
+      {showEmailError && (
+        <motion.div
+          className="fixed z-50 top-0 left-0 w-full flex justify-center mt-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Alert severity="error">Email already exists, Kupo!</Alert>
         </motion.div>
       )}
       {showProfanityError && (

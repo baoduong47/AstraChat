@@ -34,6 +34,12 @@ const userReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case "CLEAR_USER_ERROR":
+      return {
+        ...state,
+        error: null,
+      };
+
     case "GET_USERS_FAIL":
     case "GET_CURRENT_USER_FAIL":
     case "UPDATE_USER_FAIL":

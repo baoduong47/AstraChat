@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./components/NotFound";
 import Profile from "./pages/Profile";
-import Lore from "./pages/Lore";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -17,8 +17,8 @@ function App() {
           <Route path="/home" element={<PrivateRoute element={Home} />} />
           <Route path="/profile" element={<PrivateRoute element={Profile} />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/lore" element={<Lore />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

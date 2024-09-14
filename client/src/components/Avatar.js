@@ -9,7 +9,11 @@ const Avatar = ({ src, alt, className }) => {
       {isUndefinedSrc ? (
         <PiUserCircleFill className={className} />
       ) : (
-        <img src={src} alt={alt} className={`${className} object-cover`} />
+        <img
+          src={src}
+          alt={alt}
+          className={`${className} object-cover border-4 border-gray-300`}
+        />
       )}
     </div>
   );

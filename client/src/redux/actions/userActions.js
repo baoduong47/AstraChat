@@ -25,7 +25,6 @@ export const getCurrentUser = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log("Recieved current user data: ", response.data);
     dispatch({ type: "GET_CURRENT_USER_SUCCESS", payload: response.data });
   } catch (error) {
     console.log("Error retrieving current user", error.response.data);
@@ -50,6 +49,21 @@ export const updateCurrentUser = (formData) => async (dispatch) => {
     dispatch({ type: "UPDATE_USER_SUCCESS", payload: response.data });
   } catch (error) {
     console.log("Error updating user data", error);
-    dispatch({ type: "UPDATE_USER_FAIL", payload: error.message });
+
+    if (
+      error.response &&
+      error.response.status === 400 &&
+      error.response.data.message === "Email already in use"
+    ) {
+      dispatch({ type: "UPDATE_USER_FAIL", payload: "Email already in use" });
+    } else {
+      dispatch({ type: "UPDATE_USER_FAIL", payload: error.message });
+    }
   }
+};
+
+export const clearUserError = () => {
+  return {
+    type: "CLEAR_USER_ERROR",
+  };
 };
