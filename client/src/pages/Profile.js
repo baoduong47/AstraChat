@@ -34,6 +34,7 @@ const Profile = () => {
         birthday: currentUser.birthday ? formatDate(currentUser.birthday) : "",
         location: currentUser.location || "",
         title: currentUser.title || "",
+        name: currentUser.firstname || "",
       });
     }
   }, [currentUser]);
@@ -128,6 +129,13 @@ const Profile = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900 ">Name</dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    {currentUser.firstname}
+                  </dd>
+                </div>
+
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
                   <dt className="font-medium text-gray-900">Bio</dt>
                   <dd className="text-gray-700 sm:col-span-2">
                     {currentUser.bio}
@@ -166,6 +174,7 @@ const Profile = () => {
                 name="bio"
                 value={formData.bio}
                 onChange={handleChange}
+                maxLength={50}
                 className="w-full mt-2 p-2 border rounded"
               />
             </div>

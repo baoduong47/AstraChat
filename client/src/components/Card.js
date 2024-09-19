@@ -33,6 +33,8 @@ const Card = ({
   setShowDeleteError,
   setEditError,
   authorId,
+  bio,
+  location,
 }) => {
   const [reply, setReply] = useState("");
   const [currentLikes, setCurrentLikes] = useState(likes);
@@ -216,7 +218,19 @@ const Card = ({
               </>
             )}
           </div>
-          <div className="text-foregroundColor text-sm">{date}</div>
+          {bio && (
+            <div className="text-gray-800 text-sm mb-1">
+              Status: <span className="text-gray-700 text-sm">"{bio}"</span>
+            </div>
+          )}
+
+          {location ? (
+            <div className="text-foregroundColor text-sm">
+              {date} • {location}
+            </div>
+          ) : (
+            <div className="text-foregroundColor text-sm">{date}</div>
+          )}
         </div>
       </div>
       <div className="text-start mt-4 text-foreground text-base dark:text-card-foreground">

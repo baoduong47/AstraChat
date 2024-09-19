@@ -32,11 +32,11 @@ const ArtworkCarousel = () => {
   ];
 
   return (
-    <Carousel className="w-[440px] h-auto mt-10 relative" indicators={false}>
+    <Carousel className="w-[350px] h-auto mt-10 relative" indicators={false}>
       {artworks.map((artwork, index) => (
         <div
           key={index}
-          className="relative w-[440px] h-auto overflow-hidden rounded-lg"
+          className="relative w-[350px] h-auto overflow-hidden rounded-lg"
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
