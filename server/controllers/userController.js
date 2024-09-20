@@ -25,7 +25,7 @@ exports.getUserById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.log(error); // Log error for debugging
+    console.log(error);
     return res.status(500).send("Error retrieving user");
   }
 };
@@ -50,12 +50,22 @@ exports.updateCurrentUser = async (req, res) => {
 
     const updates = { ...req.body };
 
+    if (updates.email) {
+      const existingUser = await User.findOne({ email: updates.email });
+
+      if (existingUser && existingUser._id.toString() !== userId.toString()) {
+        console.log("Email already in use!");
+        return res.status(400).json({ message: "Email already in use" });
+      }
+    }
+
     if (req.file) {
       updates.avatar = req.file.path;
     }
     console.log("user", userId);
 
     updates.bio;
+
     const user = await User.findByIdAndUpdate(userId, updates, {
       new: true,
     }).select("-password");

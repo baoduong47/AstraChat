@@ -11,7 +11,7 @@ exports.getComments = async (req, res) => {
       })
       .populate({
         path: "postId",
-        select: "firstname avatar title",
+        select: "firstname avatar title bio location",
       });
     res.status(200).json(comments);
   } catch (error) {

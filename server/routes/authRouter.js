@@ -31,6 +31,7 @@ router.get(
       const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
         expiresIn: "7h",
       });
+
       res.redirect(`http://localhost:3001/login?token=${token}`);
     }
   }
