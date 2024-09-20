@@ -10,18 +10,34 @@ import Avatar from "../components/Avatar";
 import { Filter } from "bad-words";
 import AlertNotifications from "./AlertNotifications";
 
-const MessageTab = ({ user }) => {
+const MessageTab = ({ user, setIsOpen }) => {
   const [message, setMessage] = useState("");
   const [showProfanityError, setShowProfanityError] = useState(false);
 
   const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
+  const messagingTabRef = useRef(null);
 
   const { messages } = useSelector((state) => state.message);
   const { currentUser } = useSelector((state) => state.user);
-  console.log("messages received: ", messages);
 
   const filter = new Filter();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        messagingTabRef.current &&
+        !messagingTabRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsOpen]);
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
@@ -81,7 +97,10 @@ const MessageTab = ({ user }) => {
       {showProfanityError && (
         <AlertNotifications showProfanityError={showProfanityError} />
       )}
-      <div className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-56 top-0 text-black border border-gray-300 space-y-2 animate__animated animate__fadeInRight z-50">
+      <div
+        className="bg-white shadow-lg rounded-lg p-4 w-80 h-full fixed right-44 top-0 text-black border border-gray-300 space-y-2 animate__animated animate__fadeInRight z-50"
+        ref={messagingTabRef}
+      >
         <div className="ml-2 border-b pb-2 mb-4">
           <h2 className="text-xl font-semibold flex gap-1">
             <Avatar
@@ -100,7 +119,6 @@ const MessageTab = ({ user }) => {
         <div className="overflow-y-auto h-5/6">
           {messages.map((message) => {
             const isCurrentUser = message.sender === currentUser._id;
-
             return (
               <div
                 key={message._id}

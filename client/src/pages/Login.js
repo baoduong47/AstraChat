@@ -3,9 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser, authenticateWithToken } from "../redux/actions/authActions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Typography } from "@mui/material";
 import LoadingScreen from "./LoadingScreen";
 import { motion } from "framer-motion";
 import IconButton from "@mui/material/IconButton";
@@ -70,11 +67,14 @@ const Login = () => {
     console.log("Action:", action);
 
     if (token) {
-      localStorage.setItem("authToken", token);
-      dispatch(authenticateWithToken(token));
       setIsLoading(true);
 
       window.history.replaceState({}, document.title, window.location.pathname);
+
+      localStorage.setItem("authToken", token);
+      dispatch(authenticateWithToken(token));
+
+      setIsLoading(true);
     }
   }, [dispatch]);
 
@@ -229,34 +229,7 @@ const Login = () => {
               ),
             }}
           />
-          <div className="flex items-center justify-between pl-2 pr-2">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={rememberMe}
-                  onClick={(e) => setRememberMe(e.target.checked)}
-                  size="small"
-                  defaultChecked
-                />
-              }
-              label={
-                <Typography
-                  variant="body2"
-                  sx={{ fontSize: "12px", color: "white" }}
-                >
-                  Remember me
-                </Typography>
-              }
-            />
-            <a href="#" className="no-underline">
-              <Typography
-                variant="body2"
-                sx={{ fontSize: "12px", color: "white" }}
-              >
-                Forgot password?
-              </Typography>
-            </a>
-          </div>
+
           <div className="flex justify-center pt-4">
             <Button
               size="small"

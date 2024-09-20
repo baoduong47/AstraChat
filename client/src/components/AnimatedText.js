@@ -9,7 +9,7 @@ const AnimatedText = ({ text, delay = 0 }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Staggering words instead of letters
+        staggerChildren: 0.1,
         delayChildren: delay,
       },
     },

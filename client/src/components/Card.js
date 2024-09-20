@@ -210,7 +210,7 @@ const Card = ({
         />
         <div className="flex flex-col items-start justify-center ml-3">
           <div className="text-foreground font-medium text-lg flex items-center space-x-2">
-            <span>{author}</span>
+            <span>{author.charAt(0).toUpperCase() + author.slice(1)}</span>
             {title && (
               <>
                 <span className="text-gray-900 text-sm">•</span>
@@ -332,7 +332,7 @@ const Card = ({
           </button>
           <div className="relative z-50">
             {isEmojiPickerOpen && (
-              <div className="absolute bottom-full right-0 mb-2">
+              <div className="absolute bottom-full right-4 mt-5">
                 <EmojiPicker onEmojiClick={handleEmojiClick} />
               </div>
             )}

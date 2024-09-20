@@ -19,7 +19,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/signup" element={<Signup />} />
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

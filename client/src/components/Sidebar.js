@@ -8,7 +8,6 @@ import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import { ImHome } from "react-icons/im";
-import { GiTiedScroll } from "react-icons/gi";
 import Avatar from "../components/Avatar";
 import PostNotification from "./PostNotification";
 import { logout } from "../utils/auth";
@@ -38,7 +37,6 @@ const Sidebar = () => {
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-  // const unreadCount = useSelector((state) => state.message.unreadCount);
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
   const hasUnreadNotifications = () =>
@@ -261,7 +259,7 @@ const Sidebar = () => {
               {item.text === "Users" && isUsersDropdownOpen && (
                 <ul
                   className="pl-8 space-y-2 overflow-y-auto mb-1"
-                  style={{ maxHeight: "400px" }}
+                  style={{ maxHeight: "200px" }}
                 >
                   {users
                     .filter((user) => user._id !== currentUser._id)
@@ -289,8 +287,8 @@ const Sidebar = () => {
           ))}
         </ul>
       </div>
-      <div>
-        <ul className="flex flex-col text-sm mb-2 ml-2">
+      <div className="fixed bottom-2 w-full">
+        <ul className="flex flex-col text-sm mb-2 ml-2 ">
           {settingsItems.map((item, index) => (
             <li
               key={index}
@@ -326,11 +324,16 @@ const Sidebar = () => {
       {isNotificationOpen && (
         <PostNotification
           notifications={notifications}
-          isOpen={setIsNotificationOpen}
+          isOpen={isNotificationOpen}
+          setIsOpen={setIsNotificationOpen}
         />
       )}
       {isMessageTabOpen && selectedUser && (
-        <MessageTab onClose={toggleAllMessagesTab} user={selectedUser} />
+        <MessageTab
+          onClose={toggleAllMessagesTab}
+          user={selectedUser}
+          setIsOpen={setIsMessageTabOpen}
+        />
       )}
       {isAllMessagesTabOpen && (
         <AllMessagesTab

@@ -297,18 +297,18 @@ const Signup = () => {
               <span className="px-4 text-gray-600">or</span>
               <div className="flex-grow border-t border-gray-400"></div>
             </div>
-            <div className="flex space-x-4">
+            <div className="text-center space-x-4">
               <Button
                 size="small"
                 variant="outlined"
                 type="button"
-                className="w-1/2"
                 startIcon={<GoogleIcon sx={{ color: "#008744" }} />}
                 sx={{
                   borderColor: "gray",
                   color: "#666565",
                   padding: "10px 16px",
                   fontSize: "11px",
+                  width: "450px",
                   "&:hover": {
                     borderColor: "gray",
                     color: "#666565",
@@ -321,25 +321,6 @@ const Signup = () => {
                 }}
               >
                 Sign up with Google
-              </Button>
-              <Button
-                size="small"
-                variant="outlined"
-                type="button"
-                className="w-1/2"
-                startIcon={<FacebookIcon sx={{ color: "#3B5998" }} />}
-                sx={{
-                  borderColor: "gray",
-                  color: "#666565",
-                  padding: "10px 16px",
-                  fontSize: "11px",
-                  "&:hover": {
-                    borderColor: "gray",
-                    color: "#666565",
-                  },
-                }}
-              >
-                Sign up with Facebook
               </Button>
             </div>
           </form>

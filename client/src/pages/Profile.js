@@ -136,7 +136,7 @@ const Profile = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                  <dt className="font-medium text-gray-900">Bio</dt>
+                  <dt className="font-medium text-gray-900">Status</dt>
                   <dd className="text-gray-700 sm:col-span-2">
                     {currentUser.bio}
                   </dd>
@@ -169,7 +169,7 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Bio:</label>
+              <label className="block text-gray-700">Status:</label>
               <textarea
                 name="bio"
                 value={formData.bio}

@@ -31,6 +31,10 @@ const MusicList = ({ menuSound, playSound }) => {
       name: "Final Fantasy 7 - Jessie's Theme",
       file: "/sounds/FF7_JESSIE.mp3",
     },
+    {
+      name: "I Really Want to Stay At Your House - Rosa",
+      file: "/sounds/Cyberpunk.mp3",
+    },
   ];
 
   const toggleMusicList = () => {
@@ -97,7 +101,8 @@ const MusicList = ({ menuSound, playSound }) => {
       {isMusicListVisible && (
         <div
           ref={musicListRef}
-          className="absolute transform p-2 translate-x-6 translate-y-44 mt-2 w-60 bg-white border rounded-lg shadow-lg overflow-hidden"
+          className="absolute transform p-2 translate-x-6 translate-y-28 mt-2 w-60 bg-white border rounded-lg shadow-lg overflow-y-auto"
+          style={{ maxHeight: "200px" }}
         >
           <ul className="py-1 text-sm">
             {musicList.map((music, index) => (

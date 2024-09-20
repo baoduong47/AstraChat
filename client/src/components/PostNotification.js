@@ -1,25 +1,41 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { deleteNotifications } from "../redux/actions/notificationActions";
 import Avatar from "./Avatar";
 
-const PostNotification = ({ notifications, isOpen }) => {
-  // useEffect(() => {
-  //   console.log("notifications in postNotifications", notifications);
-  // }, [notifications]);
-
+const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
   const dispatch = useDispatch();
   const handleClearNotifications = () => {
     dispatch(deleteNotifications());
   };
 
+  const notificationRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsOpen]);
   return (
     <motion.div
+      ref={notificationRef}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : -20 }}
       transition={{ duration: 0.3 }}
-      className="fixed top-72 right-40 bg-white shadow-lg rounded-lg w-80 p-4 border border-gray-300"
+      className="fixed top-64 right-36 bg-white shadow-lg rounded-lg w-80 p-4 border border-gray-300"
     >
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-lg font-semibold text-gray-800 text-center">

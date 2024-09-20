@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers, getCurrentUser } from "../redux/actions/userActions";
 import { getComments } from "../redux/actions/commentAction";
 import MainLayout from "../components/MainLayout";
+import { useNavigate } from "react-router-dom";
 import NewPostForm from "../components/NewPostForm";
 import CommentsList from "../components/CommentsList";
 import "animate.css";
@@ -18,6 +19,7 @@ const Home = () => {
   const [showEditError, setEditError] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.comment);
 
@@ -77,6 +79,8 @@ const Home = () => {
   }
 
   if (error) {
+    console.log("Error: ", error);
+    navigate("/login");
     return <p>Error: {error}</p>;
   }
 
