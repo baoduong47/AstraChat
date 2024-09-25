@@ -8,10 +8,10 @@ const initialState = {
 
 const messageReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "POST_MESSAGE_SUCCESS":
+    case "RECEIVE_MESSAGE_SUCCESS":
       return {
         ...state,
-        messages: [...state.messages, action.payload.newMessage],
+        messages: [...state.messages, action.payload],
         loading: false,
       };
 

@@ -61,7 +61,7 @@ const LoadingScreen = () => {
         >
           Now Loading...
         </p>
-        <img src="/images/kupo.gif" alt="Left Image" className="w-24 h-24" />
+        <img src="/images/kupo.gif" alt="Kupo" className="w-24 h-24" />
       </div>
     </div>
   );

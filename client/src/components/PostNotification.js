@@ -60,8 +60,8 @@ const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
                 <Avatar
                   src={
                     notification.replier && notification.replier.avatar
-                      ? `http://localhost:3000/${notification.replier.avatar}`
-                      : "http://localhost:3000/undefined"
+                      ? `https://my-messaging-app-strf.onrender.com/${notification.replier.avatar}`
+                      : "https://my-messaging-app-strf.onrender.com/uploads/undefined"
                   }
                   alt="Replier Avatar"
                   className="w-9 h-9 border border-gray-200 rounded-full object-cover"

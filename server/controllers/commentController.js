@@ -67,6 +67,8 @@ exports.postComment = async (req, res) => {
     newComment = await Comment.findById(newComment._id).populate("postId");
     console.log("New comment populated:", newComment);
 
+    req.io.emit("receiveComment", newComment);
+
     res
       .status(200)
       .json({ message: "Comment saved successfully!", newComment });
@@ -140,18 +142,17 @@ exports.replyComment = async (req, res) => {
     });
     await notification.save();
 
-    // if (parentComment.postId.toString() !== user._id.toString()) {
-    //   // Create notification only if the post is not owned by the current user
-    //   const notification = new Notification({
-    //     user: parentComment.postId,
-    //     replier: user._id,
-    //     message: user.firstname,
-    //     replyContent: replyComment,
-    //     type: "comment",
-    //     postId: parentComment._id,
-    //   });
-    //   await notification.save();
-    // }
+    if (parentComment.postId.toString() !== user._id.toString()) {
+      const notification = new Notification({
+        user: parentComment.postId,
+        replier: user._id,
+        message: user.firstname,
+        replyContent: replyComment,
+        type: "comment",
+        postId: parentComment._id,
+      });
+      await notification.save();
+    }
 
     const updatedParentComment = await Comment.findById(commentId)
       .populate({

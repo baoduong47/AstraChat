@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
@@ -43,6 +43,7 @@ const Sidebar = () => {
     notifications.some((notification) => !notification.read);
 
   const handleMessageClick = (message) => {
+    console.log("Message clicked", message);
     menuSound();
     setSelectedUser(message.sender);
     setIsMessageTabOpen(true);
@@ -61,10 +62,6 @@ const Sidebar = () => {
       dispatch(clearMessages());
     }
   };
-  useEffect(() => {
-    console.log("Notifications:", notifications);
-    console.log("Has unread notifications:", hasUnreadNotifications());
-  }, [notifications]);
 
   const playSound = () => {
     const audio = new Audio("/sounds/sao_menu.mp3");
@@ -113,9 +110,6 @@ const Sidebar = () => {
       dispatch(markNotificationsAsRead());
     }
   };
-  useEffect(() => {
-    console.log("Fetched notifications:", notifications);
-  }, [notifications]);
 
   useEffect(() => {
     if (currentUser) {
@@ -124,10 +118,6 @@ const Sidebar = () => {
       dispatch(getNotifications());
     }
   }, [currentUser, dispatch]);
-
-  useEffect(() => {
-    console.log("Unreadcounts:", unreadCounts);
-  }, [unreadCounts]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -204,7 +194,7 @@ const Sidebar = () => {
           >
             <Link to="/profile" className="flex items-center space-x-3">
               <Avatar
-                src={`http://localhost:3000/${currentUser.avatar}`}
+                src={`https://my-messaging-app-strf.onrender.com/${currentUser.avatar}`}
                 alt={`${currentUser.firstname}'s avatar`}
                 className="w-10 h-10 rounded-full object-cover"
               />

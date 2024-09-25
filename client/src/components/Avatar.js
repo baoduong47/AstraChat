@@ -2,7 +2,9 @@ import React from "react";
 import { PiUserCircleFill } from "react-icons/pi";
 
 const Avatar = ({ src, alt, className }) => {
-  const isUndefinedSrc = !src || src === "http://localhost:3000/undefined";
+  const isUndefinedSrc =
+    !src ||
+    src === `https://my-messaging-app-strf.onrender.com/uploads/undefined`;
 
   return (
     <div>

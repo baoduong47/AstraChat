@@ -1,6 +1,5 @@
 import { Carousel } from "flowbite-react";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 const ArtworkCarousel = () => {
   const artworks = [

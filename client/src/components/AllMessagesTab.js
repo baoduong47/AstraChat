@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMessagesForUser } from "../redux/actions/messageActions";
+import {
+  getAllMessagesForUser,
+  receiveAllMessages,
+} from "../redux/actions/messageActions";
 import Avatar from "./Avatar";
 import "animate.css";
 
@@ -98,7 +101,7 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
                 onClick={() => handleClick(message)}
               >
                 <Avatar
-                  src={`http://localhost:3000/${message.sender.avatar}`}
+                  src={`https://my-messaging-app-strf.onrender.com/${message.sender.avatar}`}
                   alt={`${message.sender.firstname}'s avatar`}
                   className="w-12 h-12 rounded-full  object-cover"
                 />

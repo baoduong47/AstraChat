@@ -107,7 +107,7 @@ const Profile = () => {
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col items-center mb-4">
               <Avatar
-                src={`http://localhost:3000/${currentUser.avatar}`}
+                src={`https://my-messaging-app-strf.onrender.com/${currentUser.avatar}`}
                 alt={`${currentUser.firstname}'s avatar`}
                 className="w-24 h-24 rounded-full object-cover mb-4"
                 key={currentUser.avatar}

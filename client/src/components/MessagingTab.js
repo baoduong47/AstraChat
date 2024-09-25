@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   sendMessage,
   getMessagesBetweenUsers,
+  receiveMessage,
 } from "../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -9,6 +10,7 @@ import "animate.css";
 import Avatar from "../components/Avatar";
 import { Filter } from "bad-words";
 import AlertNotifications from "./AlertNotifications";
+import socket from "../utils/socket";
 
 const MessageTab = ({ user, setIsOpen }) => {
   const [message, setMessage] = useState("");
@@ -65,8 +67,29 @@ const MessageTab = ({ user, setIsOpen }) => {
 
     dispatch(sendMessage(message, user._id));
     setMessage("");
-    console.log("Message submitted: ", message);
+    dispatch(getMessagesBetweenUsers(currentUser._id, user._id));
   };
+
+  useEffect(() => {
+    socket.on("receiveMessage", (newMessage) => {
+      console.log("Message received: ", newMessage);
+      if (
+        (newMessage.sender === currentUser._id &&
+          newMessage.reciever._id === user._id) ||
+        (newMessage.sender === user._id &&
+          newMessage.reciever._id === currentUser._id)
+      ) {
+        dispatch(receiveMessage(newMessage));
+      }
+    });
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [dispatch, currentUser, user]);
+
+  useEffect(() => {
+    console.log("Messages updated:", messages);
+  }, [messages]);
 
   useEffect(() => {
     if (user && currentUser) {
@@ -104,7 +127,7 @@ const MessageTab = ({ user, setIsOpen }) => {
         <div className="ml-2 border-b pb-2 mb-4">
           <h2 className="text-xl font-semibold flex gap-1">
             <Avatar
-              src={`http://localhost:3000/${user.avatar}`}
+              src={`https://my-messaging-app-strf.onrender.com/${user.avatar}`}
               alt={`${currentUser.firstname}'s avatar`}
               className="w-10 h-10 rounded-full object-cover"
             />

@@ -12,6 +12,13 @@ const commentReducer = (state = initialState, action) => {
         comments: action.payload,
         loading: false,
       };
+
+    case "RECEIVE_COMMENT_SUCCESS":
+      console.log("Redux state updated with new comment:", action.payload);
+      return {
+        ...state,
+        comments: [...state.comments, action.payload],
+      };
     case "POST_COMMENT_SUCCESS":
       return {
         ...state,

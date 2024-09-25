@@ -4,7 +4,6 @@ import { registerUser } from "../redux/actions/authActions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { motion } from "framer-motion";

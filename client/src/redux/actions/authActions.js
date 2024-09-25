@@ -1,12 +1,10 @@
 import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
     console.log("Sending userData:", userData);
-    const response = await axios.post(
-      "http://localhost:3000/users/signup",
-      userData
-    );
+    const response = await axios.post(`${apiUrl}/users/signup`, userData);
     console.log("Recieved response: ", response.data);
     dispatch({ type: "REGISTER_SUCCESS", payload: response.data });
 
@@ -28,7 +26,7 @@ export const loginUser = (credentials, rememberMe) => async (dispatch) => {
   try {
     console.log("Logging user with credentials:", credentials);
     const response = await axios.post(
-      "http://localhost:3000/users/login",
+      `http://localhost:8000/users/login`,
       credentials
     );
     console.log("Received response from server:", response.data);

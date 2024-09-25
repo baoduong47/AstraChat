@@ -1,10 +1,11 @@
 import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const sendMessage = (content, recieverId) => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.post(
-      "http://localhost:3000/messages/",
+    await axios.post(
+      `http://localhost:8000/messages/`,
       {
         content,
         recieverId,
@@ -15,13 +16,16 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
         },
       }
     );
-    dispatch({ type: "POST_MESSAGE_SUCCESS", payload: response.data });
-    console.log("Recieved sent message: ", response.data);
+    // dispatch({ type: "POST_MESSAGE_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error sending message", error.response.data);
     dispatch({ type: "POST_MESSAGE_FAIL", payload: error.message });
   }
 };
+
+export const receiveMessage = (message) => ({
+  type: "RECEIVE_MESSAGE_SUCCESS",
+  payload: message,
+});
 
 export const clearMessages = () => ({
   type: "CLEAR_MESSAGES",
@@ -30,15 +34,13 @@ export const clearMessages = () => ({
 export const getAllMessagesForUser = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:3000/messages/", {
+    const response = await axios.get(`http://localhost:8000/messages/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("Received all messages: ", response.data);
     dispatch({ type: "GET_ALL_MSG_SUCCESS", payload: response.data.messages });
   } catch (error) {
-    console.log("Error retrieving messages: ", error.response.data);
     dispatch({ type: "GET_ALL_MSG_FAIL", payload: error.message });
   }
 };
@@ -48,7 +50,7 @@ export const getMessagesBetweenUsers =
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `http://localhost:3000/messages/${senderId}/${recieverId}`,
+        `http://localhost:8000/messages/${senderId}/${recieverId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,9 +59,7 @@ export const getMessagesBetweenUsers =
       );
       dispatch({ type: "GET_MESSAGE_SUCCESS", payload: response.data });
       dispatch(getUnreadMessagesCounts());
-      console.log("Received messages: ", response.data);
     } catch (error) {
-      console.log("Error retrieving messages: ", error.response.data);
       dispatch({ type: "GET_MESSAGE_FAIL", payload: error.message });
     }
   };
@@ -68,7 +68,7 @@ export const getUnreadMessagesCount = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      "http://localhost:3000/messages/unread-count",
+      `http://localhost:8000/messages/unread-count`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +80,6 @@ export const getUnreadMessagesCount = () => async (dispatch) => {
       payload: response.data.unreadCount,
     });
   } catch (error) {
-    console.log("Error fetching unread messages count", error.response.data);
     dispatch({ type: "GET_UNREAD_COUNT_FAIL", payload: error.message });
   }
 };
@@ -89,7 +88,7 @@ export const getUnreadMessagesCounts = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      "http://localhost:3000/messages/unread-counts",
+      `http://localhost:8000/messages/unread-counts`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,7 +100,6 @@ export const getUnreadMessagesCounts = () => async (dispatch) => {
       payload: response.data.unreadCounts,
     });
   } catch (error) {
-    console.log("Error fetching unread messages counts", error.response.data);
     dispatch({ type: "GET_UNREAD_COUNTS_FAIL", payload: error.message });
   }
 };

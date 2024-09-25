@@ -47,8 +47,6 @@ const Card = ({
 
   const { currentUser } = useSelector((state) => state.user);
 
-  console.log("current likes", currentLikes);
-
   const dispatch = useDispatch();
 
   const handleMenuClick = (event) => {
@@ -282,13 +280,13 @@ const Card = ({
                   <div className="flex-shrink-0">
                     {reply.authorId && reply.authorId.avatar ? (
                       <Avatar
-                        src={`http://localhost:3000/${reply.authorId.avatar}`}
+                        src={`https://my-messaging-app-strf.onrender.com/${reply.authorId.avatar}`}
                         alt={`Avatar of ${reply.authorId.firstname}`}
                         className="w-10 h-10 rounded-full"
                       />
                     ) : (
                       <Avatar
-                        src="http://localhost:3000/undefined"
+                        src={`https://my-messaging-app-strf.onrender.com/undefined`}
                         alt="Default Avatar"
                         className="w-10 h-10 rounded-full"
                       />

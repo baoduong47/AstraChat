@@ -16,7 +16,7 @@ const Login = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(
+  const [rememberMe] = useState(
     () => localStorage.getItem("rememberMe") === true
   );
 
@@ -67,8 +67,6 @@ const Login = () => {
     console.log("Action:", action);
 
     if (token) {
-      setIsLoading(true);
-
       window.history.replaceState({}, document.title, window.location.pathname);
 
       localStorage.setItem("authToken", token);

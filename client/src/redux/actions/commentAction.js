@@ -1,21 +1,25 @@
 import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getComments = () => async (dispatch) => {
   try {
-    const response = await axios.get("http://localhost:3000/comments/");
-    console.log("Recieved comments data: ", response.data);
+    const response = await axios.get(`http://localhost:8000/comments/`);
     dispatch({ type: "GET_COMMENTS_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error retrieving comments", error.response.data);
     dispatch({ type: "GET_COMMENTS_FAIL", payload: error.message });
   }
 };
 
+export const receiveComment = (comment) => ({
+  type: "RECEIVE_COMMENT_SUCCESS",
+  payload: comment,
+});
+
 export const postComment = (comment) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.post(
-      "http://localhost:3000/comments/",
+    await axios.post(
+      `http://localhost:8000/comments/`,
       {
         comment,
       },
@@ -25,9 +29,7 @@ export const postComment = (comment) => async (dispatch) => {
         },
       }
     );
-    dispatch({ type: "POST_COMMENT_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error posting comment", error.response.data);
     dispatch({ type: "POST_COMMENT_FAIL", payload: error.message });
   }
 };
@@ -36,17 +38,15 @@ export const deleteComment = (commentId) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.delete(
-      `http://localhost:3000/comments/${commentId}`,
+      `http://localhost:8000/comments/${commentId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    console.log("Recieved comments data: ", response.data);
     dispatch({ type: "DELETE_COMMENT_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error Deleting comment", error.response.data);
     dispatch({ type: "DELETE_COMMENT_FAIL", payload: error.message });
   }
 };
@@ -55,7 +55,7 @@ export const replyComment = (commentId, reply) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `http://localhost:3000/comments/${commentId}/replies`,
+      `http://localhost:8000/comments/${commentId}/replies`,
       {
         reply,
       },
@@ -65,10 +65,8 @@ export const replyComment = (commentId, reply) => async (dispatch) => {
         },
       }
     );
-    console.log("Received reply data: ", response.data);
     dispatch({ type: "REPLY_TO_COMMENT_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error replying to comment", error.response.data);
     dispatch({ type: "REPLY_TO_COMMENT_FAIL", payload: error.message });
   }
 };
@@ -81,7 +79,7 @@ export const updateLikes = (commentId) => async (dispatch) => {
     }
 
     const response = await axios.post(
-      `http://localhost:3000/comments/${commentId}/likes`,
+      `http://localhost:8000/comments/${commentId}/likes`,
       {},
       {
         headers: {
@@ -90,14 +88,11 @@ export const updateLikes = (commentId) => async (dispatch) => {
       }
     );
 
-    console.log("Successfully updated likes: ", response.data);
     dispatch({ type: "UPDATE_LIKES_SUCCESS", payload: response.data });
   } catch (error) {
     const errorMessage = error.response
       ? error.response.data.message
       : error.message;
-
-    console.log("Error updating likes", errorMessage);
 
     if (errorMessage === "User has already liked this comment") {
       alert("You have already liked this comment.");
@@ -116,7 +111,7 @@ export const updateComment = (commentId, updates) => async (dispatch) => {
     }
 
     const response = await axios.put(
-      `http://localhost:3000/comments/${commentId}`,
+      `http://localhost:8000/comments/${commentId}`,
       updates,
       {
         headers: {
@@ -125,10 +120,8 @@ export const updateComment = (commentId, updates) => async (dispatch) => {
       }
     );
 
-    console.log("Successfully updated comment: ", response.data);
     dispatch({ type: "UPDATE_COMMENT_SUCCESS", payload: response.data });
   } catch (error) {
-    console.log("Error updating comment", error);
     dispatch({ type: "UPDATE_COMMENT_FAIL", payload: error.message });
   }
 };
