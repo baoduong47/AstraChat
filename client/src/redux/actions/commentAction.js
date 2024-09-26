@@ -15,6 +15,11 @@ export const receiveComment = (comment) => ({
   payload: comment,
 });
 
+export const deletedComment = (removedComment) => ({
+  type: "DELETE_COMMENT_SUCCESS",
+  payload: removedComment,
+});
+
 export const postComment = (comment) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
@@ -70,6 +75,11 @@ export const replyComment = (commentId, reply) => async (dispatch) => {
     dispatch({ type: "REPLY_TO_COMMENT_FAIL", payload: error.message });
   }
 };
+
+export const receiveReply = (parentComment) => ({
+  type: "RECEIVE_REPLY_SUCCESS",
+  payload: parentComment,
+});
 
 export const updateLikes = (commentId) => async (dispatch) => {
   try {

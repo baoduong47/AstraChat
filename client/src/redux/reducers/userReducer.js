@@ -13,6 +13,22 @@ const userReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
+
+    case "UPDATED_USER_SUCCESS":
+      console.log("Updated user in Redux:", action.payload);
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user._id === action.payload._id ? action.payload : user
+        ),
+
+        currentUser:
+          state.currentUser && state.currentUser._id === action.payload._id
+            ? { ...state.currentUser, ...action.payload }
+            : state.currentUser,
+
+        loading: false,
+      };
     case "GET_USERS_SUCCESS":
       return {
         ...state,

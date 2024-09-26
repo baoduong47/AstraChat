@@ -1,5 +1,8 @@
 import React from "react";
 import Card from "./Card";
+import { useDispatch, useSelector } from "react-redux";
+import { userUpdated } from "../redux/actions/userActions";
+import socket from "../utils/socket";
 
 const CommentsList = ({
   comments,

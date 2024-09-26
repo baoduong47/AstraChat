@@ -57,6 +57,11 @@ export const updateCurrentUser = (formData) => async (dispatch) => {
   }
 };
 
+export const userUpdated = (user) => ({
+  type: "UPDATED_USER_SUCCESS",
+  payload: user,
+});
+
 export const clearUserError = () => {
   return {
     type: "CLEAR_USER_ERROR",

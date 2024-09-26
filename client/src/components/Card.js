@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   replyComment,
   updateLikes,
   deleteComment,
   updateComment,
+  receiveReply,
+  deletedComment,
 } from "../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
 import { SiThunderbird } from "react-icons/si";
@@ -18,6 +20,7 @@ import EditForm from "./EditForm";
 import EmojiPicker from "emoji-picker-react";
 import { getNotifications } from "../redux/actions/notificationActions";
 import { GiMineralHeart } from "react-icons/gi";
+import socket from "../utils/socket";
 
 const Card = ({
   avatar,
@@ -44,10 +47,47 @@ const Card = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [authorInfo, setAuthorInfo] = useState({
+    avatar,
+    author,
+    title,
+    bio,
+    location,
+  });
 
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket.on("userUpdated", (updatedUser) => {
+      console.log("Updated user on frontend", updatedUser);
+      if (updatedUser._id === authorId._id) {
+        setAuthorInfo({
+          avatar: updatedUser.avatar,
+          author: updatedUser.firstname,
+          title: updatedUser.title,
+          bio: updatedUser.bio,
+          location: updatedUser.location,
+        });
+      }
+    });
+
+    return () => {
+      socket.off("userUpdated");
+    };
+  }, [authorId._id]);
+
+  useEffect(() => {
+    socket.on("deletedComment", (removedComment) => {
+      console.log("removedComment id", removedComment._id);
+      dispatch(deletedComment(removedComment._id));
+    });
+
+    return () => {
+      socket.off("deletedComment");
+    };
+  }, [dispatch]);
 
   const handleMenuClick = (event) => {
     playSound();
@@ -86,6 +126,17 @@ const Card = ({
       setReply("");
     }
   };
+
+  useEffect(() => {
+    socket.on("receiveReply", (parentComment) => {
+      console.log("received parentComment from socket: ", parentComment);
+      dispatch(receiveReply(parentComment));
+    });
+
+    return () => {
+      socket.off("receiveReply");
+    };
+  }, [dispatch]);
 
   const handleLikes = (e) => {
     e.preventDefault();
@@ -202,29 +253,32 @@ const Card = ({
       </div>
       <div className="flex items-center justify-start ml-1">
         <Avatar
-          src={avatar}
+          src={authorInfo.avatar}
           alt={`Avatar of ${author}`}
           className="w-12 h-12 rounded-full"
         />
         <div className="flex flex-col items-start justify-center ml-3">
           <div className="text-foreground font-medium text-lg flex items-center space-x-2">
             <span>{author.charAt(0).toUpperCase() + author.slice(1)}</span>
-            {title && (
+            {authorInfo.title && (
               <>
                 <span className="text-gray-900 text-sm">•</span>
-                <span className="text-gray-500 text-sm">{title}</span>
+                <span className="text-gray-500 text-sm">
+                  {authorInfo.title}
+                </span>
               </>
             )}
           </div>
-          {bio && (
+          {authorInfo.bio && (
             <div className="text-gray-800 text-sm mb-1">
-              Status: <span className="text-gray-700 text-sm">"{bio}"</span>
+              Status:{" "}
+              <span className="text-gray-700 text-sm">"{authorInfo.bio}"</span>
             </div>
           )}
 
-          {location ? (
+          {authorInfo.location ? (
             <div className="text-foregroundColor text-sm">
-              {date} • {location}
+              {date} • {authorInfo.location}
             </div>
           ) : (
             <div className="text-foregroundColor text-sm">{date}</div>
