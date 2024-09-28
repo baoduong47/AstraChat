@@ -2,8 +2,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { deleteNotifications } from "../redux/actions/notificationActions";
+import {
+  deleteNotifications,
+  newNotification,
+} from "../redux/actions/notificationActions";
 import Avatar from "./Avatar";
+import socket from "../utils/socket";
 
 const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
   const dispatch = useDispatch();
@@ -29,6 +33,17 @@ const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setIsOpen]);
+
+  useEffect(() => {
+    socket.on("newNotification", (notification) => {
+      dispatch(newNotification(notification));
+    });
+
+    return () => {
+      socket.off("newNotification");
+    };
+  }, [dispatch]);
+
   return (
     <motion.div
       ref={notificationRef}
@@ -51,9 +66,9 @@ const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
 
       <ul className="space-y-3 overflow-y-auto" style={{ maxHeight: "200px" }}>
         {notifications.length > 0 ? (
-          notifications.map((notification) => (
+          notifications.map((notification, index) => (
             <li
-              key={notification._id}
+              key={notification._id || index}
               className="bg-gray-100 p-3 rounded-md shadow-sm hover:bg-gray-200 transition-colors duration-200"
             >
               <div className="flex items-center space-x-2 mb-2">

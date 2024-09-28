@@ -45,50 +45,19 @@ const commentReducer = (state = initialState, action) => {
         loading: false,
       };
 
-    case "DELETE_COMMENT_SUCCESS":
+    case "RECEIVE_REPLY_SUCCESS":
+      return {
+        ...state,
+        comments: state.comments.map((comment) =>
+          comment._id === action.payload._id ? action.payload : comment
+        ),
+      };
+
+    case "DELETED_COMMENT_SUCCESS":
       return {
         ...state,
         comments: state.comments.filter(
           (comment) => comment._id !== action.payload
-        ),
-      };
-
-    case "REPLY_TO_COMMENT_SUCCESS":
-      return {
-        ...state,
-        comments: state.comments.map((comment) => {
-          console.log("Redux state updated with new reply:", action.payload);
-
-          if (comment._id === action.payload.parentComment._id) {
-            return action.payload.parentComment;
-          }
-          return comment;
-        }),
-        loading: false,
-      };
-
-    case "RECEIVE_REPLY_SUCCESS":
-      console.log(
-        "Redux state updated with new reply succcess:",
-        action.payload
-      );
-      console.log("Comments state: ", state.comments);
-      return {
-        comments: state.comments.map((comment) => {
-          if (comment._id === action.payload.parentComment._id) {
-            return {
-              comments: [...state.comments, action.payload.parentComment],
-            };
-          }
-        }),
-        loading: false,
-      };
-
-    case "DELETE_COMMENT_SUCCESS":
-      return {
-        ...state,
-        comments: state.comments.filter(
-          (comment) => comment._id !== action.payload.removedComment._id
         ),
       };
 

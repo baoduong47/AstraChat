@@ -88,10 +88,6 @@ const MessageTab = ({ user, setIsOpen }) => {
   }, [dispatch, currentUser, user]);
 
   useEffect(() => {
-    console.log("Messages updated:", messages);
-  }, [messages]);
-
-  useEffect(() => {
     if (user && currentUser) {
       dispatch(getMessagesBetweenUsers(currentUser._id, user._id));
     }

@@ -15,6 +15,11 @@ export const getNotifications = () => async (dispatch) => {
   }
 };
 
+export const newNotification = (notification) => ({
+  type: "RECEIVE_NOTIFICATIONS_SUCCESS",
+  payload: notification,
+});
+
 export const deleteNotifications = () => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");

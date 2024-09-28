@@ -15,11 +15,6 @@ export const receiveComment = (comment) => ({
   payload: comment,
 });
 
-export const deletedComment = (removedComment) => ({
-  type: "DELETE_COMMENT_SUCCESS",
-  payload: removedComment,
-});
-
 export const postComment = (comment) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
@@ -42,24 +37,25 @@ export const postComment = (comment) => async (dispatch) => {
 export const deleteComment = (commentId) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.delete(
-      `http://localhost:8000/comments/${commentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    dispatch({ type: "DELETE_COMMENT_SUCCESS", payload: response.data });
+    await axios.delete(`http://localhost:8000/comments/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (error) {
     dispatch({ type: "DELETE_COMMENT_FAIL", payload: error.message });
   }
 };
 
+export const deletedComment = (removedComment) => ({
+  type: "DELETED_COMMENT_SUCCESS",
+  payload: removedComment,
+});
+
 export const replyComment = (commentId, reply) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.post(
+    await axios.post(
       `http://localhost:8000/comments/${commentId}/replies`,
       {
         reply,
@@ -70,15 +66,14 @@ export const replyComment = (commentId, reply) => async (dispatch) => {
         },
       }
     );
-    dispatch({ type: "REPLY_TO_COMMENT_SUCCESS", payload: response.data });
   } catch (error) {
     dispatch({ type: "REPLY_TO_COMMENT_FAIL", payload: error.message });
   }
 };
 
-export const receiveReply = (parentComment) => ({
+export const receiveReply = (updatedParentComment) => ({
   type: "RECEIVE_REPLY_SUCCESS",
-  payload: parentComment,
+  payload: updatedParentComment,
 });
 
 export const updateLikes = (commentId) => async (dispatch) => {

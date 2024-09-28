@@ -128,9 +128,8 @@ const Card = ({
   };
 
   useEffect(() => {
-    socket.on("receiveReply", (parentComment) => {
-      console.log("received parentComment from socket: ", parentComment);
-      dispatch(receiveReply(parentComment));
+    socket.on("receiveReply", (updatedParentComment) => {
+      dispatch(receiveReply(updatedParentComment));
     });
 
     return () => {
