@@ -61,6 +61,7 @@ exports.updateCurrentUser = async (req, res) => {
 
     if (req.file) {
       updates.avatar = req.file.path;
+      console.log("req file ", req.file);
     }
     console.log("user", userId);
 
@@ -77,8 +78,12 @@ exports.updateCurrentUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    req.io.emit("userUpdated", user);
+
     res.status(200).json({ message: "User successfully updated", user });
   } catch (error) {
+    console.error("Error updating profile:", error);
     return res.status(500).json({ message: "Error updating profile" });
   }
 };

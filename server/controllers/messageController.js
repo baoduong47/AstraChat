@@ -21,8 +21,6 @@ exports.sendMessage = async (req, res) => {
 
     await newMessage.save();
 
-    // Emit the message to the sender and receiver via their respective socket IDs
-    // console.log("Emitting message to clients");
     req.io.emit("receiveMessage", newMessage);
 
     res.status(200).json({ message: "Message sent successfully!", newMessage });

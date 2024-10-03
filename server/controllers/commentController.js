@@ -128,19 +128,7 @@ exports.replyComment = async (req, res) => {
 
     parentComment.replies.push(reply);
 
-    console.log("Parent comment with new reply before saving:", parentComment);
-
     await parentComment.save();
-
-    const notification = new Notification({
-      user: parentComment.postId,
-      replier: user._id,
-      message: user.firstname,
-      replyContent: replyComment,
-      type: "comment",
-      postId: parentComment._id,
-    });
-    await notification.save();
 
     if (parentComment.postId.toString() !== user._id.toString()) {
       const notification = new Notification({
@@ -152,6 +140,8 @@ exports.replyComment = async (req, res) => {
         postId: parentComment._id,
       });
       await notification.save();
+
+      req.io.emit("newNotification", notification);
     }
 
     const updatedParentComment = await Comment.findById(commentId)
@@ -163,6 +153,8 @@ exports.replyComment = async (req, res) => {
         path: "postId",
         select: "avatar title",
       });
+
+    req.io.emit("receiveReply", updatedParentComment);
 
     res.status(200).json({
       message: "Reply added successfully!",
@@ -197,6 +189,8 @@ exports.updateComment = async (req, res) => {
       });
 
     console.log("updated comment: ", updatedComment);
+
+    req.io.emit("editComment", updatedComment);
 
     if (!updatedComment) {
       return res.status(404).json({ message: "Comment not found" });
@@ -251,6 +245,8 @@ exports.deleteComment = async (req, res) => {
 
     console.log("Comment removed successfully", removedComment);
 
+    req.io.emit("deletedComment", removedComment);
+
     return res
       .status(200)
       .json({ message: "Comment deleted successfully!", removedComment });
@@ -296,6 +292,8 @@ exports.updateLikes = async (req, res) => {
     comment.likedBy.push(user);
     await comment.save();
 
+    req.io.emit("updatedLikes", comment);
+
     if (comment.postId.toString() !== user._id.toString()) {
       const notification = new Notification({
         user: comment.postId,
@@ -305,6 +303,8 @@ exports.updateLikes = async (req, res) => {
         postId: comment._id,
       });
       await notification.save();
+
+      req.io.emit("newNotification", notification);
     }
 
     res.status(200).json({
