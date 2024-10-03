@@ -26,21 +26,38 @@ const commentReducer = (state = initialState, action) => {
         loading: false,
       };
 
-    case "UPDATE_COMMENT_SUCCESS":
+    case "UPDATED_COMMENT_SUCCESS":
+      console.log("received updated comment in reducer", action.payload);
       return {
         ...state,
         comments: state.comments.map((comment) =>
-          comment._id === action.payload.updatedComment._id
-            ? { ...comment, ...action.payload.updatedComment }
+          comment._id === action.payload._id
+            ? { ...state.comments, ...action.payload }
             : comment
         ),
-        loading: false,
       };
+
     case "UPDATE_LIKES_SUCCESS":
       return {
         ...state,
         comments: state.comments.map((comment) =>
           comment._id === action.payload._id ? action.payload : comment
+        ),
+        loading: false,
+      };
+
+    case "UPDATED_LIKES_SUCCESS":
+      console.log("updated likes reducer", action.payload);
+      return {
+        ...state,
+        comments: state.comments.map((comment) =>
+          comment._id === action.payload._id
+            ? {
+                ...comment,
+                likes: action.payload.likes,
+                likedBy: action.payload.likedBy,
+              }
+            : comment
         ),
         loading: false,
       };

@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   replyComment,
   updateLikes,
+  updatedLikes,
   deleteComment,
   updateComment,
   receiveReply,
   deletedComment,
+  editComment,
 } from "../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
 import { SiThunderbird } from "react-icons/si";
@@ -23,7 +25,6 @@ import { GiMineralHeart } from "react-icons/gi";
 import socket from "../utils/socket";
 
 const Card = ({
-  avatar,
   author,
   date,
   description,
@@ -38,6 +39,7 @@ const Card = ({
   authorId,
   bio,
   location,
+  comments,
 }) => {
   const [reply, setReply] = useState("");
   const [currentLikes, setCurrentLikes] = useState(likes);
@@ -47,9 +49,10 @@ const Card = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [repliesState, setRepliesState] = useState(replies);
+
   const [authorInfo, setAuthorInfo] = useState({
-    avatar,
-    author,
+    avatar: authorId.avatar,
     title,
     bio,
     location,
@@ -57,30 +60,72 @@ const Card = ({
 
   const { currentUser } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    console.log("List of comments", comments);
+  }, []);
+
   const dispatch = useDispatch();
+
+  const displayLikes = (commentsArray) => {
+    commentsArray.forEach((comment) => {
+      if (comment._id === commentId) {
+        setCurrentLikes(comment.likes);
+        setLikedBy(comment.likedBy);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (comments) {
+      displayLikes(comments);
+    }
+  }, [comments, likes]);
 
   useEffect(() => {
     socket.on("userUpdated", (updatedUser) => {
-      console.log("Updated user on frontend", updatedUser);
       if (updatedUser._id === authorId._id) {
         setAuthorInfo({
           avatar: updatedUser.avatar,
-          author: updatedUser.firstname,
           title: updatedUser.title,
           bio: updatedUser.bio,
           location: updatedUser.location,
         });
       }
+
+      const updatedReplies = repliesState.map((reply) => {
+        if (reply.authorId._id === updatedUser._id) {
+          return {
+            ...reply,
+            authorId: {
+              ...reply.authorId,
+              avatar: updatedUser.avatar,
+            },
+          };
+        }
+        return reply;
+      });
+
+      setRepliesState(updatedReplies);
     });
 
     return () => {
       socket.off("userUpdated");
     };
-  }, [authorId._id]);
+  }, [authorId._id, repliesState]);
+
+  useEffect(() => {
+    if (currentUser && currentUser._id === authorId._id) {
+      setAuthorInfo({
+        avatar: currentUser.avatar,
+        title: currentUser.title,
+        bio: currentUser.bio,
+        location: currentUser.location,
+      });
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     socket.on("deletedComment", (removedComment) => {
-      console.log("removedComment id", removedComment._id);
       dispatch(deletedComment(removedComment._id));
     });
 
@@ -128,6 +173,27 @@ const Card = ({
   };
 
   useEffect(() => {
+    socket.on("editComment", (updatedComment) => {
+      dispatch(editComment(updatedComment));
+    });
+
+    return () => {
+      socket.off("editComment");
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on("updatedLikes", (comment) => {
+      console.log("updatedlikes frontend", comment);
+      dispatch(updatedLikes(comment));
+    });
+
+    return () => {
+      socket.off("updatedLikes");
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
     socket.on("receiveReply", (updatedParentComment) => {
       dispatch(receiveReply(updatedParentComment));
     });
@@ -148,8 +214,6 @@ const Card = ({
     dispatch(updateLikes(commentId)).then(() => {
       dispatch(getNotifications());
     });
-    setCurrentLikes(currentLikes + 1);
-    setLikedBy([...likedBy, currentUser._id]);
   };
 
   const toggleComments = (e) => {
@@ -327,19 +391,19 @@ const Card = ({
         </div>
         {isMessageOpen && (
           <>
-            {replies &&
-              replies.map((reply) => (
+            {repliesState &&
+              repliesState.map((reply) => (
                 <div key={reply._id} className="flex items-start">
                   <div className="flex-shrink-0">
                     {reply.authorId && reply.authorId.avatar ? (
                       <Avatar
-                        src={`https://my-messaging-app-strf.onrender.com/${reply.authorId.avatar}`}
+                        src={reply.authorId.avatar}
                         alt={`Avatar of ${reply.authorId.firstname}`}
                         className="w-10 h-10 rounded-full"
                       />
                     ) : (
                       <Avatar
-                        src={`https://my-messaging-app-strf.onrender.com/undefined`}
+                        src="undefined"
                         alt="Default Avatar"
                         className="w-10 h-10 rounded-full"
                       />

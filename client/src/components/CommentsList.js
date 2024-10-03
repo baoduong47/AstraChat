@@ -1,8 +1,6 @@
 import React from "react";
 import Card from "./Card";
-import { useDispatch, useSelector } from "react-redux";
-import { userUpdated } from "../redux/actions/userActions";
-import socket from "../utils/socket";
+import { useEffect } from "react";
 
 const CommentsList = ({
   comments,
@@ -27,7 +25,6 @@ const CommentsList = ({
               description={comment.comment}
               author={comment.author}
               authorId={comment.postId}
-              avatar={`https://my-messaging-app-strf.onrender.com/${comment.postId.avatar}`}
               title={comment.postId.title}
               date={new Date(comment.createdAt).toLocaleString()}
               commentId={comment._id}
@@ -39,6 +36,7 @@ const CommentsList = ({
               setEditError={setEditError}
               setShowSuccess={setShowSuccess}
               setShowDeleteError={setShowDeleteError}
+              comments={comments}
             />
           </div>
         </li>

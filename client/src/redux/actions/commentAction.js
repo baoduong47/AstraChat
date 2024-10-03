@@ -15,6 +15,16 @@ export const receiveComment = (comment) => ({
   payload: comment,
 });
 
+export const editComment = (updatedComment) => ({
+  type: "UPDATED_COMMENT_SUCCESS",
+  payload: updatedComment,
+});
+
+export const updatedLikes = (comment) => ({
+  type: "UPDATED_LIKES_SUCCESS",
+  payload: comment,
+});
+
 export const postComment = (comment) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
@@ -93,7 +103,7 @@ export const updateLikes = (commentId) => async (dispatch) => {
       }
     );
 
-    dispatch({ type: "UPDATE_LIKES_SUCCESS", payload: response.data });
+    // dispatch({ type: "UPDATE_LIKES_SUCCESS", payload: response.data });
   } catch (error) {
     const errorMessage = error.response
       ? error.response.data.message
@@ -115,17 +125,11 @@ export const updateComment = (commentId, updates) => async (dispatch) => {
       throw new Error("No token found");
     }
 
-    const response = await axios.put(
-      `http://localhost:8000/comments/${commentId}`,
-      updates,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    dispatch({ type: "UPDATE_COMMENT_SUCCESS", payload: response.data });
+    await axios.put(`http://localhost:8000/comments/${commentId}`, updates, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (error) {
     dispatch({ type: "UPDATE_COMMENT_FAIL", payload: error.message });
   }

@@ -6,11 +6,13 @@ import {
 } from "../redux/actions/messageActions";
 import Avatar from "./Avatar";
 import "animate.css";
+import socket from "../utils/socket";
 
-const AllMessagesTab = ({ onClose, onMessageClick }) => {
+const AllMessagesTab = ({ onClose, onMessageClick, user }) => {
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { messages } = useSelector((state) => state.message);
+  const { users } = useSelector((state) => state.user);
 
   const [readMessages, setReadMessages] = useState({});
 
@@ -22,11 +24,14 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
     const groups = filteredMessages.reduce((acc, message) => {
       const senderName = message.sender.firstname;
 
+      const sender =
+        users.find((user) => user._id === message.sender._id) || message.sender;
+
       if (
         !acc[senderName] ||
         new Date(acc[senderName].timestamp) < new Date(message.timestamp)
       ) {
-        acc[senderName] = message;
+        acc[senderName] = { ...message, sender };
       }
       return acc;
     }, {});
@@ -68,6 +73,19 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
     onMessageClick(message);
   };
 
+  useEffect(() => {
+    socket.on("userUpdated", (updatedUser) => {
+      dispatch({
+        type: "UPDATED_USER_SUCCESS",
+        payload: updatedUser,
+      });
+    });
+
+    return () => {
+      socket.off("userUpdated");
+    };
+  }, [dispatch]);
+
   const groupedMessages = groupMessagesBySender(messages);
 
   if (loading) {
@@ -101,7 +119,7 @@ const AllMessagesTab = ({ onClose, onMessageClick }) => {
                 onClick={() => handleClick(message)}
               >
                 <Avatar
-                  src={`https://my-messaging-app-strf.onrender.com/${message.sender.avatar}`}
+                  src={message.sender.avatar}
                   alt={`${message.sender.firstname}'s avatar`}
                   className="w-12 h-12 rounded-full  object-cover"
                 />

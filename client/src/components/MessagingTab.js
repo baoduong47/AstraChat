@@ -12,7 +12,7 @@ import { Filter } from "bad-words";
 import AlertNotifications from "./AlertNotifications";
 import socket from "../utils/socket";
 
-const MessageTab = ({ user, setIsOpen }) => {
+const MessageTab = ({ user, setIsOpen, avatar }) => {
   const [message, setMessage] = useState("");
   const [showProfanityError, setShowProfanityError] = useState(false);
 
@@ -72,7 +72,6 @@ const MessageTab = ({ user, setIsOpen }) => {
 
   useEffect(() => {
     socket.on("receiveMessage", (newMessage) => {
-      console.log("Message received: ", newMessage);
       if (
         (newMessage.sender === currentUser._id &&
           newMessage.reciever._id === user._id) ||
@@ -123,7 +122,7 @@ const MessageTab = ({ user, setIsOpen }) => {
         <div className="ml-2 border-b pb-2 mb-4">
           <h2 className="text-xl font-semibold flex gap-1">
             <Avatar
-              src={`https://my-messaging-app-strf.onrender.com/${user.avatar}`}
+              src={avatar}
               alt={`${currentUser.firstname}'s avatar`}
               className="w-10 h-10 rounded-full object-cover"
             />

@@ -4,15 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiBellSimpleRingingFill } from "react-icons/pi";
-import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
-import { ImHome } from "react-icons/im";
-import Avatar from "../components/Avatar";
-import PostNotification from "./PostNotification";
 import { logout } from "../utils/auth";
-import MessageTab from "./MessagingTab";
-import AllMessagesTab from "./AllMessagesTab";
+import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
+import { ImHome } from "react-icons/im";
 import {
   getUnreadMessagesCount,
   getUnreadMessagesCounts,
@@ -22,7 +16,14 @@ import {
   getNotifications,
   markNotificationsAsRead,
 } from "../redux/actions/notificationActions";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
+import Avatar from "../components/Avatar";
+import PostNotification from "./PostNotification";
+import MessageTab from "./MessagingTab";
+import AllMessagesTab from "./AllMessagesTab";
 import "animate.css";
+import socket from "../utils/socket";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const Sidebar = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAllMessagesTabOpen, setIsAllMessagesTabOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [userAvatar, setUserAvatar] = useState(null);
 
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
@@ -43,7 +45,6 @@ const Sidebar = () => {
     notifications.some((notification) => !notification.read);
 
   const handleMessageClick = (message) => {
-    console.log("Message clicked", message);
     menuSound();
     setSelectedUser(message.sender);
     setIsMessageTabOpen(true);
@@ -62,6 +63,33 @@ const Sidebar = () => {
       dispatch(clearMessages());
     }
   };
+
+  useEffect(() => {
+    if (selectedUser) {
+      setUserAvatar(selectedUser.avatar);
+    }
+  }, [selectedUser]);
+
+  useEffect(() => {
+    socket.on("userUpdated", (updatedUser) => {
+      dispatch({
+        type: "UPDATED_USER_SUCCESS",
+        payload: updatedUser,
+      });
+
+      if (selectedUser && updatedUser._id === selectedUser._id) {
+        setSelectedUser((prevUser) => ({
+          ...prevUser,
+          avatar: updatedUser.avatar,
+        }));
+        setUserAvatar(updatedUser.avatar);
+      }
+    });
+
+    return () => {
+      socket.off("userUpdated");
+    };
+  }, [selectedUser]);
 
   const playSound = () => {
     const audio = new Audio("/sounds/sao_menu.mp3");
@@ -194,7 +222,7 @@ const Sidebar = () => {
           >
             <Link to="/profile" className="flex items-center space-x-3">
               <Avatar
-                src={`https://my-messaging-app-strf.onrender.com/${currentUser.avatar}`}
+                src={currentUser.avatar}
                 alt={`${currentUser.firstname}'s avatar`}
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -323,12 +351,14 @@ const Sidebar = () => {
           onClose={toggleAllMessagesTab}
           user={selectedUser}
           setIsOpen={setIsMessageTabOpen}
+          avatar={userAvatar}
         />
       )}
       {isAllMessagesTabOpen && (
         <AllMessagesTab
           onClose={toggleAllMessagesTab}
           onMessageClick={handleMessageClick}
+          user={selectedUser}
         />
       )}
     </div>

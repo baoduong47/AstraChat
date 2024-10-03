@@ -23,10 +23,7 @@ const MusicList = ({ menuSound, playSound }) => {
       name: "Final Fantasy 7 - Aerith's Theme",
       file: "/sounds/FF7_AERITH.mp3",
     },
-    {
-      name: "Final Fantasy 13 - The Promise",
-      file: "/sounds/ff13_promise.mp3",
-    },
+
     {
       name: "Final Fantasy 7 - Jessie's Theme",
       file: "/sounds/FF7_JESSIE.mp3",

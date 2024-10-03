@@ -16,6 +16,7 @@ const notificationReducer = (state = initialState, action) => {
       const isDuplicate = state.notifications.some(
         (notification) => notification._id === action.payload._id
       );
+
       return {
         ...state,
         notifications: isDuplicate

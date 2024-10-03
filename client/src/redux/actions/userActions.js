@@ -34,15 +34,19 @@ export const getCurrentUser = () => async (dispatch) => {
 export const updateCurrentUser = (formData) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
+    console.log("FormData being sent:", formData);
+
     const response = await axios.put(
       `http://localhost:8000/users/current`,
       formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     );
+
     dispatch({ type: "UPDATE_USER_SUCCESS", payload: response.data });
   } catch (error) {
     if (
@@ -52,6 +56,8 @@ export const updateCurrentUser = (formData) => async (dispatch) => {
     ) {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Email already in use" });
     } else {
+      console.log("error avatar", error);
+
       dispatch({ type: "UPDATE_USER_FAIL", payload: error.message });
     }
   }

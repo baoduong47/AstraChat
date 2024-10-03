@@ -29,7 +29,7 @@ const Profile = () => {
   useEffect(() => {
     if (currentUser) {
       setFormData({
-        avatar: null,
+        avatar: currentUser.avatar || null,
         bio: currentUser.bio || "",
         birthday: currentUser.birthday ? formatDate(currentUser.birthday) : "",
         location: currentUser.location || "",
@@ -43,7 +43,6 @@ const Profile = () => {
     e.preventDefault();
     buttonSound();
     const data = new FormData();
-
     if (formData.avatar) {
       data.append("avatar", formData.avatar);
     }
@@ -104,10 +103,10 @@ const Profile = () => {
           <h1 className="text-2xl font-bold mb-4">
             {currentUser.firstname}'s Profile
           </h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="flex flex-col items-center mb-4">
               <Avatar
-                src={`http://localhost:8000/${currentUser.avatar}`}
+                src={currentUser.avatar}
                 alt={`${currentUser.firstname}'s avatar`}
                 className="w-24 h-24 rounded-full object-cover mb-4"
                 key={currentUser.avatar}
