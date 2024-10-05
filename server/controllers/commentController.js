@@ -301,6 +301,7 @@ exports.updateLikes = async (req, res) => {
         message: user.firstname,
         type: "like",
         postId: comment._id,
+        read: false,
       });
       await notification.save();
 

@@ -82,15 +82,12 @@ exports.getMessagesBetweenUsers = async (req, res) => {
 exports.getUnreadMessagesCount = async (req, res) => {
   const userId = req.user;
 
-  console.log("userId :D", userId);
-
   try {
     const unreadCount = await Message.countDocuments({
       reciever: userId,
       read: false,
     });
 
-    console.log("unreadCount", unreadCount);
     res.status(200).json({ unreadCount });
   } catch (error) {
     return res.status(500).json({
