@@ -13,16 +13,15 @@ const notificationReducer = (state = initialState, action) => {
         loading: false,
       };
     case "RECEIVE_NOTIFICATIONS_SUCCESS":
-      const isDuplicate = state.notifications.some(
-        (notification) => notification._id === action.payload._id
-      );
+      console.log("received notification", action.payload);
+      console.log("Current state", state.notifications);
+      console.log("updated state", [...state.notifications, action.payload]);
 
       return {
         ...state,
-        notifications: isDuplicate
-          ? state.notifications
-          : [...state.notifications, action.payload],
+        notifications: [...state.notifications, action.payload],
       };
+
     case "MARK_NOTIFICATIONS_READ_SUCCESS":
       return {
         ...state,

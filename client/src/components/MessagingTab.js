@@ -67,24 +67,23 @@ const MessageTab = ({ user, setIsOpen, avatar }) => {
 
     dispatch(sendMessage(message, user._id));
     setMessage("");
-    dispatch(getMessagesBetweenUsers(currentUser._id, user._id));
   };
 
-  useEffect(() => {
-    socket.on("receiveMessage", (newMessage) => {
-      if (
-        (newMessage.sender === currentUser._id &&
-          newMessage.reciever._id === user._id) ||
-        (newMessage.sender === user._id &&
-          newMessage.reciever._id === currentUser._id)
-      ) {
-        dispatch(receiveMessage(newMessage));
-      }
-    });
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, [dispatch, currentUser, user]);
+  // useEffect(() => {
+  //   socket.on("receiveMessage", (newMessage) => {
+  //     if (
+  //       (newMessage.sender === currentUser._id &&
+  //         newMessage.reciever._id === user._id) ||
+  //       (newMessage.sender === user._id &&
+  //         newMessage.reciever._id === currentUser._id)
+  //     ) {
+  //       dispatch(receiveMessage(newMessage));
+  //     }
+  //   });
+  //   return () => {
+  //     socket.off("receiveMessage");
+  //   };
+  // }, [dispatch, currentUser, user]);
 
   useEffect(() => {
     if (user && currentUser) {

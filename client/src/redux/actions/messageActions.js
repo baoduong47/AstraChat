@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useActionData } from "react-router-dom";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const sendMessage = (content, recieverId) => async (dispatch) => {
@@ -22,10 +23,11 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
   }
 };
 
-export const receiveMessage = (message) => ({
-  type: "RECEIVE_MESSAGE_SUCCESS",
-  payload: message,
-});
+export const receiveMessage = (newMessage, currentUser) => (dispatch) =>
+  dispatch({
+    type: "RECEIVE_MESSAGE_SUCCESS",
+    payload: { newMessage, currentUser },
+  });
 
 export const clearMessages = () => ({
   type: "CLEAR_MESSAGES",

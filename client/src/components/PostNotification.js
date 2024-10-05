@@ -7,7 +7,6 @@ import {
   newNotification,
 } from "../redux/actions/notificationActions";
 import Avatar from "./Avatar";
-import socket from "../utils/socket";
 
 const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
   const dispatch = useDispatch();
@@ -33,16 +32,6 @@ const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setIsOpen]);
-
-  useEffect(() => {
-    socket.on("newNotification", (notification) => {
-      dispatch(newNotification(notification));
-    });
-
-    return () => {
-      socket.off("newNotification");
-    };
-  }, [dispatch]);
 
   return (
     <motion.div

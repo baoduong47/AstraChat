@@ -11,4 +11,13 @@ body,
   margin: 0;
   padding: 0;
   cursor: pointer;
+  overflow-x: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

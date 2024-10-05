@@ -18,7 +18,9 @@ const MainLayout = ({ children }) => {
       <div className="ml-6 mr-52 mt-6 flex-grow flex flex-col h-full">
         {children}
       </div>
-      <Sidebar />
+      <div className="sidebar no-scrollbar">
+        <Sidebar />
+      </div>
     </div>
   );
 };

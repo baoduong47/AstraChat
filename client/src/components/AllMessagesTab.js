@@ -84,7 +84,7 @@ const AllMessagesTab = ({ onClose, onMessageClick, user }) => {
     return () => {
       socket.off("userUpdated");
     };
-  }, [dispatch]);
+  }, [user]);
 
   const groupedMessages = groupMessagesBySender(messages);
 

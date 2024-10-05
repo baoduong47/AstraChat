@@ -9,9 +9,21 @@ const initialState = {
 const messageReducer = (state = initialState, action) => {
   switch (action.type) {
     case "RECEIVE_MESSAGE_SUCCESS":
+      const { newMessage, currentUser } = action.payload;
+      let updatedUnreadCounts = { ...state.unreadCounts };
+
+      if (
+        newMessage.reciever._id === currentUser._id &&
+        newMessage.read === false
+      ) {
+        updatedUnreadCounts[newMessage.reciever._id] =
+          (updatedUnreadCounts[newMessage.reciever._id] || 0) + 1;
+      }
+
       return {
         ...state,
-        messages: [...state.messages, action.payload],
+        messages: [...state.messages, newMessage],
+        unreadCounts: updatedUnreadCounts,
         loading: false,
       };
 

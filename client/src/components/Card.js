@@ -32,13 +32,10 @@ const Card = ({
   replies,
   likes,
   likedBy: initialLikedBy,
-  title,
   setShowSuccess,
   setShowDeleteError,
   setEditError,
   authorId,
-  bio,
-  location,
   comments,
 }) => {
   const [reply, setReply] = useState("");
@@ -51,18 +48,10 @@ const Card = ({
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [repliesState, setRepliesState] = useState(replies);
 
-  const [authorInfo, setAuthorInfo] = useState({
-    avatar: authorId.avatar,
-    title,
-    bio,
-    location,
-  });
-
   const { currentUser } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    console.log("List of comments", comments);
-  }, []);
+  const { users } = useSelector((state) => state.user);
+  const authorUpdated = users.find((user) => user._id === authorId._id);
 
   const dispatch = useDispatch();
 
@@ -79,18 +68,11 @@ const Card = ({
     if (comments) {
       displayLikes(comments);
     }
-  }, [comments, likes]);
+  }, [comments, likes, displayLikes]);
 
   useEffect(() => {
     socket.on("userUpdated", (updatedUser) => {
-      if (updatedUser._id === authorId._id) {
-        setAuthorInfo({
-          avatar: updatedUser.avatar,
-          title: updatedUser.title,
-          bio: updatedUser.bio,
-          location: updatedUser.location,
-        });
-      }
+      dispatch({ type: "UPDATED_USER_SUCCESS", payload: updatedUser });
 
       const updatedReplies = repliesState.map((reply) => {
         if (reply.authorId._id === updatedUser._id) {
@@ -111,18 +93,7 @@ const Card = ({
     return () => {
       socket.off("userUpdated");
     };
-  }, [authorId._id, repliesState]);
-
-  useEffect(() => {
-    if (currentUser && currentUser._id === authorId._id) {
-      setAuthorInfo({
-        avatar: currentUser.avatar,
-        title: currentUser.title,
-        bio: currentUser.bio,
-        location: currentUser.location,
-      });
-    }
-  }, [currentUser]);
+  }, [dispatch, repliesState]);
 
   useEffect(() => {
     socket.on("deletedComment", (removedComment) => {
@@ -132,7 +103,7 @@ const Card = ({
     return () => {
       socket.off("deletedComment");
     };
-  }, [dispatch]);
+  }, [comments]);
 
   const handleMenuClick = (event) => {
     playSound();
@@ -316,32 +287,34 @@ const Card = ({
       </div>
       <div className="flex items-center justify-start ml-1">
         <Avatar
-          src={authorInfo.avatar}
+          src={authorUpdated?.avatar}
           alt={`Avatar of ${author}`}
           className="w-12 h-12 rounded-full"
         />
         <div className="flex flex-col items-start justify-center ml-3">
           <div className="text-foreground font-medium text-lg flex items-center space-x-2">
             <span>{author.charAt(0).toUpperCase() + author.slice(1)}</span>
-            {authorInfo.title && (
+            {authorUpdated.title && (
               <>
                 <span className="text-gray-900 text-sm">•</span>
                 <span className="text-gray-500 text-sm">
-                  {authorInfo.title}
+                  {authorUpdated.title}
                 </span>
               </>
             )}
           </div>
-          {authorInfo.bio && (
+          {authorUpdated.bio && (
             <div className="text-gray-800 text-sm mb-1">
               Status:{" "}
-              <span className="text-gray-700 text-sm">"{authorInfo.bio}"</span>
+              <span className="text-gray-700 text-sm">
+                "{authorUpdated.bio}"
+              </span>
             </div>
           )}
 
-          {authorInfo.location ? (
+          {authorUpdated.location ? (
             <div className="text-foregroundColor text-sm">
-              {date} • {authorInfo.location}
+              {date} • {authorUpdated.location}
             </div>
           ) : (
             <div className="text-foregroundColor text-sm">{date}</div>

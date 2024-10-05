@@ -11,6 +11,7 @@ import {
   getUnreadMessagesCount,
   getUnreadMessagesCounts,
   clearMessages,
+  receiveMessage,
 } from "../redux/actions/messageActions";
 import {
   getNotifications,
@@ -26,12 +27,6 @@ import "animate.css";
 import socket from "../utils/socket";
 
 const Sidebar = () => {
-  const dispatch = useDispatch();
-  const { users, currentUser, loading, error } = useSelector(
-    (state) => state.user
-  );
-  const { notifications } = useSelector((state) => state.notifications);
-
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
   const [isMessageTabOpen, setIsMessageTabOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -39,14 +34,19 @@ const Sidebar = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [userAvatar, setUserAvatar] = useState(null);
 
+  const { users, currentUser, loading, error } = useSelector(
+    (state) => state.user
+  );
+  const { notifications } = useSelector((state) => state.notifications);
+
   const unreadCounts = useSelector((state) => state.message.unreadCounts);
 
-  const hasUnreadNotifications = () =>
-    notifications.some((notification) => !notification.read);
+  const dispatch = useDispatch();
 
   const handleMessageClick = (message) => {
     menuSound();
     setSelectedUser(message.sender);
+    console.log("selectedUser", selectedUser);
     setIsMessageTabOpen(true);
     setIsAllMessagesTabOpen(false);
     dispatch(clearMessages());
@@ -65,12 +65,21 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    if (selectedUser) {
-      setUserAvatar(selectedUser.avatar);
-    }
-  }, [selectedUser]);
+    socket.on("receiveMessage", (newMessage) => {
+      if (
+        selectedUser &&
+        currentUser &&
+        ((newMessage.sender === currentUser._id &&
+          newMessage.reciever._id === selectedUser._id) ||
+          (newMessage.sender === selectedUser._id &&
+            newMessage.reciever._id === currentUser._id))
+      ) {
+        dispatch(receiveMessage(newMessage, currentUser));
+      } else {
+        dispatch(getUnreadMessagesCounts());
+      }
+    });
 
-  useEffect(() => {
     socket.on("userUpdated", (updatedUser) => {
       dispatch({
         type: "UPDATED_USER_SUCCESS",
@@ -86,9 +95,27 @@ const Sidebar = () => {
       }
     });
 
+    socket.on("newNotification", (notification) => {
+      dispatch({
+        type: "RECEIVE_NOTIFICATIONS_SUCCESS",
+        payload: notification,
+      });
+    });
     return () => {
+      socket.off("receiveMessage");
       socket.off("userUpdated");
+      socket.off("newNotification");
+      socket.off("unreadCounts");
     };
+  }, [dispatch, currentUser, selectedUser, unreadCounts, notifications]);
+
+  const hasUnreadNotifications = () =>
+    notifications.some((notification) => !notification.read);
+
+  useEffect(() => {
+    if (selectedUser) {
+      setUserAvatar(selectedUser.avatar);
+    }
   }, [selectedUser]);
 
   const playSound = () => {
@@ -159,6 +186,10 @@ const Sidebar = () => {
     return <p>User not found</p>;
   }
 
+  const unreadMessageCountForUser = (user) => {
+    return unreadCounts[user] > 0;
+  };
+
   const menuItems = [
     {
       text: "Home",
@@ -175,9 +206,13 @@ const Sidebar = () => {
       icon: (
         <div className="relative">
           <FaArrowsDownToPeople fontSize="large" />
-          {Object.values(unreadCounts).reduce((a, b) => a + b, 0) > 0 && (
+          {Object.values(unreadCounts).reduce((acc, count) => acc + count, 0) >
+            0 && (
             <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              {Object.values(unreadCounts).reduce((a, b) => a + b, 0)}
+              {Object.values(unreadCounts).reduce(
+                (acc, count) => acc + count,
+                0
+              )}
             </span>
           )}
         </div>
@@ -211,6 +246,10 @@ const Sidebar = () => {
       onClick: logout,
     },
   ];
+
+  if (!currentUser || !currentUser._id) {
+    return <p>Loading user data...</p>;
+  }
 
   return (
     <div className="bg-sideBar text-black h-screen px-4 fixed right-0 w-16 md:w-48 flex flex-col justify-between border border-neutral-400">
@@ -291,7 +330,7 @@ const Sidebar = () => {
                           animationDuration: "0.7s",
                         }}
                       >
-                        {unreadCounts[user._id] > 0 && (
+                        {unreadMessageCountForUser(user._id) && (
                           <span className="absolute left-0 bg-red-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center transform -translate-x-4 -translate-y-1/2 top-1/2"></span>
                         )}
                         <span>
