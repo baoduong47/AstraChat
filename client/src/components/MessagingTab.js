@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   sendMessage,
   getMessagesBetweenUsers,
-  receiveMessage,
 } from "../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -68,22 +67,6 @@ const MessageTab = ({ user, setIsOpen, avatar }) => {
     dispatch(sendMessage(message, user._id));
     setMessage("");
   };
-
-  // useEffect(() => {
-  //   socket.on("receiveMessage", (newMessage) => {
-  //     if (
-  //       (newMessage.sender === currentUser._id &&
-  //         newMessage.reciever._id === user._id) ||
-  //       (newMessage.sender === user._id &&
-  //         newMessage.reciever._id === currentUser._id)
-  //     ) {
-  //       dispatch(receiveMessage(newMessage));
-  //     }
-  //   });
-  //   return () => {
-  //     socket.off("receiveMessage");
-  //   };
-  // }, [dispatch, currentUser, user]);
 
   useEffect(() => {
     if (user && currentUser) {

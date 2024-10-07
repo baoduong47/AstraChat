@@ -63,6 +63,7 @@ const commentReducer = (state = initialState, action) => {
       };
 
     case "RECEIVE_REPLY_SUCCESS":
+      console.log("action payload", action.payload);
       return {
         ...state,
         comments: state.comments.map((comment) =>

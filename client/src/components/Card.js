@@ -6,7 +6,6 @@ import {
   updatedLikes,
   deleteComment,
   updateComment,
-  receiveReply,
   deletedComment,
   editComment,
 } from "../redux/actions/commentAction";
@@ -54,6 +53,10 @@ const Card = ({
   const authorUpdated = users.find((user) => user._id === authorId._id);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("replies state", repliesState);
+  }, [repliesState]);
 
   const displayLikes = (commentsArray) => {
     commentsArray.forEach((comment) => {
@@ -166,13 +169,22 @@ const Card = ({
 
   useEffect(() => {
     socket.on("receiveReply", (updatedParentComment) => {
-      dispatch(receiveReply(updatedParentComment));
+      console.log("recievedreply socket", updatedParentComment);
+
+      if (updatedParentComment._id === commentId) {
+        setRepliesState(updatedParentComment.replies);
+      }
+
+      dispatch({
+        type: "RECEIVE_REPLY_SUCCESS",
+        payload: updatedParentComment,
+      });
     });
 
     return () => {
       socket.off("receiveReply");
     };
-  }, [dispatch]);
+  }, [dispatch, commentId]);
 
   const handleLikes = (e) => {
     e.preventDefault();

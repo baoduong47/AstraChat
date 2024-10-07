@@ -13,10 +13,6 @@ const notificationReducer = (state = initialState, action) => {
         loading: false,
       };
     case "RECEIVE_NOTIFICATIONS_SUCCESS":
-      console.log("received notification", action.payload);
-      console.log("Current state", state.notifications);
-      console.log("updated state", [...state.notifications, action.payload]);
-
       return {
         ...state,
         notifications: [...state.notifications, action.payload],
