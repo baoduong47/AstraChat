@@ -1,9 +1,9 @@
-import Particles from "../components/Particle";
+import Particles from "../components/special-effects/Particle";
 import { GiBroadsword } from "react-icons/gi";
 import { HiMiniUserCircle } from "react-icons/hi2";
-import Kupo from "../components/Kupo";
-import MusicList from "../components/MusicList";
-import AlertNotifications from "../components/AlertNotifications";
+import Kupo from "../components/ui-elements/Kupo";
+import MusicList from "../components/ui-elements/MusicList";
+import AlertNotifications from "../components/notifications/AlertNotifications";
 const Header = ({
   showError,
   showDeleteError,

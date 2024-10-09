@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
-import ArtworkCarousel from "./ArtworkCarousel";
-import { postComment, receiveComment } from "../redux/actions/commentAction";
-import socket from "../utils/socket";
+import { postComment, receiveComment } from "../../redux/actions/commentAction";
+import ArtworkCarousel from "../ui-elements/ArtworkCarousel";
+import socket from "../../utils/socket";
 
 const NewPostForm = ({
   currentUser,
@@ -13,6 +13,21 @@ const NewPostForm = ({
 }) => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket.on("receiveComment", (comment) => {
+      console.log("received comment from socket: ", comment);
+      dispatch(receiveComment(comment));
+    });
+
+    return () => {
+      socket.off("receiveComment");
+    };
+  }, [dispatch]);
+
+  const handleChange = (e) => {
+    setComment(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,21 +46,6 @@ const NewPostForm = ({
     } else {
       setShowError(true);
     }
-  };
-
-  useEffect(() => {
-    socket.on("receiveComment", (comment) => {
-      console.log("received comment from socket: ", comment);
-      dispatch(receiveComment(comment));
-    });
-
-    return () => {
-      socket.off("receiveComment");
-    };
-  }, [dispatch]);
-
-  const handleChange = (e) => {
-    setComment(e.target.value);
   };
 
   return (

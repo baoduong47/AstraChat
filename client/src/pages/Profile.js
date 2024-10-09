@@ -6,7 +6,7 @@ import {
 } from "../redux/actions/userActions";
 import { GiReturnArrow } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import Avatar from "../components/Avatar";
+import Avatar from "../components/ui-elements/Avatar";
 import { motion } from "framer-motion";
 import "animate.css";
 

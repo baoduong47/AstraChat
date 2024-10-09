@@ -19,12 +19,12 @@ import {
 } from "../redux/actions/notificationActions";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
-import Avatar from "../components/Avatar";
-import PostNotification from "./PostNotification";
-import MessageTab from "./MessagingTab";
-import AllMessagesTab from "./AllMessagesTab";
+import PostNotification from "../components/notifications/PostNotification";
+import MessageTab from "../components/tabs/MessagingTab";
+import AllMessagesTab from "../components/tabs/AllMessagesTab";
 import "animate.css";
 import socket from "../utils/socket";
+import Avatar from "../components/ui-elements/Avatar";
 
 const Sidebar = () => {
   const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);

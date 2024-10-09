@@ -18,6 +18,7 @@ const ArtworkCarousel = () => {
       title: "Final Fantasy Artwork 2",
       description: "A majestic portrayal of a Final Fantasy character.",
     },
+
     {
       src: "/images/ffart3.jpeg",
       title: "Final Fantasy Artwork 3",

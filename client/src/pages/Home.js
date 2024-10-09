@@ -1,54 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUsers, getCurrentUser } from "../redux/actions/userActions";
-import { getComments } from "../redux/actions/commentAction";
-import MainLayout from "../components/MainLayout";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import NewPostForm from "../components/NewPostForm";
-import CommentsList from "../components/CommentsList";
+import { playButtonClickedSound, playMenuOpenSound } from "../utils/soundUtils";
+import useCurrentDateTime from "../utils/dateUtils";
+import MainLayout from "../layout/MainLayout";
+import NewPostForm from "../components/forms/NewPostForm";
+import CommentsList from "../components/ui-elements/CommentsList";
+import Cactus from "../components/ui-elements/Cactus";
+import Header from "../layout/Header";
 import "animate.css";
-import Cactus from "../components/Cactus";
-import Header from "../components/Header";
 
 const Home = () => {
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [postSuccess, setPostSuccess] = useState(false);
   const [showDeleteError, setShowDeleteError] = useState(false);
   const [showEditError, setEditError] = useState(false);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.comment);
 
-  const playSound = () => {
-    const audio = new Audio("/sounds/sao_menu.mp3");
-    audio.play();
-  };
-
-  const buttonSound = () => {
-    const audio = new Audio("/sounds/ff_select.mp3");
-    audio.play();
-  };
-
-  const menuSound = () => {
-    const audio = new Audio("/sounds/sao_menu_select.mp3");
-    audio.play();
-  };
-
-  useEffect(() => {
-    dispatch(getUsers());
-    dispatch(getCurrentUser());
-    dispatch(getComments());
-
-    const interval = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [dispatch]);
+  const navigate = useNavigate();
+  const currentDateTime = useCurrentDateTime();
 
   useEffect(() => {
     if (showSuccess || postSuccess) {
@@ -94,13 +67,13 @@ const Home = () => {
         postSuccess={postSuccess}
         currentUser={currentUser}
         currentDateTime={currentDateTime}
-        menuSound={menuSound}
-        playSound={playSound}
+        menuSound={playMenuOpenSound}
+        playSound={playButtonClickedSound}
       />
 
       <NewPostForm
         currentUser={currentUser}
-        buttonSound={buttonSound}
+        buttonSound={playButtonClickedSound}
         setShowError={setShowError}
         setPostSuccess={setPostSuccess}
       />

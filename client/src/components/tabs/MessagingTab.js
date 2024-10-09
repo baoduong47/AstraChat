@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   sendMessage,
   getMessagesBetweenUsers,
-} from "../redux/actions/messageActions";
+} from "../../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import "animate.css";
-import Avatar from "../components/Avatar";
+import Avatar from "../ui-elements/Avatar.js";
 import { Filter } from "bad-words";
-import AlertNotifications from "./AlertNotifications";
-import socket from "../utils/socket";
+import AlertNotifications from "../notifications/AlertNotifications";
 
 const MessageTab = ({ user, setIsOpen, avatar }) => {
   const [message, setMessage] = useState("");

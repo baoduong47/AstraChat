@@ -3,90 +3,37 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllMessagesForUser,
   receiveAllMessages,
-} from "../redux/actions/messageActions";
-import Avatar from "./Avatar";
+} from "../../redux/actions/messageActions";
+import Avatar from "../ui-elements/Avatar.js";
 import "animate.css";
-import socket from "../utils/socket";
+import useSocketUpdates from "../../hooks/useSocketUpdates";
+import {
+  formatTimestamp,
+  groupMessagesBySender,
+} from "../../utils/messageUtils";
 
 const AllMessagesTab = ({ onClose, onMessageClick, user }) => {
-  const dispatch = useDispatch();
+  const [readMessages, setReadMessages] = useState({});
+
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const { messages } = useSelector((state) => state.message);
   const { users } = useSelector((state) => state.user);
 
-  const [readMessages, setReadMessages] = useState({});
-
-  const groupMessagesBySender = (messages) => {
-    const filteredMessages = messages.filter(
-      (message) => message.sender._id !== currentUser._id
-    );
-
-    const groups = filteredMessages.reduce((acc, message) => {
-      const senderName = message.sender.firstname;
-
-      const sender =
-        users.find((user) => user._id === message.sender._id) || message.sender;
-
-      if (
-        !acc[senderName] ||
-        new Date(acc[senderName].timestamp) < new Date(message.timestamp)
-      ) {
-        acc[senderName] = { ...message, sender };
-      }
-      return acc;
-    }, {});
-
-    return Object.values(groups);
-  };
-
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now - date) / 1000);
-
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds} seconds ago`;
-    } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60);
-      return `${minutes} minutes ago`;
-    } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `${hours} hours ago`;
-    } else {
-      const days = Math.floor(diffInSeconds / 86400);
-      if (days > 1) {
-        return `${days} days ago`;
-      } else {
-        return `${days} day ago`;
-      }
-    }
-  };
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (currentUser) {
       dispatch(getAllMessagesForUser());
     }
   }, [currentUser, dispatch]);
 
+  useSocketUpdates(user);
+
   const handleClick = (message) => {
     setReadMessages((prev) => ({ ...prev, [message._id]: true }));
     onMessageClick(message);
   };
 
-  useEffect(() => {
-    socket.on("userUpdated", (updatedUser) => {
-      dispatch({
-        type: "UPDATED_USER_SUCCESS",
-        payload: updatedUser,
-      });
-    });
-
-    return () => {
-      socket.off("userUpdated");
-    };
-  }, [user]);
-
-  const groupedMessages = groupMessagesBySender(messages);
+  const groupedMessages = groupMessagesBySender(messages, currentUser, users);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -97,7 +44,7 @@ const AllMessagesTab = ({ onClose, onMessageClick, user }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex justify-end ">
+    <div className="fixed inset-0 flex justify-end">
       <div
         className="bg-black opacity-50 absolute inset-0"
         onClick={onClose}

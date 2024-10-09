@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import {
   deleteNotifications,
   newNotification,
-} from "../redux/actions/notificationActions";
-import Avatar from "./Avatar";
+} from "../../redux/actions/notificationActions";
+import Avatar from "../ui-elements/Avatar.js";
 
 const PostNotification = ({ notifications, isOpen, setIsOpen }) => {
   const dispatch = useDispatch();

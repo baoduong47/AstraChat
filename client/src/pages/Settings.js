@@ -9,8 +9,8 @@ import { GiReturnArrow } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "animate.css";
-import AlertNotifications from "../components/AlertNotifications";
-import ConfirmationModal from "../components/ConfirmationModal";
+import AlertNotifications from "../components/notifications/AlertNotifications";
+import ConfirmationModal from "../components/ui-elements/ConfirmationModal";
 
 const Settings = () => {
   const [showEmailError, setShowEmailError] = useState(false);

@@ -8,20 +8,20 @@ import {
   updateComment,
   deletedComment,
   editComment,
-} from "../redux/actions/commentAction";
+} from "../../redux/actions/commentAction";
 import { FiMessageCircle } from "react-icons/fi";
 import { SiThunderbird } from "react-icons/si";
-import Avatar from "./Avatar";
+import Avatar from "./Avatar.js";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "animate.css";
 import ConfirmationModal from "./ConfirmationModal";
-import EditForm from "./EditForm";
+import EditForm from "../forms/EditForm";
 import EmojiPicker from "emoji-picker-react";
-import { getNotifications } from "../redux/actions/notificationActions";
+import { getNotifications } from "../../redux/actions/notificationActions";
 import { GiMineralHeart } from "react-icons/gi";
-import socket from "../utils/socket";
+import socket from "../../utils/socket";
 
 const Card = ({
   author,
