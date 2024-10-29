@@ -314,7 +314,7 @@ const Signup = () => {
                   },
                 }}
                 onClick={() => {
-                  const url = "http://localhost:3000/auth/google?action=signup";
+                  const url = `${process.env.REACT_APP_BACKEND_URL}/auth/google?action=signup`;
                   console.log("Redirecting to:", url);
                   window.location.href = url;
                 }}

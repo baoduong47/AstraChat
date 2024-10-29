@@ -6,7 +6,7 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
     await axios.post(
-      `https://wisteria-912.netlify.app/messages/`,
+      `${apiUrl}/messages/`,
       {
         content,
         recieverId,
@@ -17,7 +17,6 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
         },
       }
     );
-    // dispatch({ type: "POST_MESSAGE_SUCCESS", payload: response.data });
   } catch (error) {
     dispatch({ type: "POST_MESSAGE_FAIL", payload: error.message });
   }
@@ -36,14 +35,11 @@ export const clearMessages = () => ({
 export const getAllMessagesForUser = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(
-      `https://wisteria-912.netlify.app/messages/`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${apiUrl}/messages/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({ type: "GET_ALL_MSG_SUCCESS", payload: response.data.messages });
   } catch (error) {
     dispatch({ type: "GET_ALL_MSG_FAIL", payload: error.message });
@@ -55,7 +51,7 @@ export const getMessagesBetweenUsers =
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `https://wisteria-912.netlify.app/messages/${senderId}/${recieverId}`,
+        `${apiUrl}/messages/${senderId}/${recieverId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,14 +68,11 @@ export const getMessagesBetweenUsers =
 export const getUnreadMessagesCount = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(
-      `https://wisteria-912.netlify.app/messages/unread-count`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${apiUrl}/messages/unread-count`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({
       type: "GET_UNREAD_COUNT_SUCCESS",
       payload: response.data.unreadCount,
@@ -92,14 +85,11 @@ export const getUnreadMessagesCount = () => async (dispatch) => {
 export const getUnreadMessagesCounts = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(
-      `https://wisteria-912.netlify.app/messages/unread-counts`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${apiUrl}/messages/unread-counts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({
       type: "GET_UNREAD_COUNTS_SUCCESS",
       payload: response.data.unreadCounts,

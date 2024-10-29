@@ -4,10 +4,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 export const registerUser = (userData) => async (dispatch) => {
   try {
     console.log("Sending userData:", userData);
-    const response = await axios.post(
-      `https://wisteria-912.netlify.app/users/signup`,
-      userData
-    );
+    const response = await axios.post(`${apiUrl}/users/signup`, userData);
     console.log("Recieved response: ", response.data);
     dispatch({ type: "REGISTER_SUCCESS", payload: response.data });
 
@@ -28,10 +25,7 @@ export const registerUser = (userData) => async (dispatch) => {
 export const loginUser = (credentials, rememberMe) => async (dispatch) => {
   try {
     console.log("Logging user with credentials:", credentials);
-    const response = await axios.post(
-      `https://wisteria-912.netlify.app/users/login`,
-      credentials
-    );
+    const response = await axios.post(`${apiUrl}/users/login`, credentials);
     console.log("Received response from server:", response.data);
     dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
 

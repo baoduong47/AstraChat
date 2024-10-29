@@ -5,14 +5,11 @@ export const getUsers = () => async (dispatch) => {
   dispatch({ type: "GET_USERS_REQUEST" });
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(
-      `https://wisteria-912.netlify.app/users/`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${apiUrl}/users/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     dispatch({ type: "GET_USERS_SUCCESS", payload: response.data });
   } catch (error) {
@@ -23,14 +20,11 @@ export const getUsers = () => async (dispatch) => {
 export const getCurrentUser = () => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(
-      `https://wisteria-912.netlify.app/users/current`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${apiUrl}/users/current`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     dispatch({ type: "GET_CURRENT_USER_SUCCESS", payload: response.data });
   } catch (error) {
     dispatch({ type: "GET_CURRENT_USER_FAIL", payload: error.message });
@@ -42,16 +36,12 @@ export const updateCurrentUser = (formData) => async (dispatch) => {
     const token = localStorage.getItem("token");
     console.log("FormData being sent:", formData);
 
-    const response = await axios.put(
-      `https://wisteria-912.netlify.app/users/current`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await axios.put(`${apiUrl}/users/current`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     dispatch({ type: "UPDATE_USER_SUCCESS", payload: response.data });
   } catch (error) {
