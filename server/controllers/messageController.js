@@ -1,6 +1,7 @@
 const Message = require("../models/message");
 const User = require("../models/user");
 
+// Send a message
 exports.sendMessage = async (req, res) => {
   const { recieverId, content } = req.body;
 
@@ -32,6 +33,7 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
+//Get all messages for a user
 exports.getAllMessagesForUser = async (req, res) => {
   const userId = req.user;
 
@@ -52,6 +54,7 @@ exports.getAllMessagesForUser = async (req, res) => {
   }
 };
 
+// Get messages between two users
 exports.getMessagesBetweenUsers = async (req, res) => {
   const { senderId, recieverId } = req.params;
   try {
@@ -61,10 +64,6 @@ exports.getMessagesBetweenUsers = async (req, res) => {
         { sender: recieverId, reciever: senderId },
       ],
     }).sort({ timestamp: 1 });
-
-    console.log("sender Id: ", senderId);
-    console.log("reciever Id: ", recieverId);
-    console.log("messages :", messages);
 
     await Message.updateMany(
       { sender: recieverId, reciever: senderId, read: false },
@@ -79,6 +78,7 @@ exports.getMessagesBetweenUsers = async (req, res) => {
   }
 };
 
+// Get unread messages count for a user
 exports.getUnreadMessagesCount = async (req, res) => {
   const userId = req.user;
 
@@ -97,6 +97,7 @@ exports.getUnreadMessagesCount = async (req, res) => {
   }
 };
 
+// Get unread messages counts for a user
 exports.getUnreadMessagesCounts = async (req, res) => {
   const userId = req.user;
 

@@ -39,7 +39,7 @@ connect
 
 const io = new Server(server, {
   cors: {
-    origin: "https://wisteria-912.netlify.app",
+    origin: "https://astra-world.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
@@ -70,7 +70,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(
   cors({
-    origin: "https://wisteria-912.netlify.app",
+    origin: "https://astra-world.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

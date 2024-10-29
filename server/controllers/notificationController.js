@@ -1,5 +1,6 @@
 const Notification = require("../models/notification");
 
+// Get all notifications for a user
 exports.getNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find({ user: req.user })
@@ -7,14 +8,13 @@ exports.getNotifications = async (req, res) => {
       .populate("replier", "firstname avatar")
       .exec();
 
-    console.log("notifications found: ", notifications);
-
     res.status(200).json(notifications);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving notifications", error });
   }
 };
 
+// Delete all notifications for a user
 exports.deleteNotifications = async (req, res) => {
   try {
     await Notification.deleteMany({ user: req.user });
@@ -24,6 +24,7 @@ exports.deleteNotifications = async (req, res) => {
   }
 };
 
+// Mark all notifications as read for a user
 exports.markAsRead = async (req, res) => {
   try {
     await Notification.updateMany(

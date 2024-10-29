@@ -2,6 +2,7 @@ const Comment = require("../models/comment");
 const User = require("../models/user");
 const Notification = require("../models/notification");
 
+// Fetch all comments
 exports.getComments = async (req, res) => {
   try {
     const comments = await Comment.find({})
@@ -19,10 +20,10 @@ exports.getComments = async (req, res) => {
   }
 };
 
+// Fetch comment by ID
 exports.getCommentById = async (req, res) => {
   try {
     const commentId = req.params.commentId;
-
     const comment = await Comment.findById(commentId);
 
     if (!comment) {
@@ -35,6 +36,7 @@ exports.getCommentById = async (req, res) => {
   }
 };
 
+// Post a new comment
 exports.postComment = async (req, res) => {
   const { comment } = req.body;
 
@@ -44,7 +46,6 @@ exports.postComment = async (req, res) => {
 
   try {
     const user = await User.findById(req.user);
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -56,11 +57,9 @@ exports.postComment = async (req, res) => {
     });
 
     await newComment.save();
-
     newComment = await Comment.findById(newComment._id).populate("postId");
 
     req.io.emit("receiveComment", newComment);
-
     return res
       .status(200)
       .json({ message: "Comment saved successfully!", newComment });
@@ -69,6 +68,7 @@ exports.postComment = async (req, res) => {
   }
 };
 
+// Reply to a comment
 exports.replyComment = async (req, res) => {
   const { reply: replyComment } = req.body;
   const { commentId } = req.params;
@@ -77,13 +77,11 @@ exports.replyComment = async (req, res) => {
     if (!commentId) {
       return res.status(404).json({ error: "Comment not found" });
     }
-
     if (!req.user) {
       return res.status(401).json({ message: "User not authenticated" });
     }
 
     const user = await User.findById(req.user);
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -101,12 +99,7 @@ exports.replyComment = async (req, res) => {
       createdAt: new Date(),
     };
 
-    if (!reply.authorId) {
-      return res.status(400).json({ message: "authorId is required" });
-    }
-
     parentComment.replies.push(reply);
-
     await parentComment.save();
 
     if (parentComment.postId.toString() !== user._id.toString()) {
@@ -146,6 +139,7 @@ exports.replyComment = async (req, res) => {
   }
 };
 
+// Update an existing comment
 exports.updateComment = async (req, res) => {
   try {
     const { commentId } = req.params;
@@ -164,7 +158,6 @@ exports.updateComment = async (req, res) => {
       });
 
     req.io.emit("editComment", updatedComment);
-
     if (!updatedComment) {
       return res.status(404).json({ message: "Comment not found" });
     }
@@ -177,6 +170,7 @@ exports.updateComment = async (req, res) => {
   }
 };
 
+// Delete a comment
 exports.deleteComment = async (req, res) => {
   try {
     const commentId = req.params.commentId;
@@ -186,14 +180,11 @@ exports.deleteComment = async (req, res) => {
     }
 
     const user = await User.findById(req.user);
-
-    console.log("User found: ", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const comment = await Comment.findById(commentId);
-
     if (!comment) {
       return res.status(500).json({ message: "Comment not found", error });
     }
@@ -206,16 +197,15 @@ exports.deleteComment = async (req, res) => {
     const removedComment = await Comment.findByIdAndDelete(commentId);
 
     req.io.emit("deletedComment", removedComment);
-
     return res
       .status(200)
       .json({ message: "Comment deleted successfully!", removedComment });
   } catch (error) {
-    console.log("Error removing message", error);
     return res.status(500).json({ message: "Error deleting message", error });
   }
 };
 
+// Update likes on a comment
 exports.updateLikes = async (req, res) => {
   const { commentId } = req.params;
   try {
@@ -229,13 +219,11 @@ exports.updateLikes = async (req, res) => {
     }
 
     const user = await User.findById(req.user);
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const userIdString = user._id.toString();
-
     if (comment.likedBy.some((id) => id.toString() === userIdString)) {
       return res
         .status(400)

@@ -17,7 +17,7 @@ router.get(
   (req, res) => {
     if (!req.user) {
       console.log("No user returned from Google authentication");
-      return res.redirect("https://wisteria-912.netlify.app/login");
+      return res.redirect("https://astra-world.netlify.app/login");
     }
 
     console.log("req.user", req.user);
@@ -26,13 +26,12 @@ router.get(
     console.log("Action:", action);
 
     if (action === "signup") {
-      return res.redirect("https://wisteria-912.netlify.app/login");
+      return res.redirect("https://astra-world.netlify.app/login");
     } else {
       const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
         expiresIn: "7h",
       });
-
-      res.redirect(`https://wisteria-912.netlify.app/login?token=${token}`);
+      res.redirect(`https://astra-world.netlify.app/login?token=${token}`);
     }
   }
 );
