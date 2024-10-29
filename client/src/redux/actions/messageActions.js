@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useActionData } from "react-router-dom";
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const sendMessage = (content, recieverId) => async (dispatch) => {
   const token = localStorage.getItem("token");
