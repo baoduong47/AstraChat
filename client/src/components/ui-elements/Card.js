@@ -306,7 +306,7 @@ const Card = ({
         <div className="flex flex-col items-start justify-center ml-3">
           <div className="text-foreground font-medium text-lg flex items-center space-x-2">
             <span>{author.charAt(0).toUpperCase() + author.slice(1)}</span>
-            {authorUpdated.title && (
+            {authorUpdated?.title && (
               <>
                 <span className="text-gray-900 text-sm">•</span>
                 <span className="text-gray-500 text-sm">
@@ -315,7 +315,7 @@ const Card = ({
               </>
             )}
           </div>
-          {authorUpdated.bio && (
+          {authorUpdated?.bio && (
             <div className="text-gray-800 text-sm mb-1">
               Status:{" "}
               <span className="text-gray-700 text-sm">
@@ -324,7 +324,7 @@ const Card = ({
             </div>
           )}
 
-          {authorUpdated.location ? (
+          {authorUpdated?.location ? (
             <div className="text-foregroundColor text-sm">
               {date} • {authorUpdated.location}
             </div>
