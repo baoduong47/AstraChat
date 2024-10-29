@@ -5,22 +5,22 @@ import {
 } from "../../redux/actions/messageActions";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import "animate.css";
-import Avatar from "../ui-elements/Avatar.js";
 import { Filter } from "bad-words";
+import { formatTimestamp } from "../../utils/dateUtils";
+import Avatar from "../ui-elements/Avatar.js";
 import AlertNotifications from "../notifications/AlertNotifications";
+import "animate.css";
 
 const MessageTab = ({ user, setIsOpen, avatar }) => {
   const [message, setMessage] = useState("");
   const [showProfanityError, setShowProfanityError] = useState(false);
 
   const dispatch = useDispatch();
-  const messagesEndRef = useRef(null);
-  const messagingTabRef = useRef(null);
-
   const { messages } = useSelector((state) => state.message);
   const { currentUser } = useSelector((state) => state.user);
 
+  const messagesEndRef = useRef(null);
+  const messagingTabRef = useRef(null);
   const filter = new Filter();
 
   useEffect(() => {
@@ -38,15 +38,6 @@ const MessageTab = ({ user, setIsOpen, avatar }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setIsOpen]);
-
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
 
   const buttonSound = () => {
     const audio = new Audio("/sounds/ff_select.mp3");
@@ -118,6 +109,8 @@ const MessageTab = ({ user, setIsOpen, avatar }) => {
         <div className="overflow-y-auto h-5/6">
           {messages.map((message) => {
             const isCurrentUser = message.sender === currentUser._id;
+            const formattedTimestamp = formatTimestamp(message.timestamp);
+
             return (
               <div
                 key={message._id}
@@ -138,7 +131,7 @@ const MessageTab = ({ user, setIsOpen, avatar }) => {
                     {message.content}
                   </p>
                   <div className="text-xs absolute bottom-0 right-0 mr-2 mb-1">
-                    {formatTimestamp(message.timestamp)}
+                    {formatTimestamp}
                   </div>
                 </div>
               </div>

@@ -64,8 +64,6 @@ const Login = () => {
     const token = queryParams.get("token");
     const action = queryParams.get("action");
 
-    console.log("Action:", action);
-
     if (token) {
       window.history.replaceState({}, document.title, window.location.pathname);
 

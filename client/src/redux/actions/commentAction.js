@@ -3,7 +3,9 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getComments = () => async (dispatch) => {
   try {
-    const response = await axios.get(`http://localhost:8000/comments/`);
+    const response = await axios.get(
+      `https://wisteria-912.netlify.app/comments/`
+    );
     dispatch({ type: "GET_COMMENTS_SUCCESS", payload: response.data });
   } catch (error) {
     dispatch({ type: "GET_COMMENTS_FAIL", payload: error.message });
@@ -29,7 +31,7 @@ export const postComment = (comment) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
     await axios.post(
-      `http://localhost:8000/comments/`,
+      `https://wisteria-912.netlify.app/comments/`,
       {
         comment,
       },
@@ -47,11 +49,14 @@ export const postComment = (comment) => async (dispatch) => {
 export const deleteComment = (commentId) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
-    await axios.delete(`http://localhost:8000/comments/${commentId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await axios.delete(
+      `https://wisteria-912.netlify.app/comments/${commentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   } catch (error) {
     dispatch({ type: "DELETE_COMMENT_FAIL", payload: error.message });
   }
@@ -66,7 +71,7 @@ export const replyComment = (commentId, reply) => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
     await axios.post(
-      `http://localhost:8000/comments/${commentId}/replies`,
+      `https://wisteria-912.netlify.app/comments/${commentId}/replies`,
       {
         reply,
       },
@@ -94,7 +99,7 @@ export const updateLikes = (commentId) => async (dispatch) => {
     }
 
     const response = await axios.post(
-      `http://localhost:8000/comments/${commentId}/likes`,
+      `https://wisteria-912.netlify.app/comments/${commentId}/likes`,
       {},
       {
         headers: {
@@ -125,11 +130,15 @@ export const updateComment = (commentId, updates) => async (dispatch) => {
       throw new Error("No token found");
     }
 
-    await axios.put(`http://localhost:8000/comments/${commentId}`, updates, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await axios.put(
+      `https://wisteria-912.netlify.app/comments/${commentId}`,
+      updates,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   } catch (error) {
     dispatch({ type: "UPDATE_COMMENT_FAIL", payload: error.message });
   }

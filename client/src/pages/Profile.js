@@ -6,14 +6,11 @@ import {
 } from "../redux/actions/userActions";
 import { GiReturnArrow } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import Avatar from "../components/ui-elements/Avatar";
 import { motion } from "framer-motion";
+import Avatar from "../components/ui-elements/Avatar";
 import "animate.css";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const { currentUser, loading, error } = useSelector((state) => state.user);
-
   const [formData, setFormData] = useState({
     avatar: null,
     bio: "",
@@ -21,6 +18,9 @@ const Profile = () => {
     location: "",
     title: "",
   });
+
+  const dispatch = useDispatch();
+  const { currentUser, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getCurrentUser());

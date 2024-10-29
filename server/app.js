@@ -39,13 +39,11 @@ connect
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://wisteria-912.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
 });
-
-//https:wisteria-912.netlify.app
 
 app.use((req, res, next) => {
   req.io = io;
@@ -72,13 +70,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://wisteria-912.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 
-// https://wisteria-912.netlify.app
 app.use(passport.initialize());
 
 app.use("/", indexRouter);

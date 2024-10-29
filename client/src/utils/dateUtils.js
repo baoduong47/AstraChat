@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { getUsers, getCurrentUser } from "../redux/actions/userActions";
 import { getComments } from "../redux/actions/commentAction";
 
-function useCurrentDateTime() {
+export const useCurrentDateTime = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   const dispatch = useDispatch();
@@ -21,6 +21,14 @@ function useCurrentDateTime() {
   }, [dispatch]);
 
   return currentDateTime;
-}
+};
 
-export default useCurrentDateTime;
+// - Expects message.timestamp
+export const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};

@@ -6,7 +6,7 @@ export const sendMessage = (content, recieverId) => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
     await axios.post(
-      `http://localhost:8000/messages/`,
+      `https://wisteria-912.netlify.app/messages/`,
       {
         content,
         recieverId,
@@ -36,11 +36,14 @@ export const clearMessages = () => ({
 export const getAllMessagesForUser = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(`http://localhost:8000/messages/`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `https://wisteria-912.netlify.app/messages/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({ type: "GET_ALL_MSG_SUCCESS", payload: response.data.messages });
   } catch (error) {
     dispatch({ type: "GET_ALL_MSG_FAIL", payload: error.message });
@@ -52,7 +55,7 @@ export const getMessagesBetweenUsers =
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `http://localhost:8000/messages/${senderId}/${recieverId}`,
+        `https://wisteria-912.netlify.app/messages/${senderId}/${recieverId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,7 +73,7 @@ export const getUnreadMessagesCount = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://localhost:8000/messages/unread-count`,
+      `https://wisteria-912.netlify.app/messages/unread-count`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -90,7 +93,7 @@ export const getUnreadMessagesCounts = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://localhost:8000/messages/unread-counts`,
+      `https://wisteria-912.netlify.app/messages/unread-counts`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

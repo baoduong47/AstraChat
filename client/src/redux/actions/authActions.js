@@ -5,7 +5,7 @@ export const registerUser = (userData) => async (dispatch) => {
   try {
     console.log("Sending userData:", userData);
     const response = await axios.post(
-      `http://localhost:8000/users/signup`,
+      `https://wisteria-912.netlify.app/users/signup`,
       userData
     );
     console.log("Recieved response: ", response.data);
@@ -29,7 +29,7 @@ export const loginUser = (credentials, rememberMe) => async (dispatch) => {
   try {
     console.log("Logging user with credentials:", credentials);
     const response = await axios.post(
-      `http://localhost:8000/users/login`,
+      `https://wisteria-912.netlify.app/users/login`,
       credentials
     );
     console.log("Received response from server:", response.data);

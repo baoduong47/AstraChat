@@ -17,7 +17,7 @@ router.get(
   (req, res) => {
     if (!req.user) {
       console.log("No user returned from Google authentication");
-      return res.redirect("http://localhost:3001/login");
+      return res.redirect("https://wisteria-912.netlify.app/login");
     }
 
     console.log("req.user", req.user);
@@ -26,13 +26,13 @@ router.get(
     console.log("Action:", action);
 
     if (action === "signup") {
-      return res.redirect("http://localhost:3001/login");
+      return res.redirect("https://wisteria-912.netlify.app/login");
     } else {
       const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
         expiresIn: "7h",
       });
 
-      res.redirect(`http://localhost:3001/login?token=${token}`);
+      res.redirect(`https://wisteria-912.netlify.app/login?token=${token}`);
     }
   }
 );

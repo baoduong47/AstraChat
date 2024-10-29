@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { playButtonClickedSound, playMenuOpenSound } from "../utils/soundUtils";
-import useCurrentDateTime from "../utils/dateUtils";
+import { useCurrentDateTime } from "../utils/dateUtils";
 import MainLayout from "../layout/MainLayout";
 import NewPostForm from "../components/forms/NewPostForm";
 import CommentsList from "../components/ui-elements/CommentsList";

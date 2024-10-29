@@ -5,11 +5,14 @@ export const getUsers = () => async (dispatch) => {
   dispatch({ type: "GET_USERS_REQUEST" });
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`http://localhost:8000/users/`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `https://wisteria-912.netlify.app/users/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     dispatch({ type: "GET_USERS_SUCCESS", payload: response.data });
   } catch (error) {
@@ -20,11 +23,14 @@ export const getUsers = () => async (dispatch) => {
 export const getCurrentUser = () => async (dispatch) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`http://localhost:8000/users/current`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `https://wisteria-912.netlify.app/users/current`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     dispatch({ type: "GET_CURRENT_USER_SUCCESS", payload: response.data });
   } catch (error) {
     dispatch({ type: "GET_CURRENT_USER_FAIL", payload: error.message });
@@ -37,7 +43,7 @@ export const updateCurrentUser = (formData) => async (dispatch) => {
     console.log("FormData being sent:", formData);
 
     const response = await axios.put(
-      `http://localhost:8000/users/current`,
+      `https://wisteria-912.netlify.app/users/current`,
       formData,
       {
         headers: {
