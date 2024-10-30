@@ -131,7 +131,7 @@ const MessageTab = ({ user, setIsOpen, avatar }) => {
                     {message.content}
                   </p>
                   <div className="text-xs absolute bottom-0 right-0 mr-2 mb-1">
-                    {formatTimestamp}
+                    {formattedTimestamp}
                   </div>
                 </div>
               </div>

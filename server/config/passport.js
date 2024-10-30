@@ -17,7 +17,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://astra-world.netlify.app/auth/google/callback",
+      callbackURL:
+        "https://my-messaging-app-strf.onrender.com/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
