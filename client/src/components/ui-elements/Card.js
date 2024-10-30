@@ -50,13 +50,9 @@ const Card = ({
   const { currentUser } = useSelector((state) => state.user);
 
   const { users } = useSelector((state) => state.user);
-  const authorUpdated = users.find((user) => user._id === authorId._id);
+  const authorUpdated = users.find((user) => user._id === authorId?._id);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log("replies state", repliesState);
-  }, [repliesState]);
 
   const displayLikes = (commentsArray) => {
     commentsArray.forEach((comment) => {
@@ -158,7 +154,6 @@ const Card = ({
 
   useEffect(() => {
     socket.on("updatedLikes", (comment) => {
-      console.log("updatedlikes frontend", comment);
       dispatch(updatedLikes(comment));
     });
 
@@ -169,8 +164,6 @@ const Card = ({
 
   useEffect(() => {
     socket.on("receiveReply", (updatedParentComment) => {
-      console.log("recievedreply socket", updatedParentComment);
-
       if (updatedParentComment._id === commentId) {
         setRepliesState(updatedParentComment.replies);
       }
@@ -213,7 +206,6 @@ const Card = ({
   };
 
   const handleSaveEdit = (newDescription) => {
-    console.log("New Description", newDescription);
     dispatch(updateComment(commentId, { comment: newDescription }));
     setIsEditing(false);
   };
