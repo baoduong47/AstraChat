@@ -257,7 +257,7 @@ const Login = () => {
               type="button"
               size="small"
               onClick={() => {
-                window.location.href = `${process.env.REACT_APP_BACKEND_URL}/auth/google?action=login`;
+                window.location.href = `https://astra-world.netlify.app/auth/google?action=login`;
               }}
             >
               Log in with Google
